@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/style-index.css">
+    <link id="favicon" rel="icon" type="image/png" href="../assets/favicon.png">
+</head>
+<body>
+    <div class="bubbles-container">
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+        <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+    </div>
+
+    <div class="pokeballs-container">
+        <div class="pokeball p-1"></div><div class="pokeball p-2"></div><div class="pokeball p-8"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="../assets/logo-pokedex.png" alt="Logo">
+            </div>
+            <ul>
+                <li><a href="index.html" class="btn-nav active">Início</a></li>
+                <li><a href="mainpage.html" class="btn-nav">Pokedex</a></li>
+                <li><a href="compare.html" class="btn-nav">Comparar</a></li>
+                <li><a href="favoritos.html" class="btn-nav">Favoritos</a></li>
+                <li><a href="login.html" class="btn-nav">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1>Explore o mundo <span>Pokemon!</span></h1>
+                <p>Descubra todos os Pokemons com sua Pokedex digital:</p>
+                <button class="btn-start" onclick="window.location.href='mainpage.html'">COMECE AGORA</button>
+            </div>
+            <div class="hero-image">
+                <img src="../assets/trio-pokemon.png" alt="Hero">
+            </div>
+        </section>
+    </main>
+
+    <section class="destaques">
+       <h2>Pokemons em destaque:</h2>
+        <div class="carousel-container">
+            <button class="arrow-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+            <div id="pokemon-list" class="pokemon-container"></div>
+            <button class="arrow-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+        </div>
+    </section>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

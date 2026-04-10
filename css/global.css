@@ -1,0 +1,365 @@
+/* --- 1. VARIÁVEIS E CONFIGURAÇÃO BASE --- */
+:root {
+    --clr-grass: #74cb48;
+    --clr-fire: #f57d31;
+    --clr-water: #6493eb;
+    --clr-electric: #f9cf30;
+    --clr-bug: #A7B723;
+    --clr-normal: #aaa67f;
+    --clr-poison: #a33ea1;
+    --clr-ground: #e2bf65;
+    --clr-flying: #a98ff3;
+    --clr-glass: rgba(255, 255, 255, 0.4);
+    --clr-fav-red: #EE1515;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('../assets/background-pokedex.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- 2. HEADER E NAVBAR (LOGO 350PX E ALINHAMENTO EM COLUNA) --- */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    width: 100%;
+    z-index: 100;
+    position: relative;
+}
+
+header nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    width: 350px; 
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo img { width: 100%; height: auto; }
+
+nav ul { display: flex; list-style: none; gap: 15px; }
+
+.btn-nav {
+    text-decoration: none;
+    color: white;
+    padding: 10px 30px;
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    border-radius: 25px;
+    border: 1px solid #fff; 
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.3s;
+    display: inline-block;
+}
+
+.btn-nav:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Efeito de Botão Apertado */
+.btn-nav.active {
+    background: #4d8c18;
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    transform: scale(0.95);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* Botão padrão para o Banner */
+.btn-start {
+    border: 1px solid white;
+    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
+    color: white; 
+    padding: 15px 40px;
+    border-radius: 30px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+/* --- 3. COMPONENTES DE CARD --- */
+.pokemon-card-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokemon-card-base {
+    width: 100%;
+    height: 175px;
+    border-radius: 24px;
+    position: relative;
+    z-index: 5;
+    transition: 0.3s;
+}
+
+.pokemon-image-card { 
+    width: 180px; 
+    position: absolute; 
+    top: -50px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 15; 
+    filter: drop-shadow(0 12px 18px rgba(0,0,0,0.25)); 
+    transition: 0.3s;
+}
+
+
+.pokemon-card-container:hover .pokemon-image-card {
+    transform: translateX(-50%) translateY(-10px) scale(1.1);
+}
+
+.hp-badge { 
+    position: absolute; 
+    top: 85px; 
+    right: 5px; 
+    background-color: var(--clr-fav-red); 
+    z-index: 1000;
+    padding: 2px 12px; 
+    border-radius: 12px; 
+    font-size: 0.75rem; 
+    font-weight: bold;
+}
+
+/* Pokébola Favorito */
+.favorite-toggle { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    width: 35px; 
+    height: 35px; 
+    cursor: pointer; 
+    z-index: 15; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 50%; 
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.pokeball-icons-wrapper { position: relative; width: 22px; height: 22px; }
+.favorite-toggle svg { position: absolute; width: 100%; height: 100%; transition: opacity 0.3s; }
+.icon-filled { opacity: 0; }
+.favorite-toggle.is-favorite .icon-outline { opacity: 0; }
+.favorite-toggle.is-favorite .icon-filled { opacity: 1; }
+
+/* Info Glass Panel */
+.glass-info-panel { 
+    position: absolute; 
+    bottom: 0;
+    z-index: 900; 
+    width: 100%; 
+    height: 80px; 
+    background: none;     
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; 
+    padding: 15px 20px; 
+}
+
+.header-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.pokemon-name { 
+    font-size: 1.2rem; 
+    font-weight: 700; 
+    text-transform: capitalize;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+    margin: 0; }
+
+.pokemon-number {
+    font-size: 0.9rem;
+    color: white;
+    font-weight: normal;
+    opacity: 0.8;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); 
+}
+
+/* Badges de Tipo Coloridas */
+.types-wrapper { display: flex; gap: 5px; margin-top: 8px; }
+.type-badge {
+    padding: 2px 12px; 
+    border-radius: 12px; 
+    font-size: 0.75rem;
+    text-transform: uppercase; 
+    font-weight: bold; 
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+.type-badge.grass { background-color: var(--clr-grass); }
+.type-badge.fire { background-color: var(--clr-fire); }
+.type-badge.water { background-color: var(--clr-water); }
+.type-badge.electric { background-color: var(--clr-electric); }
+.type-badge.bug { background-color: var(--clr-bug); }
+.type-badge.normal { background-color: var(--clr-normal); }
+.type-badge.poison { background-color: var(--clr-poison); }
+.type-badge.flying { background-color: var(--clr-flying); }
+.type-badge.ground { background-color: var(--clr-ground); }
+
+/* --- 4. ROLLDOWN (PAINEL DE DETALHES) --- */
+.expand-btn { 
+    width: 38px; height: 38px; border-radius: 50%; 
+    background: #96e072; border: none; color: white; 
+    position: absolute; 
+    top: 156px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    cursor: pointer; 
+    z-index: 20; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.details-panel { 
+    display: grid; 
+    grid-template-rows: 0fr; 
+    transition: 0.5s ease-out; 
+    width: 92%; 
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(10px); 
+    border-radius: 0 0 24px 24px; 
+    position: relative; 
+    margin-top: -10px; 
+    z-index: 1; 
+    opacity: 0;
+}
+
+.details-panel.open { 
+    grid-template-rows: 1fr; 
+    opacity: 1; 
+    padding: 30px 0 15px 0;
+}
+
+.stat-row { 
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18); 
+    border-radius: 20px; 
+    padding: 8px 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    margin: 5px 12px; 
+    font-size: 0.85rem; 
+    font-weight: 600;
+}
+
+.moves-section { 
+    margin: 10px 12px 0; 
+    text-align: left; 
+}
+
+.pixel-move-btn {
+    background: #555; 
+    color: white; 
+    border: 1px solid #555;
+    font-family: 'Courier New', monospace; 
+    font-size: 9px;
+    padding: 3px 6px; 
+    text-transform: uppercase; 
+    margin: 2px;
+}
+
+/* --- 5. FUNDO ANIMADO --- */
+.bubbles-container { position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -1; 
+    overflow: hidden; 
+    pointer-events: none; 
+}
+
+.bubble {
+    position: absolute;
+    bottom: -100px;
+    background: rgba(255, 255, 255, 0.25); 
+    border: 2px solid rgba(255, 255, 255, 0.4); 
+    border-radius: 50%;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.5);
+    animation: floatUp 10s infinite ease-in-out;
+}
+.bubble::after { 
+    content: ""; 
+    position: absolute; 
+    top: 15%; 
+    left: 15%; 
+    width: 25%; 
+    height: 25%; 
+    background: rgba(255, 255, 255, 0.6); 
+    border-radius: 50%; 
+    filter: blur(1px); 
+}
+
+/* Variações das Bolhas */
+.bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; }
+.bubble:nth-child(2) { width: 80px; height: 80px; left: 20%; animation-duration: 12s; animation-delay: 2s; }
+.bubble:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 10s; animation-delay: 4s; }
+.bubble:nth-child(4) { width: 90px; height: 90px; left: 50%; animation-duration: 15s; }
+.bubble:nth-child(5) { width: 30px; height: 30px; left: 65%; animation-duration: 7s; }
+.bubble:nth-child(6) { width: 70px; height: 70px; left: 80%; animation-duration: 11s; }
+.bubble:nth-child(7) { width: 45px; height: 45px; left: 90%; animation-duration: 9s; }
+.bubble:nth-child(8) { width: 100px; height: 100px; left: 15%; animation-duration: 14s; }
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+}
+
+/* Pokébolas de Fundo */
+.pokeballs-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; overflow: hidden; }
+.pokeball {
+    position: absolute;
+    background-image: url('../assets/Pokebola.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: floatPokeball 20s infinite linear;
+}
+
+.p-1 { width: 60px; height: 60px; top: 10%; right: 15%; }
+.p-2 { width: 150px; height: 150px; bottom: 5%; left: 10%; filter: blur(5px); }
+.p-3 { width: 80px; height: 80px; top: 40%; left: 5%; filter: blur(2px); }
+.p-8 { width: 30px; height: 30px; top: 50%; right: 40%; }
+
+@keyframes floatPokeball {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- 6. UTILITÁRIOS --- */
+#backToTop {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 50px; height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: white; border-radius: 50%;
+    font-size: 24px; cursor: pointer; z-index: 1000;
+    opacity: 0; transition: 0.4s; pointer-events: none;
+}
+#backToTop.show { opacity: 1; pointer-events: auto; }
+
+#pokemon-list .hp-badge {
+    display: none;
+}
