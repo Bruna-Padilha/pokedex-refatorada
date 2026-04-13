@@ -36,7 +36,7 @@
                 <div class="hero-content">
                     <h1>Compare <span>Pokemons!</span></h1>
                     <p>Compare todos os seus Pokemons favoritos</p>
-                    <button class="btn-start" onclick="irParaSecao()">COMECE AGORA</button>
+                    <button class="btn-start" onclick="irParaSecaoCompare()">COMECE AGORA</button>
                 </div>
                 <div class="hero-image"><img src="../assets/trio-pokemon.png" alt="Hero"></div>
             </div>
@@ -46,12 +46,22 @@
             <div class="card-add-empty" id="card1" onclick="addCard1()">
                 <div class="card-add-empty-circle"><h1>+</h1></div>
             </div>
-            <div class="card-add-empty-circle h1">
-                <h3>VS</h3>
+
+            <div id="vs-button">
+                <div class="card-add-empty-circle h1">
+                    <h3>VS</h3>                
+                </div>
+                <button  onclick="irParaSecaoBattle()">Buttle!</button>
             </div>
+
             <div class="card-add-empty" id="card2" onclick="addCard2()">
                 <div class="card-add-empty-circle"><h1>+</h1></div>
             </div>
+        </section>
+
+        <section class="card-add-content" id="sectionBattle">
+
+
         </section>
     </main>
 

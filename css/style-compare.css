@@ -92,6 +92,26 @@
     margin: 0;
 }
 
+#vs-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#vs-button button {
+    border: 1px solid white;
+    background: linear-gradient(to bottom, #ffee00 0%, #c95b00 100%);
+    color: white; 
+    padding: 15px 40px;
+    border-radius: 30px; 
+    font-weight: bold; 
+    text-transform: uppercase;
+    margin-top: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
 /* --- CARD PREENCHIDO (ESTILO BULBASAUR) --- */
 .card-add { 
     width: 250px; 
