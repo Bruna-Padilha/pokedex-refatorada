@@ -159,14 +159,17 @@ async function carregarDestaquesIndex() {
 
 // Carrossel 
 function scrollCarousel(direction) {
-    const list = document.getElementById('pokemon-list');
-    
-    if (list) {
-        list.scrollBy({ 
-            left: 300 * direction, 
-            behavior: 'smooth' 
-        });
-    }
+    const container = document.getElementById('pokemon-list');
+    const cardWidth = 250;
+    const gap = 15;
+    const visibleCards = 4;
+
+    const scrollAmount = (cardWidth + gap) * visibleCards;
+
+    container.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth'
+    });
 }
 
 
