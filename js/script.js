@@ -232,15 +232,38 @@ function addCard2() {
     }); 
 }
 
-function irParaSecao() {
+function irParaSecaoCompare() {
     const section = document.getElementById('sectionCompare');
     
-    if (section) {
-        section.style.visibility = 'visible';
-        section.scrollIntoView({ behavior: 'smooth' });
-        section.style.animation = 'slideUp 0.3s ease forwards';
-    }
+    section.scrollIntoView({ behavior: 'smooth' });
 }
+
+function irParaSecaoBattle() {
+    const section = document.getElementById('sectionBattle');
+    
+    section.scrollIntoView({ behavior: 'smooth' });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const target = document.querySelector("#sectionCompare");
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+
+                target.style.visibility = 'visible';
+                target.style.animation = 'slideUp 0.5s ease forwards';
+                
+                // Parar de observar após renderizar
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.8 // Carrega quando 80% do elemento estiver visível
+    });
+
+    observer.observe(target);
+});
 
 
 /* FUNÇÃO MESTRE DE RENDERIZAÇÃO DE CARD */
