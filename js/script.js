@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
-function buttle() {
+function battle() {
 
     if(card1 && card2){
         const section = document.getElementById('sectionCompare');
