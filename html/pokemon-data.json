@@ -298,5 +298,15 @@
     "defense": 67,
     "moves": ["Bite", "Poison Fang"],
     "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/30.png"
+  },
+    {
+    "id": 31,
+    "name": "Cachorro sorridente",
+    "type": ["cachorro"],
+    "hp": 100,
+    "attack": 100,
+    "defense": 100,
+    "moves": ["Auau", "Sorrir"],
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSnFZ3x5Vy8yGPP-Mr9-XKamfv_vxA5Ofmbw&s"
   }
 ]
