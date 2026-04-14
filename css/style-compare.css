@@ -218,7 +218,65 @@
     animation: slideUp 0.8s ease forwards;
 }
 
+.battle-content {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    gap: 8%;
+    padding: 2%;
+    display: none;
+}
+
+#battleDiv {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+}
+
+#winner-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 350px;
+    height: 500px;
+}
+
+#winner-pokemon-name {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: xxx-large;
+}
+
+.imagem-winner {
+    width: 100%;
+}
+
+.winner-info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.winner-info {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size:x-large
+}
+
 @keyframes slideUp {
     from { transform: translate(0%, -30%); opacity: 0; }
     to { transform: translate(0%, 0%); opacity: 1; }
+}
+
+@keyframes battleWin {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
