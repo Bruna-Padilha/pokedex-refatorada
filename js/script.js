@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
-function buttle() {
+function battle() {
 
     if(card1 && card2){
         const section = document.getElementById('sectionCompare');
@@ -285,12 +285,13 @@ function buttle() {
         `;
 
         section.scrollIntoView({ behavior: 'smooth' });
+        
 
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor();
-        }, 800);
+        }, 500);
     }
     else {
         alert("Você precisa adicionar os dois pokemons nos cards!")
@@ -303,19 +304,19 @@ function renderizarVencedor(){
 
     winner.innerHTML = `
         <div id="winner-column">
-            <img class="imagem-winner" src="../assets/img/pikachu.png" alt="pikachu">
+            <img class="imagem-pokemon-winner" src="../assets/img/pikachu.png" alt="pikachu">
         </div>
 
         <div id="winner-column">
-            <h1>Winner</h1>
+            <img class="imagem-pokemon-winner" src="../assets/img/winner.png" alt="Winner!">
 
             <h1 id="winner-pokemon-name">Pikachu</h1>
 
             <div class="winner-info-content">
-                <div class="winner-info">Ataque: 112</div>
-                <div class="winner-info">Defesa: 96</div>
-                <div class="winner-info">Estamina: 111</div>
-                <div class="winner-info">PC Máx: 1060</div>
+                <div class="winner-info"></div>
+                <div class="winner-info"></div>
+                <div class="winner-info"></div>
+                <div class="winner-info"></div>
             </div>
         </div>
     `;

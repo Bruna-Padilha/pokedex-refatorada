@@ -257,8 +257,13 @@
     font-size: xxx-large;
 }
 
-.imagem-winner {
+.imagem-pokemon-winner {
     width: 100%;
+}
+
+.imagem-winner {
+    height: auto;
+    width: auto;
 }
 
 .winner-info-content {
