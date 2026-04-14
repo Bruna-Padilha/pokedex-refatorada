@@ -276,9 +276,8 @@ function buttle() {
         section.style.backgroundColor = 'black';
 
         section.innerHTML = `
-            <div class="battleDiv">
+            <div id="battleDiv">
                 <img src="../assets/img/animacao1.gif" alt="animacao" id="animacaoBattle">
-                <div id="battleDiv"></div>
             </div>
         `;
 
@@ -300,23 +299,21 @@ function renderizarVencedor(){
     const winner = document.getElementById('battleDiv');
 
     winner.innerHTML = `
-        <div class="card-add">
-            <div class="card-add-head">
-                <img class="card-img" src="assets/img/pikachu.png" alt="pikachu">
+        <div id="winner-column">
+            <img class="imagem-winner" src="../assets/img/pikachu.png" alt="pikachu">
+        </div>
 
-                <div class="card-add-head-title">
-                    <h2>Pikachu</h2>
-                    <p>Elétrico</p>
-                </div>            
+        <div id="winner-column">
+            <h1>Winner</h1>
+
+            <h1 id="winner-pokemon-name">Pikachu</h1>
+
+            <div class="winner-info-content">
+                <div class="winner-info">Ataque: 112</div>
+                <div class="winner-info">Defesa: 96</div>
+                <div class="winner-info">Estamina: 111</div>
+                <div class="winner-info">PC Máx: 1060</div>
             </div>
-
-            <div class="card-add-info-content">
-                <li class="card-add-info">Ataque: 112</li>
-                <li class="card-add-info">Defesa: 96</li>
-                <li class="card-add-info">Estamina: 111</li>
-                <li class="card-add-info">PC Máx: 1060</li>
-            </div>
-
         </div>
     `;
 }
