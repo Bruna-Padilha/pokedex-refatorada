@@ -5,6 +5,9 @@ let filteredPokemon = [];
 let itemsToShow = 8;
 const increment = 4;
 let currentSort = 'id';
+let card1 = false;
+let card2 = false;
+
 
 const cores = {
     fire: 'var(--clr-fire)',
@@ -207,7 +210,8 @@ function renderizarNoSlot(containerId, pokemon) {
     `;
 }
 
-function addCard1() { 
+function addCard1() {
+    card1 = true;
     renderizarNoSlot('card1', 
         { id: 25, 
         name: "Pikachu", 
@@ -220,7 +224,8 @@ function addCard1() {
     }); 
 }
 
-function addCard2() { 
+function addCard2() {
+    card2 = true;
     renderizarNoSlot('card2', 
         { id: 1, name: "Bulbasaur", 
         type: ["grass", "poison"], 
@@ -232,17 +237,12 @@ function addCard2() {
     }); 
 }
 
-function irParaSecaoCompare() {
+function irParaSectionCompare() {
     const section = document.getElementById('sectionCompare');
     
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
-function irParaSecaoBattle() {
-    const section = document.getElementById('sectionBattle');
-    
-    section.scrollIntoView({ behavior: 'smooth' });
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
@@ -265,6 +265,61 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
+function buttle() {
+
+    if(card1 && card2){
+        const section = document.getElementById('sectionCompare');
+        const bannersection = document.querySelector('.hero-div');
+
+        //section.style.display = 'flex';
+        bannersection.style.display = 'none';
+        section.style.backgroundColor = 'black';
+
+        section.innerHTML = `
+            <div class="battleDiv">
+                <img src="../assets/img/animacao1.gif" alt="animacao" id="animacaoBattle">
+                <div id="battleDiv"></div>
+            </div>
+        `;
+
+        section.scrollIntoView({ behavior: 'smooth' });
+
+        setTimeout(function() {
+            document.getElementById('animacaoBattle').style.display = 'none';
+            section.style.backgroundColor = 'transparent';
+            renderizarVencedor();
+        }, 800);
+    }
+    else {
+        alert("Você precisa adicionar os dois pokemons nos cards!")
+    } 
+    
+}
+
+function renderizarVencedor(){
+    const winner = document.getElementById('battleDiv');
+
+    winner.innerHTML = `
+        <div class="card-add">
+            <div class="card-add-head">
+                <img class="card-img" src="assets/img/pikachu.png" alt="pikachu">
+
+                <div class="card-add-head-title">
+                    <h2>Pikachu</h2>
+                    <p>Elétrico</p>
+                </div>            
+            </div>
+
+            <div class="card-add-info-content">
+                <li class="card-add-info">Ataque: 112</li>
+                <li class="card-add-info">Defesa: 96</li>
+                <li class="card-add-info">Estamina: 111</li>
+                <li class="card-add-info">PC Máx: 1060</li>
+            </div>
+
+        </div>
+    `;
+}
 
 /* FUNÇÃO MESTRE DE RENDERIZAÇÃO DE CARD */
 

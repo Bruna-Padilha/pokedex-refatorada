@@ -218,7 +218,24 @@
     animation: slideUp 0.8s ease forwards;
 }
 
+.battle-content {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    gap: 8%;
+    padding: 2%;
+    display: none;
+}
+
 @keyframes slideUp {
     from { transform: translate(0%, -30%); opacity: 0; }
     to { transform: translate(0%, 0%); opacity: 1; }
+}
+
+@keyframes battleWin {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
