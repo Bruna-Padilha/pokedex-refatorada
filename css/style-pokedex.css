@@ -32,10 +32,11 @@
 }
 
 .sort-container {
-    background: #74cb48;
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
     color: white;
     padding: 12px 25px;
-    border-radius: 30px;
+    border-radius: 25px;
+    border: 1px solid #fff;
     display: flex;
     align-items: center;
     font-weight: 600;
