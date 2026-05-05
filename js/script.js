@@ -129,6 +129,26 @@ function carregarMais() {
     renderizarGrid();
 }
 
+/* OBSERVER PARA CARREGAR MAIS CARDS QUANDO APARECER O BOTAO CARREGAR NA TELA DA POKEDEX */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const carregarMaisObserver = document.querySelector("#loadMoreBtn");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+
+                setTimeout(() => {
+                    carregarMais();
+                }, 100);
+            }
+        });
+    }, {
+        threshold: 1 // Carrega quando 100% do elemento estiver visível
+    });
+
+    observer.observe(carregarMaisObserver);
+});
 
 /* LÓGICA DA INDEX E CARROSSEL (ORIGINAL) */
 

@@ -46,14 +46,14 @@
 
 /* --- GRID E SLOTS DE COMPARAÇÃO --- */
 .card-add-content {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8%;
-    padding: 2%;
-    visibility: hidden;
+width: 100vw;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 8%;
+padding: 2%;
+visibility: hidden;
 }
 
 /* Slot Vazio com "+" */
@@ -284,4 +284,45 @@
 @keyframes battleWin {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+
+#fade{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    z-index: 20;
+    width: 450px;
+    height: 300px;
+    padding: 1.5rem;
+
+}
+
+#modal-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid white;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+#modal-body p{
+   text-align: justify;
 }
