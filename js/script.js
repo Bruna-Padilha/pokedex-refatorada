@@ -5,7 +5,7 @@ let filteredPokemon = [];
 let itemsToShow = 8;
 const increment = 4;
 let currentSort = 'id';
-let cardcompare = [0, 0];
+let cardcompare = [];
 
 
 const cores = {
@@ -133,6 +133,7 @@ function carregarMais() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const carregarMaisObserver = document.querySelector("#loadMoreBtn");
+    if(!carregarMaisObserver) return;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -267,6 +268,7 @@ function irParaSectionCompare() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
+    if(!target) return;
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -285,6 +287,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observer.observe(target);
 });
+
 
 /* EVENTO DE CLICK NOS CARDS ADD */
 const card01 = document.getElementById('card1');
