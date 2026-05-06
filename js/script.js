@@ -324,7 +324,7 @@ function abrirmodal(card){
     const bodymodal = document.getElementById('modal-body-grid');
 
     filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, false);
+        renderizarCard(p, bodymodal, true);
     });
 
     const btnBusca = document.getElementById('btn-modal-compare');
