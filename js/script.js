@@ -22,7 +22,6 @@ const cores = {
 };
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
-carregarPokedex(); //Lucas: Chamei a funcao aqui pq a pokedex nao carrega os pokemons no meu pc
 
 function obterBackground(tipos) {
     const listaTipos = Array.isArray(tipos) ? tipos : [tipos.toLowerCase()];
@@ -47,7 +46,7 @@ async function inicializar() {
 
     } else if (path.includes('compare.html')) {
         
-        // Lógica de comparação pronta para uso via cliques
+        await carregarPokedex();
 
     } else {
         
@@ -293,13 +292,16 @@ document.addEventListener("DOMContentLoaded", () => {
 const card01 = document.getElementById('card1');
 const card02 = document.getElementById('card2');
 
-card01.addEventListener('click', () => {
-    abrirmodal(1);
-});
+if (card01 && card02) {        
+    card01.addEventListener('click', () => {
+        abrirmodal(1);
+    });
 
-card02.addEventListener('click', () => {
-    abrirmodal(2);
-});
+    card02.addEventListener('click', () => {
+        abrirmodal(2);
+    });
+}
+
 
 function abrirmodal(card){
     const modal = document.querySelector('.modal-container');
