@@ -22,6 +22,7 @@ const cores = {
 };
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
+carregarPokedex(); //Lucas: Chamei a funcao aqui pq a pokedex nao carrega os pokemons no meu pc
 
 function obterBackground(tipos) {
     const listaTipos = Array.isArray(tipos) ? tipos : [tipos.toLowerCase()];
@@ -59,9 +60,11 @@ async function inicializar() {
 
 async function carregarPokedex() {
     try {
-        const res = await fetch('pokemon-data.json'); 
+        const res = await fetch('../html/pokemon-data.json'); 
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
+
+        console.log("dados", filteredPokemon);
         
         renderizarGrid();
     } catch (e) {
@@ -296,32 +299,44 @@ card02.addEventListener('click', () => {
 });
 
 function abrirmodal(card){
-    const modal = document.getElementById('modal-container');
+    const modal = document.querySelector('.modal-container');
   
     modal.innerHTML = `
         <div id="fade"></div>
         <div id="modal">
-            <div id="modal-header">
-                <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                <button class="btn-nav" id="btn-modal-compare">Buscar</button>
+            <div class="search-sort-bar" id="modal-header">
+   
+                <div class="search-container">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
+                </div>
+                <div class="sort-container" id="btn-modal-compare">
+                    <span>Buscar</span>
+                </div>
+                
             </div>
-
             <div id="modal-body">
-                <p></p>
+                <div id="modal-body-grid"></div>
             </div>
         </div>
     `;
     
-    //Para fechar o modal
-    const btn = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
+    const bodymodal = document.getElementById('modal-body-grid');
 
-    btn.addEventListener('click', () => {
-        modal.innerHTML = "";
+    filteredPokemon.forEach(p => {
+        renderizarCard(p, bodymodal, false);
     });
 
+    const btnBusca = document.getElementById('btn-modal-compare');
+    const fadearea = document.getElementById('fade');
+
+    btnBusca.addEventListener('click', () => {
+       card == 1 ? addCard1() : addCard2();
+    });
+
+    //Para fechar o modal
     fadearea.addEventListener('click', () => {
-        modal.innerHTML = "";
+         modal.innerHTML = "";
     });
     //--------//--------//
 }

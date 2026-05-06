@@ -366,3 +366,23 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 #pokemon-list .hp-badge {
     display: none;
 }
+
+::-webkit-scrollbar{
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7c7c7c; /* Cor da alça */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor da alça ao passar o mouse */
+}
