@@ -5,8 +5,7 @@ let filteredPokemon = [];
 let itemsToShow = 8;
 const increment = 4;
 let currentSort = 'id';
-let card1 = false;
-let card2 = false;
+let cardcompare = [0, 0];
 
 
 const cores = {
@@ -21,7 +20,6 @@ const cores = {
     flying: 'var(--clr-flying)',
     fairy: '#d685ad'
 };
-
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
@@ -56,7 +54,6 @@ async function inicializar() {
 
     }
 }
-
 
 /* LÓGICA DA POKEDEX (MAINPAGE) */
 
@@ -195,7 +192,6 @@ function scrollCarousel(direction) {
     });
 }
 
-
 /* LÓGICA DE COMPARAÇÃO */
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -266,7 +262,6 @@ function irParaSectionCompare() {
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
 
@@ -287,6 +282,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observer.observe(target);
 });
+
+/* EVENTO DE CLICK NOS CARDS ADD */
+const card01 = document.getElementById('card1');
+const card02 = document.getElementById('card2');
+
+card01.addEventListener('click', () => {
+    abrirmodal(1);
+});
+
+card02.addEventListener('click', () => {
+    abrirmodal(2);
+});
+
+function abrirmodal(card){
+    const modal = document.getElementById('modal-container');
+  
+    modal.innerHTML = `
+        <div id="fade"></div>
+        <div id="modal">
+            <div id="modal-header">
+                <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
+                <button class="btn-nav" id="btn-modal-compare">Buscar</button>
+            </div>
+
+            <div id="modal-body">
+                <p></p>
+            </div>
+        </div>
+    `;
+    
+    //Para fechar o modal
+    const btn = document.getElementById('btn-modal-compare');
+    const fadearea = document.getElementById('fade');
+
+    btn.addEventListener('click', () => {
+        modal.innerHTML = "";
+    });
+
+    fadearea.addEventListener('click', () => {
+        modal.innerHTML = "";
+    });
+    //--------//--------//
+}
 
 function battle() {
 
