@@ -23,6 +23,56 @@ const cores = {
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
+/* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
+
+/* PARA RESETAR O LOGIN SIMULADO, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
+localStorage.clear();
+location.reload() /
+
+if (localStorage.getItem('usuarioLogado') === null) {
+    localStorage.setItem('usuarioLogado', 'false');
+}
+
+function estaLogado() {
+    return localStorage.getItem('usuarioLogado') === 'true';
+}
+
+function loginSimulado(status) {
+    localStorage.setItem('usuarioLogado', status);
+    console.log(`Estado de login alterado para: ${status}`);
+}
+
+function obterFavoritos() {
+    const favs = localStorage.getItem('pokemonsFavoritos');
+    return favs ? JSON.parse(favs) : [];
+}
+
+function salvarFavorito(id) {
+    let favs = obterFavoritos();
+    if (favs.includes(id)) {
+        favs = favs.filter(favId => favId !== id);
+    } else {
+        favs.push(id);
+    }
+    localStorage.setItem('pokemonsFavoritos', JSON.stringify(favs));
+}
+
+function tentarFavoritar(event, elemento, pokemonId) {
+    
+    event.stopPropagation();
+
+    if (estaLogado()) {
+        elemento.classList.toggle('is-favorite');
+        salvarFavorito(pokemonId);                
+        console.log(`Pokemon ${pokemonId} adicionado aos favoritos.`);
+    } else {
+        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");        
+        window.location.href = 'login.html';
+    }
+}
+
+/* ------------------------------------------------- */
+
 function obterBackground(tipos) {
     const listaTipos = Array.isArray(tipos) ? tipos : [tipos.toLowerCase()];
 
@@ -394,11 +444,25 @@ function renderizarCard(p, container, isMainPage) {
         card.style.flex = "0 0 250px";
     }
 
+    const listaFavs = obterFavoritos();
+    const jaEFavorito = listaFavs.includes(p.id) ? 'is-favorite' : '';
+
     const favButton = isMainPage ? `
-        <div class="favorite-toggle" onclick="this.classList.toggle('is-favorite')">
+        <div class="favorite-toggle ${jaEFavorito}" onclick="tentarFavoritar(event, this, ${p.id})">
             <div class="pokeball-icons-wrapper">
-                <svg class="icon-outline" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M2 12h20" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/></svg>
-                <svg class="icon-filled" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12h20C22 6.48 17.52 2 12 2z" fill="#EE1515"/><path d="M12 22c5.52 0 10-4.48 10-10H2c0 5.52 4.48 10 10 10z" fill="white"/><rect x="2" y="11" width="20" height="2" fill="#222222"/><circle cx="12" cy="12" r="4" fill="white" stroke="#222222" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="#222222"/></svg>
+                <svg class="icon-outline" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+                    <path d="M2 12h20" stroke="white" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/>
+                </svg>
+
+                <svg class="icon-filled" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C6.48 2 2 6.48 2 12h20C22 6.48 17.52 2 12 2z" fill="#EE1515"/>
+                    <path d="M12 22c5.52 0 10-4.48 10-10H2c0 5.52 4.48 10 10 10z" fill="white"/>
+                    <rect x="2" y="11" width="20" height="2" fill="#222222"/>
+                    <circle cx="12" cy="12" r="4" fill="white" stroke="#222222" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="1.5" fill="#222222"/>
+                </svg>
             </div>
         </div>` : '';
 
@@ -424,15 +488,15 @@ function renderizarCard(p, container, isMainPage) {
             <img src="${p.image}" class="pokemon-image-card" alt="${p.name}">
             <div class="glass-info-panel">
                 <div class="header-row">
-                    <h3 class="pokemon-name">${p.name}</h3>
-                    <span class="pokemon-number" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">#${p.id.toString().padStart(3, '0')}</span>
+                    <h3 class="pokemon-name" style="text-transform:capitalize;">${p.name}</h3>
+                    <span class="pokemon-number">#${p.id.toString().padStart(3, '0')}</span>
                 </div>
                 <div class="types-wrapper">
                     ${p.type.map(t => `<span class="type-badge ${t}">${t}</span>`).join('')}
                 </div>
             </div>
         </div>
-        ${detailsPanel}
+        ${detailsPanel} 
     `;
 
     card.addEventListener('click', () => {
@@ -455,7 +519,6 @@ function toggleDetails(btn) {
     panel.classList.toggle('open');
     btn.textContent = panel.classList.contains('open') ? '▲' : '▼';
 }
-
 
 /* 7. UTILITÁRIOS FINAIS (SCROLL E WINDOW)*/
 
