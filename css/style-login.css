@@ -1,0 +1,127 @@
+/* Fundo com imagem de paisagem Pokémon */
+.pokemon-bg {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('../assets/bg-pokemon.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Card translúcido central */
+.login-card {
+  background: rgba(144, 238, 144, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  min-width: 320px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+/* Personagens posicionados */
+.char {
+  position: absolute;
+  bottom: 0;
+  width: 140px;
+  z-index: 0;
+}
+
+.char--left {
+  left: 2rem;
+}
+
+.char--right {
+  right: 2rem;
+}
+
+/* Campo com label vermelha + input verde */
+.form-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.form-field__label {
+  background: #e53e3e;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px 0 0 20px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+}
+
+.form-field__input {
+  flex: 1;
+  background: #c6f6d5;
+  border: none;
+  border-radius: 0 20px 20px 0;
+  padding: 0.4rem 0.8rem;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-field__input:focus {
+  background: #9ae6b4;
+}
+
+/* Botão principal — Entrar */
+.btn--primary {
+  display: inline-block;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 2rem;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0.75rem 0;
+  transition: background 0.2s;
+}
+
+.btn--primary:hover {
+  background: #c53030;
+}
+
+/* Botões secundários — Cadastrar / Esqueci senha */
+.btn--secondary {
+  display: inline-block;
+  background: #c6f6d5;
+  color: #276749;
+  border: 1px solid #9ae6b4;
+  border-radius: 12px;
+  padding: 0.3rem 0.9rem;
+  text-decoration: none;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn--secondary:hover {
+  background: #9ae6b4;
+}
+
+/* Container dos links inferiores */
+.login-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
