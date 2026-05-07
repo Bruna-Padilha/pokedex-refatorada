@@ -232,33 +232,6 @@ function renderizarNoSlot(containerId, pokemon) {
     `;
 }
 
-function addCard1() {
-    card1 = true;
-    renderizarNoSlot('card1', 
-        { id: 25, 
-        name: "Pikachu", 
-        type: ["electric"], 
-        attack: 112, 
-        defense: 96, 
-        stamina: 111, 
-        maxPc: 1060, 
-        image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" 
-    }); 
-}
-
-function addCard2() {
-    card2 = true;
-    renderizarNoSlot('card2', 
-        { id: 1, name: "Bulbasaur", 
-        type: ["grass", "poison"], 
-        attack: 118, 
-        defense: 111, 
-        stamina: 128, 
-        maxPc: 1115, 
-        image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" 
-    }); 
-}
-
 function irParaSectionCompare() {
     const section = document.getElementById('sectionCompare');
     
@@ -286,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observer.observe(target);
 });
-
 
 /* EVENTO DE CLICK NOS CARDS ADD */
 const card01 = document.getElementById('card1');
@@ -334,17 +306,12 @@ function abrirmodal(card){
     const btnBusca = document.getElementById('btn-modal-compare');
     const fadearea = document.getElementById('fade');
 
-    btnBusca.addEventListener('click', () => {
-       card == 1 ? addCard1() : addCard2();
-    });
-
     //Para fechar o modal
     fadearea.addEventListener('click', () => {
          modal.innerHTML = "";
     });
     //--------//--------//
 }
-
 
 function battle() {
 
@@ -475,10 +442,9 @@ function renderizarCard(p, container, isMainPage) {
             } else{ 
                 cardcompare[1] = p;
                 renderizarNoSlot('card2', cardcompare[1]);
-            }
+                document.querySelector('.modal-container').innerHTML = "";
 
-            console.log("Pokemon array 01:", cardcompare[0]);
-            console.log("Pokemon array 02:", cardcompare[1]);
+            }
             
         }); 
     container.appendChild(card);
