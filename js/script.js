@@ -302,7 +302,6 @@ if (card01 && card02) {
     });
 }
 
-
 function abrirmodal(card){
     const modal = document.querySelector('.modal-container');
   
@@ -346,9 +345,27 @@ function abrirmodal(card){
     //--------//--------//
 }
 
+
 function battle() {
 
-    if(card1 && card2){
+    if(cardcompare[0] && cardcompare[1]){
+        let pontuacaoPokemon01 = 0;
+        let pontuacaoPokemon02 = 0;
+        let ganhador = [];
+
+        cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+        cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+        cardcompare[0].hp > cardcompare[1].hp ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+
+        console.log("pontuacaoPokemon01", pontuacaoPokemon01);
+        console.log("pontuacaoPokemon02", pontuacaoPokemon02);
+
+         if(pontuacaoPokemon01 > pontuacaoPokemon02){
+            ganhador = cardcompare[0];
+         } else {
+            ganhador = cardcompare[1];
+         }
+
         const section = document.getElementById('sectionCompare');
         const bannersection = document.querySelector('.hero-div');
 
@@ -362,13 +379,13 @@ function battle() {
             </div>
         `;
 
-        section.scrollIntoView({ behavior: 'smooth' });
+        //section.scrollIntoView({ behavior: 'smooth' });
         
 
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
-            renderizarVencedor();
+            renderizarVencedor(ganhador);
         }, 500);
     }
     else {
@@ -377,18 +394,18 @@ function battle() {
     
 }
 
-function renderizarVencedor(){
+function renderizarVencedor(ganhador){
     const winner = document.getElementById('battleDiv');
 
     winner.innerHTML = `
         <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="../assets/img/pikachu.png" alt="pikachu">
+            <img class="imagem-pokemon-winner" src="${ganhador.image}" alt="pikachu">
         </div>
 
         <div id="winner-column">
             <img class="imagem-pokemon-winner" src="../assets/img/winner.png" alt="Winner!">
 
-            <h1 id="winner-pokemon-name">Pikachu</h1>
+            <h1 id="winner-pokemon-name">${ganhador.name}</h1>
 
             <div class="winner-info-content">
                 <div class="winner-info"></div>
@@ -450,6 +467,20 @@ function renderizarCard(p, container, isMainPage) {
         </div>
         ${detailsPanel}
     `;
+
+    card.addEventListener('click', () => {
+            if(!cardcompare[0]){
+                cardcompare[0] = p;
+                renderizarNoSlot('card1', cardcompare[0]);
+            } else{ 
+                cardcompare[1] = p;
+                renderizarNoSlot('card2', cardcompare[1]);
+            }
+
+            console.log("Pokemon array 01:", cardcompare[0]);
+            console.log("Pokemon array 02:", cardcompare[1]);
+            
+        }); 
     container.appendChild(card);
 }
 
