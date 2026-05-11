@@ -232,33 +232,6 @@ function renderizarNoSlot(containerId, pokemon) {
     `;
 }
 
-function addCard1() {
-    card1 = true;
-    renderizarNoSlot('card1', 
-        { id: 25, 
-        name: "Pikachu", 
-        type: ["electric"], 
-        attack: 112, 
-        defense: 96, 
-        stamina: 111, 
-        maxPc: 1060, 
-        image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" 
-    }); 
-}
-
-function addCard2() {
-    card2 = true;
-    renderizarNoSlot('card2', 
-        { id: 1, name: "Bulbasaur", 
-        type: ["grass", "poison"], 
-        attack: 118, 
-        defense: 111, 
-        stamina: 128, 
-        maxPc: 1115, 
-        image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" 
-    }); 
-}
-
 function irParaSectionCompare() {
     const section = document.getElementById('sectionCompare');
     
@@ -287,7 +260,6 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
-
 /* EVENTO DE CLICK NOS CARDS ADD */
 const card01 = document.getElementById('card1');
 const card02 = document.getElementById('card2');
@@ -301,7 +273,6 @@ if (card01 && card02) {
         abrirmodal(2);
     });
 }
-
 
 function abrirmodal(card){
     const modal = document.querySelector('.modal-container');
@@ -335,10 +306,6 @@ function abrirmodal(card){
     const btnBusca = document.getElementById('btn-modal-compare');
     const fadearea = document.getElementById('fade');
 
-    btnBusca.addEventListener('click', () => {
-       card == 1 ? addCard1() : addCard2();
-    });
-
     //Para fechar o modal
     fadearea.addEventListener('click', () => {
          modal.innerHTML = "";
@@ -348,7 +315,24 @@ function abrirmodal(card){
 
 function battle() {
 
-    if(card1 && card2){
+    if(cardcompare[0] && cardcompare[1]){
+        let pontuacaoPokemon01 = 0;
+        let pontuacaoPokemon02 = 0;
+        let ganhador = [];
+
+        cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+        cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+        cardcompare[0].hp > cardcompare[1].hp ? pontuacaoPokemon01++ : pontuacaoPokemon02++;
+
+        console.log("pontuacaoPokemon01", pontuacaoPokemon01);
+        console.log("pontuacaoPokemon02", pontuacaoPokemon02);
+
+         if(pontuacaoPokemon01 > pontuacaoPokemon02){
+            ganhador = cardcompare[0];
+         } else {
+            ganhador = cardcompare[1];
+         }
+
         const section = document.getElementById('sectionCompare');
         const bannersection = document.querySelector('.hero-div');
 
@@ -362,13 +346,13 @@ function battle() {
             </div>
         `;
 
-        section.scrollIntoView({ behavior: 'smooth' });
+        //section.scrollIntoView({ behavior: 'smooth' });
         
 
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
-            renderizarVencedor();
+            renderizarVencedor(ganhador);
         }, 500);
     }
     else {
@@ -377,18 +361,18 @@ function battle() {
     
 }
 
-function renderizarVencedor(){
+function renderizarVencedor(ganhador){
     const winner = document.getElementById('battleDiv');
 
     winner.innerHTML = `
         <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="../assets/img/pikachu.png" alt="pikachu">
+            <img class="imagem-pokemon-winner" src="${ganhador.image}" alt="pikachu">
         </div>
 
         <div id="winner-column">
             <img class="imagem-pokemon-winner" src="../assets/img/winner.png" alt="Winner!">
 
-            <h1 id="winner-pokemon-name">Pikachu</h1>
+            <h1 id="winner-pokemon-name">${ganhador.name}</h1>
 
             <div class="winner-info-content">
                 <div class="winner-info"></div>
@@ -450,6 +434,19 @@ function renderizarCard(p, container, isMainPage) {
         </div>
         ${detailsPanel}
     `;
+
+    card.addEventListener('click', () => {
+            if(!cardcompare[0]){
+                cardcompare[0] = p;
+                renderizarNoSlot('card1', cardcompare[0]);
+            } else{ 
+                cardcompare[1] = p;
+                renderizarNoSlot('card2', cardcompare[1]);
+                document.querySelector('.modal-container').innerHTML = "";
+
+            }
+            
+        }); 
     container.appendChild(card);
 }
 
