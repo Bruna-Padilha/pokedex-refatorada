@@ -5,7 +5,8 @@ let filteredPokemon = [];
 let itemsToShow = 8;
 const increment = 4;
 let currentSort = 'id';
-let cardcompare = [];
+let card1 = false;
+let card2 = false;
 
 
 const cores = {
@@ -20,6 +21,153 @@ const cores = {
     flying: 'var(--clr-flying)',
     fairy: '#d685ad'
 };
+
+/* FUNÇÕES DE MANIPULAÇÃO DO LOCALSTORAGE */
+
+function salvarLS(chave, valor) {
+    localStorage.setItem(chave, JSON.stringify(valor));
+}
+
+function buscarLS(chave, padrao = null) {
+    const item = localStorage.getItem(chave);
+    return item ? JSON.parse(item) : padrao;
+}
+
+function removerLS(chave) {
+    localStorage.removeItem(chave);
+}
+
+/* LÓGICA DE FAVORITOS */
+
+function verificarFavorito(id) {
+    const favoritos = buscarLS('pokemonFavoritos', []);
+    return favoritos.includes(id);
+}
+
+function toggleFavorito(id, elemento) {
+    let favoritos = buscarLS('pokemonFavoritos', []);
+
+    if (favoritos.includes(id)) {
+        favoritos = favoritos.filter(fav => fav !== id);
+        elemento.classList.remove('is-favorite');
+    } else {
+        favoritos.push(id);
+        elemento.classList.add('is-favorite');
+    }
+
+    salvarLS('pokemonFavoritos', favoritos);
+}
+
+// LÓGICA DE LOGIN SIMPLIFICADO (APENAS PARA DEMONSTRAÇÃO, NÃO SEGURO PARA USO REAL)
+
+function fazerLogin() {
+
+    const usuario = document.getElementById('loginUsuario').value;
+    const senha = document.getElementById('loginSenha').value;
+
+    const usuarioCorreto = "admin";
+    const senhaCorreta = "admin123";
+
+    if(usuario === usuarioCorreto && senha === senhaCorreta){
+
+        const dadosUsuario = {
+            usuario: usuario,
+            logado: true
+        };
+
+        localStorage.setItem(
+            'usuarioLogado',
+            JSON.stringify(dadosUsuario)
+        );
+
+        alert("Login realizado com sucesso!");
+
+        carregarUsuarioLogado();
+
+    } else {
+
+        alert("Usuário ou senha incorretos!");
+
+    }
+}
+
+// Carrega o usuário logado (se houver) ao acessar a página de login ou mainpage
+
+function carregarUsuarioLogado(){
+
+    const usuarioSalvo = JSON.parse(
+        localStorage.getItem('usuarioLogado')
+    );
+
+    const texto = document.getElementById('usuarioLogado');
+
+    if(!texto) return;
+
+    if(usuarioSalvo && usuarioSalvo.logado){
+
+        texto.innerHTML = `
+            Usuário logado: <strong>${usuarioSalvo.usuario}</strong>
+        `;
+
+    } else {
+
+        texto.innerHTML = "Nenhum usuário logado.";
+
+    }
+}
+
+// Função de logout, remove o usuário do localStorage e atualiza a interface
+
+function logout(){
+
+    localStorage.removeItem('usuarioLogado');
+
+    alert("Logout realizado!");
+
+    carregarUsuarioLogado();
+}
+
+/* LÓGICA DE FAVORITOS - RENDERIZAÇÃO */
+
+async function carregarFavoritos() {
+
+    const grid = document.getElementById('favoritosGrid');
+
+    if (!grid) return;
+
+    try {
+
+        const res = await fetch('pokemon-data.json');
+        const todosPokemons = await res.json();
+
+        const favoritos = buscarLS('pokemonFavoritos', []);
+
+        const pokemonsFavoritos = todosPokemons.filter(pokemon =>
+            favoritos.includes(pokemon.id)
+        );
+
+        grid.innerHTML = '';
+
+        if (pokemonsFavoritos.length === 0) {
+
+            grid.innerHTML = `
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
+`;
+            return;
+        }
+        pokemonsFavoritos.forEach(pokemon => {
+            renderizarCard(pokemon, grid, true);
+        });
+
+    } catch (erro) {
+        console.error('Erro ao carregar favoritos:', erro);
+    }
+}
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
@@ -36,22 +184,26 @@ function obterBackground(tipos) {
     return cores[listaTipos[0]] || '#777';
 }
 
+/* Função mestre de inicialização, detecta a página e chama as funções específicas */
+
 async function inicializar() {
     const path = window.location.pathname;
     
     if (path.includes('mainpage.html')) {
-        
         await carregarPokedex();
         configurarFiltros();
 
     } else if (path.includes('compare.html')) {
-        
-        await carregarPokedex();
+        carregarComparacaoSalva();
+
+    } else if (path.includes('favoritos.html')) {
+        await carregarFavoritos();
+
+    } else if (path.includes('login.html')) {
+        carregarUsuarioLogado();
 
     } else {
-        
         await carregarDestaquesIndex();
-
     }
 }
 
@@ -59,11 +211,9 @@ async function inicializar() {
 
 async function carregarPokedex() {
     try {
-        const res = await fetch('../html/pokemon-data.json'); 
+        const res = await fetch('pokemon-data.json'); 
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
-
-        console.log("dados", filteredPokemon);
         
         renderizarGrid();
     } catch (e) {
@@ -128,27 +278,6 @@ function carregarMais() {
     renderizarGrid();
 }
 
-/* OBSERVER PARA CARREGAR MAIS CARDS QUANDO APARECER O BOTAO CARREGAR NA TELA DA POKEDEX */
-
-document.addEventListener("DOMContentLoaded", () => {
-    const carregarMaisObserver = document.querySelector("#loadMoreBtn");
-    if(!carregarMaisObserver) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-
-                setTimeout(() => {
-                    carregarMais();
-                }, 100);
-            }
-        });
-    }, {
-        threshold: 1 // Carrega quando 100% do elemento estiver visível
-    });
-
-    observer.observe(carregarMaisObserver);
-});
 
 /* LÓGICA DA INDEX E CARROSSEL (ORIGINAL) */
 
@@ -195,6 +324,7 @@ function scrollCarousel(direction) {
     });
 }
 
+
 /* LÓGICA DE COMPARAÇÃO */
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -232,10 +362,11 @@ function renderizarNoSlot(containerId, pokemon) {
     `;
 }
 
+/* Lógica de comparação - para fins de demonstração, os pokemons são fixos. */
+
 function addCard1() {
-    card1 = true;
-    renderizarNoSlot('card1', 
-        { id: 25, 
+    const pokemon = { 
+        id: 25, 
         name: "Pikachu", 
         type: ["electric"], 
         attack: 112, 
@@ -243,20 +374,45 @@ function addCard1() {
         stamina: 111, 
         maxPc: 1060, 
         image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" 
-    }); 
+    };
+
+    card1 = true;
+    salvarLS('pokemonComparacao1', pokemon);
+    renderizarNoSlot('card1', pokemon);
 }
 
 function addCard2() {
-    card2 = true;
-    renderizarNoSlot('card2', 
-        { id: 1, name: "Bulbasaur", 
+    const pokemon = { 
+        id: 1, 
+        name: "Bulbasaur", 
         type: ["grass", "poison"], 
         attack: 118, 
         defense: 111, 
         stamina: 128, 
         maxPc: 1115, 
         image: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" 
-    }); 
+    };
+
+    card2 = true;
+    salvarLS('pokemonComparacao2', pokemon);
+    renderizarNoSlot('card2', pokemon);
+}
+
+// Carrega os pokemons salvos para comparação ao acessar a página
+
+function carregarComparacaoSalva() {
+    const pokemon1 = buscarLS('pokemonComparacao1');
+    const pokemon2 = buscarLS('pokemonComparacao2');
+
+    if (pokemon1) {
+        card1 = true;
+        renderizarNoSlot('card1', pokemon1);
+    }
+
+    if (pokemon2) {
+        card2 = true;
+        renderizarNoSlot('card2', pokemon2);
+    }
 }
 
 function irParaSectionCompare() {
@@ -265,9 +421,9 @@ function irParaSectionCompare() {
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
-    if(!target) return;
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
@@ -287,66 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
-
-/* EVENTO DE CLICK NOS CARDS ADD */
-const card01 = document.getElementById('card1');
-const card02 = document.getElementById('card2');
-
-if (card01 && card02) {        
-    card01.addEventListener('click', () => {
-        abrirmodal(1);
-    });
-
-    card02.addEventListener('click', () => {
-        abrirmodal(2);
-    });
-}
-
-
-function abrirmodal(card){
-    const modal = document.querySelector('.modal-container');
-  
-    modal.innerHTML = `
-        <div id="fade"></div>
-        <div id="modal">
-            <div class="search-sort-bar" id="modal-header">
-   
-                <div class="search-container">
-                    <span>🔍</span>
-                    <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                </div>
-                <div class="sort-container" id="btn-modal-compare">
-                    <span>Buscar</span>
-                </div>
-                
-            </div>
-            <div id="modal-body">
-                <div id="modal-body-grid"></div>
-            </div>
-        </div>
-    `;
-    
-    const bodymodal = document.getElementById('modal-body-grid');
-
-    filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true);
-    });
-
-    const btnBusca = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
-
-    btnBusca.addEventListener('click', () => {
-       card == 1 ? addCard1() : addCard2();
-    });
-
-    //Para fechar o modal
-    fadearea.addEventListener('click', () => {
-         modal.innerHTML = "";
-    });
-    //--------//--------//
-}
-
-function battle() {
+function buttle() {
 
     if(card1 && card2){
         const section = document.getElementById('sectionCompare');
@@ -363,13 +460,12 @@ function battle() {
         `;
 
         section.scrollIntoView({ behavior: 'smooth' });
-        
 
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor();
-        }, 500);
+        }, 800);
     }
     else {
         alert("Você precisa adicionar os dois pokemons nos cards!")
@@ -382,19 +478,19 @@ function renderizarVencedor(){
 
     winner.innerHTML = `
         <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="../assets/img/pikachu.png" alt="pikachu">
+            <img class="imagem-winner" src="../assets/img/pikachu.png" alt="pikachu">
         </div>
 
         <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="../assets/img/winner.png" alt="Winner!">
+            <h1>Winner</h1>
 
             <h1 id="winner-pokemon-name">Pikachu</h1>
 
             <div class="winner-info-content">
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
+                <div class="winner-info">Ataque: 112</div>
+                <div class="winner-info">Defesa: 96</div>
+                <div class="winner-info">Estamina: 111</div>
+                <div class="winner-info">PC Máx: 1060</div>
             </div>
         </div>
     `;
@@ -411,7 +507,7 @@ function renderizarCard(p, container, isMainPage) {
     }
 
     const favButton = isMainPage ? `
-        <div class="favorite-toggle" onclick="this.classList.toggle('is-favorite')">
+        <div class="favorite-toggle ${verificarFavorito(p.id) ? 'is-favorite' : ''}" onclick="toggleFavorito(${p.id}, this)"> // codigo alterado por joao - 
             <div class="pokeball-icons-wrapper">
                 <svg class="icon-outline" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M2 12h20" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/></svg>
                 <svg class="icon-filled" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12h20C22 6.48 17.52 2 12 2z" fill="#EE1515"/><path d="M12 22c5.52 0 10-4.48 10-10H2c0 5.52 4.48 10 10 10z" fill="white"/><rect x="2" y="11" width="20" height="2" fill="#222222"/><circle cx="12" cy="12" r="4" fill="white" stroke="#222222" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="#222222"/></svg>
