@@ -113,8 +113,8 @@ async function carregarPokedex() {
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
 
-        console.log("dados", filteredPokemon);
-        
+        //console.log("dados", filteredPokemon);
+        window.dispatchEvent(new Event('pokemonsCarregados'));
         renderizarGrid();
     } catch (e) {
         console.error("Erro no JSON:", e);
@@ -246,6 +246,16 @@ function scrollCarousel(direction) {
 }
 
 /* LÓGICA DE COMPARAÇÃO */
+
+const divUltimasComp = document.getElementById('divGridUltimasComparacoes');
+
+if(divUltimasComp){
+    window.addEventListener('pokemonsCarregados', () => {
+        filteredPokemon.forEach(p => {
+            renderizarCard(p, divUltimasComp, false, "");
+        });
+    });
+}
 
 function renderizarNoSlot(containerId, pokemon) {
     const container = document.getElementById(containerId);
@@ -503,13 +513,21 @@ function renderizarCard(p, container, isMainPage, origem) {
     if(btnAdd){
         btnAdd.addEventListener('click', () => {
             if(origem === 'card1'){
-                cardcompare[0] = p;
-                renderizarNoSlot(origem, p);
-                document.querySelector('.modal-container').innerHTML = "";
+                if(!cardcompare[1] || p.id != cardcompare[1].id){
+                    cardcompare[0] = p;
+                    renderizarNoSlot(origem, p);
+                    document.querySelector('.modal-container').innerHTML = "";
+                } else {
+                    alert("Voce não pode escolher o mesmo pokemon!");
+                }
             } else{
-                cardcompare[1] = p;
-                renderizarNoSlot(origem, p);
-                document.querySelector('.modal-container').innerHTML = "";
+                if(!cardcompare[0] || p.id != cardcompare[0].id){
+                    cardcompare[1] = p;
+                    renderizarNoSlot(origem, p);
+                    document.querySelector('.modal-container').innerHTML = "";
+                } else {
+                    alert("Voce não pode escolher o mesmo pokemon!");
+                }
             }
         }); 
     }

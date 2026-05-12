@@ -1,10 +1,12 @@
 /* --- BANNER HERO (PADRÃO INDEX) --- */
 .hero-div {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
     width: 100vw;
-    height: 52vh;
+    height: 70vh;
+    gap: 1rem;
+    
 }
 
 .hero-banner {
@@ -13,12 +15,14 @@
     align-items: center;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    width: 70%;
+    width: 80rem;
+    max-width: 90%;
+    height: 45%;
     border-radius: 50px;
+    margin-top: 1.5rem;
     padding: 35px 50px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
-    min-height: 250px;
 }
 
 .hero-content h1 { 
@@ -37,11 +41,59 @@
 .hero-content span { color: #ffcb05; }
 
 .hero-image img { 
-    width: 480px; 
+    width: 45%; 
     position: absolute; 
     bottom: -30px; 
-    right: 10px; 
+    right: -20px; 
     filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5)); 
+}
+
+#divUltimasComparacoes {
+    width: 80rem;
+    max-width: 90%;
+    padding: 0rem 0rem 0.5rem 0rem;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: end;
+    overflow-x: scroll;
+}
+
+#divGridUltimasComparacoes {
+    display: flex;
+    flex-direction: row;
+    justify-items: end;
+    align-content: end;
+    padding: 3rem 0rem 0rem 0rem;
+    margin-top: 1rem;
+    border-radius: 30px;
+    margin-bottom: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    gap: 1rem;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar{
+    height: 8px;
+    width: 8px;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.5rem;
+  margin: 3rem;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cor da alça */
+  border-radius: 10px;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor da alça ao passar o mouse */
 }
 
 /* --- GRID E SLOTS DE COMPARAÇÃO --- */
