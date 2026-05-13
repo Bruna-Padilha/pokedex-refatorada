@@ -40,6 +40,7 @@ function estaLogado() {
 function loginSimulado(status) {
     localStorage.setItem('usuarioLogado', status);
     console.log(`Estado de login alterado para: ${status}`);
+    atualizarInterfaceLogin(); // Garante que a classe do body mude imediatamente
 }
 
 function obterFavoritos() {
@@ -71,6 +72,59 @@ function tentarFavoritar(event, elemento, pokemonId) {
     }
 }
 
+/* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
+
+function atualizarInterfaceLogin() {
+    if (estaLogado()) {
+        document.body.classList.add('user-logged-in');
+    } else {
+        document.body.classList.remove('user-logged-in');
+    }
+}
+
+function configurarPaginaLogin() {
+    const loginForm = document.querySelector('.login-form');
+    const loginCard = document.querySelector('.login-card');
+    const loginTitle = document.querySelector('.login-card-title');
+
+    if (!loginForm || !loginCard) return;
+
+    if (estaLogado()) {
+        // Altera visual para estado logado
+        loginForm.style.display = 'none';
+        if (loginTitle) loginTitle.textContent = "Status";
+
+        const logoutContainer = document.createElement('div');
+        logoutContainer.innerHTML = `
+            <p style="margin-bottom: 20px; font-size: 1.2rem; color: white;">Você já está logado.</p>
+            <p style="margin-bottom: 30px; color: white;">Deseja deslogar?</p>
+            <button id="btn-logout" class="btn btn--primary">Deslogar</button>
+        `;
+        loginCard.appendChild(logoutContainer);
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            loginSimulado('false');
+            alert("Sessão encerrada.");
+            window.location.href = 'mainpage.html';
+        });
+    } else {
+        // Validação admin/1234
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const usuarioInput = document.getElementById('usuario').value;
+            const senhaInput = document.getElementById('senha').value;
+
+            if (usuarioInput === 'admin' && senhaInput === '1234') {
+                loginSimulado('true');
+                alert("Login realizado com sucesso!");
+                window.location.href = 'index.html';
+            } else {
+                alert("Usuário ou senha incorretos.");
+            }
+        });
+    }
+}
+
 /* ------------------------------------------------- */
 
 function obterBackground(tipos) {
@@ -89,6 +143,9 @@ function obterBackground(tipos) {
 async function inicializar() {
     const path = window.location.pathname;
     
+    // Atualiza a classe do body em todas as páginas
+    atualizarInterfaceLogin();
+
     if (path.includes('mainpage.html')) {
         
         await carregarPokedex();
@@ -97,6 +154,10 @@ async function inicializar() {
     } else if (path.includes('compare.html')) {
         
         await carregarPokedex();
+
+    } else if (path.includes('login.html')) {
+        
+        configurarPaginaLogin();
 
     } else {
         
