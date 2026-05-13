@@ -14,18 +14,28 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 16px;
-  padding: 2rem 2.5rem;
-  width: 700px;
+  padding: 8rem 2.5rem;
+  width: 900px;
   min-width: 320px;
   text-align: center;
-  position: relative;
   z-index: 1;
 }
 
+.login-form{
+
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .login-card__title {
-  font-size: 1.8rem;
+  font-size: 2.8rem;
   font-weight: 700;
-  color: #fff;
+  color: #f9cf30;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
   margin-bottom: 1.25rem;
 }
@@ -53,25 +63,29 @@
   margin-left: 5rem;
   margin-right: 5rem;
   margin-bottom: 0.75rem;
+  
 }
 
 .form-field__label {
-  background: #e53e3e;
+  background: linear-gradient(to bottom, #FF8079, #F72B20);
+  border: 1px solid #fff;
   color: white;
   padding: 0.4rem 0.8rem;
-  border-radius: 20px 0 0 20px;
+  margin: -65px -25px;
+  border-radius: 20px;
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
   min-width: 80px;
   text-align: center;
+  z-index: 3;
 }
 
 .form-field__input {
   flex: 1;
-  background: #c6f6d5;
+  background: #c6f6d568;
   border: none;
-  border-radius: 0 20px 20px 0;
+  border-radius: 20px;
   padding: 0.4rem 0.8rem;
   outline: none;
   font-size: 14px;
@@ -83,17 +97,16 @@
 
 /* Botão principal — Entrar */
 .btn--primary {
-  display: inline-block;
-  background: #e53e3e;
+  text-decoration: none;
   color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 0.5rem 2rem;
+  padding: 10px 30px;
+  background: linear-gradient(to bottom, #FF8079, #F72B20);
+  border-radius: 25px;
+  border: 1px solid #fff; 
+  font-weight: bold;
   font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin: 0.75rem 0;
-  transition: background 0.2s;
+  transition: 0.3s;
+  display: inline-block;
 }
 
 .btn--primary:hover {
