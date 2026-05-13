@@ -6,6 +6,7 @@ let itemsToShow = 8;
 const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
+let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
 
 
 const cores = {
@@ -245,16 +246,59 @@ function scrollCarousel(direction) {
     });
 }
 
+function scrollCarouselCompare(direction) {
+    const container = document.getElementById('pokemon-list');
+    const cardWidth = 250;
+    const gap = 16;
+    const visibleCards = 4;
+
+    const scrollAmount = (cardWidth + gap) * visibleCards;
+
+    container.scrollBy({
+        left: scrollAmount * direction,
+        behavior: 'smooth'
+    });
+}
 /* LÓGICA DE COMPARAÇÃO */
 
-const divUltimasComp = document.getElementById('divGridUltimasComparacoes');
+const divUltimasComp = document.getElementById('pokemon-list');
 
 if(divUltimasComp){
-    window.addEventListener('pokemonsCarregados', () => {
+    
+    if(ultimasComparacoes.length){
+        console.log(ultimasComparacoes);
+        ultimasComparacoes.forEach(p => {
+            renderizarCard(p, divUltimasComp, false, "");
+        });
+    } else{
+        for(i=0; i<5; i++){
+            const card = document.createElement('div');
+            card.classList.add('pokemon-card-container');
+
+            card.innerHTML = `
+                <div class="pokemon-card-base" style="background-color: rgba(255, 255, 255, 0.1);">            
+                    <div class="glass-info-panel">
+                        <div class="header-row">
+                            <h3 class="pokemon-name" style="text-transform:capitalize;">Vazio</h3>
+                            <span class="pokemon-number">#</span>
+                        </div>
+                        <div class="types-wrapper">
+                        </div>
+                    </div>
+                </div>                
+            `;
+
+            divUltimasComp.appendChild(card);
+        }
+    }
+     
+    /*
+    window.addEventListener('pokemonsCarregados',() => {
         filteredPokemon.forEach(p => {
             renderizarCard(p, divUltimasComp, false, "");
         });
     });
+    */
 }
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -358,7 +402,7 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
-
+    
     filteredPokemon.forEach(p => {
         renderizarCard(p, bodymodal, true, card);
     });
@@ -378,6 +422,10 @@ function battle() {
     if(cardcompare[0] && cardcompare[1]){
         let pontuacaoPokemon = [];
         let ganhador = [];
+
+        //adiciono aqui os ultimos comparados na Array de historico
+        ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
+        localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
 
         cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
         cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
@@ -421,24 +469,20 @@ function battle() {
 }
 
 function renderizarVencedor(ganhador){
-    const winner = document.getElementById('battleDiv');
+    const winner = document.getElementById('modal-container');
 
     winner.innerHTML = `
-        <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="${ganhador.image}" alt="pikachu">
-        </div>
-
-        <div id="winner-column">
-            <img class="imagem-pokemon-winner" src="../assets/img/winner.png" alt="Winner!">
-
-            <h1 id="winner-pokemon-name">${ganhador.name}</h1>
-
-            <div class="winner-info-content">
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
-                <div class="winner-info"></div>
+        <div id="fade"></div>
+        <div id="modal">
+            <a href="compare.html" id="buttonFecharWinner">X</a>
+            <div id="winner-column">
+                <div>
+                    <img class="imagem-winner" src="../assets/img/winner.png" alt="Winner!">
+                    <h1 id="winner-pokemon-name">${ganhador.name}</h1>
+                </div>
+                <img class="imagem-pokemon-winner" src="${ganhador.image}" alt="pikachu">
             </div>
+            
         </div>
     `;
 }

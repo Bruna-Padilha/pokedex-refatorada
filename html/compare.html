@@ -40,9 +40,11 @@
                 </div>
                 <div class="hero-image"><img src="../assets/trio-pokemon.png" alt="Hero"></div>
             </div>
-            <h2>Ultimas Comparações</h2>
-            <div id="divUltimasComparacoes">
-                <div id="divGridUltimasComparacoes"></div>
+            <h3>Ultimas Comparações</h3>
+            <div class="carousel-container">
+                <button class="arrow-btn left" onclick="scrollCarouselCompare(-1)">&#10094;</button>
+                <div id="pokemon-list"></div>
+                <button class="arrow-btn right" onclick="scrollCarouselCompare(1)">&#10095;</button>
             </div>
         </section>
 
@@ -65,7 +67,7 @@
 
     </main>
 
-    <div class="modal-container"></div>
+    <div class="modal-container" id="modal-container"></div>
 
     <script src="../js/script.js"></script>
 </body>
