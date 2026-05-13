@@ -27,7 +27,7 @@ const cores = {
 
 /* PARA RESETAR O LOGIN SIMULADO, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
 localStorage.clear();
-location.reload() /
+location.reload() */
 
 if (localStorage.getItem('usuarioLogado') === null) {
     localStorage.setItem('usuarioLogado', 'false');
