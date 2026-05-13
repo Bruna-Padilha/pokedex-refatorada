@@ -472,7 +472,7 @@ function renderizarVencedor(ganhador){
     const winner = document.getElementById('modal-container');
 
     winner.innerHTML = `
-        <div id="fade"></div>
+        
         <div id="modal">
             <a href="compare.html" id="buttonFecharWinner">X</a>
             <div id="winner-column">
