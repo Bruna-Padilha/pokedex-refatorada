@@ -135,6 +135,8 @@ async function carregarFavoritos() {
 
     if (!grid) return;
 
+    configurarCliqueDoBotaoMaisFavoritos(grid);
+
     try {
 
         const res = await fetch('pokemon-data.json');
@@ -148,24 +150,76 @@ async function carregarFavoritos() {
 
         grid.innerHTML = '';
 
-        if (pokemonsFavoritos.length === 0) {
-
-            grid.innerHTML = `
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-                <div class="slot-vazio" onclick="adicionarFavoritoManual()">+</div>
-`;
-            return;
-        }
         pokemonsFavoritos.forEach(pokemon => {
             renderizarCard(pokemon, grid, true);
         });
 
+        adicionarBotaoMaisFavoritos(grid);
+
     } catch (erro) {
         console.error('Erro ao carregar favoritos:', erro);
+    }
+}
+
+function adicionarBotaoMaisFavoritos(grid) {
+
+    const slot = document.createElement('button');
+
+    slot.type = 'button';
+    slot.classList.add('slot-vazio');
+    slot.textContent = '+';
+
+    slot.setAttribute('title', 'Adicionar Pokémon aos favoritos');
+    slot.setAttribute('aria-label', 'Adicionar Pokémon aos favoritos');
+
+    grid.appendChild(slot);
+}
+
+function configurarCliqueDoBotaoMaisFavoritos(grid) {
+
+    if (grid.dataset.cliqueMaisConfigurado === 'true') return;
+
+    grid.dataset.cliqueMaisConfigurado = 'true';
+
+    grid.addEventListener('click', function(event) {
+
+        const slotClicado = event.target.closest('.slot-vazio');
+
+        if (!slotClicado) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (typeof adicionarFavoritoManual === 'function') {
+            adicionarFavoritoManual();
+        } else {
+            console.error('Função adicionarFavoritoManual não encontrada.');
+            alert('A função para adicionar Pokémon ainda não foi configurada.');
+        }
+    });
+}
+
+function adicionarSlotsVaziosFavoritos(grid, quantidadeFavoritos) {
+
+    const quantidadeMinimaSlots = 6;
+
+    let quantidadeSlots = quantidadeMinimaSlots - quantidadeFavoritos;
+
+    if (quantidadeSlots <= 0) {
+        quantidadeSlots = 1;
+    }
+
+    for (let i = 0; i < quantidadeSlots; i++) {
+
+        const slot = document.createElement('div');
+
+        slot.classList.add('slot-vazio');
+        slot.textContent = '+';
+        slot.setAttribute('title', 'Adicionar Pokémon aos favoritos');
+
+        slot.addEventListener('click', adicionarFavoritoManual);
+
+        grid.appendChild(slot);
     }
 }
 
@@ -425,6 +479,8 @@ function irParaSectionCompare() {
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
 
+    if (!target) return;
+
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -432,12 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 target.style.visibility = 'visible';
                 target.style.animation = 'slideUp 0.5s ease forwards';
                 
-                // Parar de observar após renderizar
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.8 // Carrega quando 80% do elemento estiver visível
+        threshold: 0.8
     });
 
     observer.observe(target);
@@ -507,7 +562,7 @@ function renderizarCard(p, container, isMainPage) {
     }
 
     const favButton = isMainPage ? `
-        <div class="favorite-toggle ${verificarFavorito(p.id) ? 'is-favorite' : ''}" onclick="toggleFavorito(${p.id}, this)"> // codigo alterado por joao - 
+        <div class="favorite-toggle ${verificarFavorito(p.id) ? 'is-favorite' : ''}" onclick="toggleFavorito(${p.id}, this)"> 
             <div class="pokeball-icons-wrapper">
                 <svg class="icon-outline" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/><path d="M2 12h20" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/></svg>
                 <svg class="icon-filled" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12h20C22 6.48 17.52 2 12 2z" fill="#EE1515"/><path d="M12 22c5.52 0 10-4.48 10-10H2c0 5.52 4.48 10 10 10z" fill="white"/><rect x="2" y="11" width="20" height="2" fill="#222222"/><circle cx="12" cy="12" r="4" fill="white" stroke="#222222" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="#222222"/></svg>
@@ -571,6 +626,189 @@ function scrollToTop() {
         behavior: 'smooth' 
     }); 
 }
+
+/* MODAL PARA ADICIONAR POKÉMON AOS FAVORITOS */
+
+let todosPokemonsModalFavoritos = [];
+
+function criarModalFavoritos() {
+
+    const modalExistente = document.getElementById('modalFavoritos');
+
+    if (modalExistente) return;
+
+    const modal = document.createElement('div');
+
+    modal.id = 'modalFavoritos';
+    modal.classList.add('favoritos-modal-overlay');
+
+    modal.innerHTML = `
+        <div class="favoritos-modal">
+            <div class="favoritos-modal-header">
+                <div>
+                    <h2>Adicionar Pokémon</h2>
+                    <p>Escolha um Pokémon para colocar nos seus favoritos.</p>
+                </div>
+
+                <button class="fechar-modal-favoritos" onclick="fecharModalFavoritos()">
+                    ×
+                </button>
+            </div>
+
+            <input 
+                type="text" 
+                id="buscaPokemonFavorito" 
+                class="busca-modal-favoritos" 
+                placeholder="Buscar por nome ou número..."
+                oninput="filtrarPokemonsModalFavoritos()"
+            >
+
+            <div id="listaPokemonsModal" class="lista-pokemons-modal"></div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            fecharModalFavoritos();
+        }
+    });
+}
+
+async function adicionarFavoritoManual() {
+
+    criarModalFavoritos();
+
+    const modal = document.getElementById('modalFavoritos');
+
+    modal.classList.add('ativo');
+
+    if (todosPokemonsModalFavoritos.length === 0) {
+
+        try {
+
+            const res = await fetch('pokemon-data.json');
+            todosPokemonsModalFavoritos = await res.json();
+
+        } catch (erro) {
+
+            console.error('Erro ao carregar pokémons no modal:', erro);
+            alert('Não foi possível carregar a lista de Pokémons.');
+            return;
+        }
+    }
+
+    const inputBusca = document.getElementById('buscaPokemonFavorito');
+
+    if (inputBusca) {
+        inputBusca.value = '';
+        inputBusca.focus();
+    }
+
+    renderizarPokemonsModalFavoritos(todosPokemonsModalFavoritos);
+}
+
+function fecharModalFavoritos() {
+
+    const modal = document.getElementById('modalFavoritos');
+
+    if (!modal) return;
+
+    modal.classList.remove('ativo');
+}
+
+function filtrarPokemonsModalFavoritos() {
+
+    const inputBusca = document.getElementById('buscaPokemonFavorito');
+
+    if (!inputBusca) return;
+
+    const termo = inputBusca.value.toLowerCase().trim();
+
+    const pokemonsFiltrados = todosPokemonsModalFavoritos.filter(pokemon => {
+        return (
+            pokemon.name.toLowerCase().includes(termo) ||
+            pokemon.id.toString().includes(termo)
+        );
+    });
+
+    renderizarPokemonsModalFavoritos(pokemonsFiltrados);
+}
+
+function renderizarPokemonsModalFavoritos(listaPokemons) {
+
+    const lista = document.getElementById('listaPokemonsModal');
+
+    if (!lista) return;
+
+    const favoritos = buscarLS('pokemonFavoritos', []);
+
+    lista.innerHTML = '';
+
+    const pokemonsLimitados = listaPokemons.slice(0, 80);
+
+    if (pokemonsLimitados.length === 0) {
+
+        lista.innerHTML = `
+            <div class="modal-sem-resultado">
+                Nenhum Pokémon encontrado.
+            </div>
+        `;
+
+        return;
+    }
+
+    pokemonsLimitados.forEach(pokemon => {
+
+        const jaAdicionado = favoritos.includes(pokemon.id);
+
+        const item = document.createElement('div');
+
+        item.classList.add('pokemon-modal-item');
+
+        if (jaAdicionado) {
+            item.classList.add('adicionado');
+        }
+
+        item.innerHTML = `
+            <img src="${pokemon.image}" alt="${pokemon.name}">
+            <strong>${pokemon.name}</strong>
+            <span>#${pokemon.id.toString().padStart(3, '0')}</span>
+            <span>${jaAdicionado ? 'Já adicionado' : 'Adicionar'}</span>
+        `;
+
+        if (!jaAdicionado) {
+            item.addEventListener('click', function() {
+                salvarPokemonNosFavoritos(pokemon.id);
+            });
+        }
+
+        lista.appendChild(item);
+    });
+}
+
+function salvarPokemonNosFavoritos(id) {
+
+    let favoritos = buscarLS('pokemonFavoritos', []);
+
+    if (!favoritos.includes(id)) {
+        favoritos.push(id);
+    }
+
+    salvarLS('pokemonFavoritos', favoritos);
+
+    fecharModalFavoritos();
+
+    carregarFavoritos();
+}
+
+document.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Escape') {
+        fecharModalFavoritos();
+    }
+});
 
 // Inicialização imediata
 inicializar();
