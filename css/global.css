@@ -190,6 +190,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     border-radius: 15px; 
     padding: 5px 20px;
     align-content: center;
+    cursor: pointer;
 }
 
 .header-row { 

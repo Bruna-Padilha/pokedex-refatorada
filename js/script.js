@@ -385,15 +385,17 @@ function abrirmodal(card){
         <div id="fade"></div>
         <div id="modal">
             <div class="search-sort-bar" id="modal-header">
-   
-                <div class="search-container">
-                    <span>🔍</span>
-                    <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                </div>
-                <div class="sort-container" id="btn-modal-compare">
-                    <span>Buscar</span>
-                </div>
                 
+                    <div class="search-container">
+                        <span>🔍</span>
+                        <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
+                    </div>
+              
+                    <div class="sort-container" id="btn-modal-compare">
+                        <span>Buscar</span>
+                    </div>
+                    <a href="compare.html" id="buttonFecharX">X</a>
+               
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -455,12 +457,14 @@ function battle() {
 
         //section.scrollIntoView({ behavior: 'smooth' });
         
-
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor(ganhador);
         }, 500);
+
+        cardcompare[0] = [];
+        cardcompare[1] = [];
     }
     else {
         alert("Você precisa adicionar os dois pokemons nos cards!")
@@ -474,7 +478,7 @@ function renderizarVencedor(ganhador){
     winner.innerHTML = `
         
         <div id="modal">
-            <a href="compare.html" id="buttonFecharWinner">X</a>
+            <a href="compare.html" id="buttonFecharXModalWinner">X</a>
             <div id="winner-column">
                 <div>
                     <img class="imagem-winner" src="../assets/img/winner.png" alt="Winner!">
