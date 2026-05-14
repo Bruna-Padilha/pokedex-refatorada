@@ -26,7 +26,7 @@ const cores = {
 
 /* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
 
-/* PARA RESETAR O LOGIN SIMULADO, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
+/* PARA RESETAR O LOCAL STORAGE, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
 localStorage.clear();
 location.reload() */
 
@@ -41,36 +41,7 @@ function estaLogado() {
 function loginSimulado(status) {
     localStorage.setItem('usuarioLogado', status);
     console.log(`Estado de login alterado para: ${status}`);
-    atualizarInterfaceLogin(); // Garante que a classe do body mude imediatamente
-}
-
-function obterFavoritos() {
-    const favs = localStorage.getItem('pokemonsFavoritos');
-    return favs ? JSON.parse(favs) : [];
-}
-
-function salvarFavorito(id) {
-    let favs = obterFavoritos();
-    if (favs.includes(id)) {
-        favs = favs.filter(favId => favId !== id);
-    } else {
-        favs.push(id);
-    }
-    localStorage.setItem('pokemonsFavoritos', JSON.stringify(favs));
-}
-
-function tentarFavoritar(event, elemento, pokemonId) {
-    
-    event.stopPropagation();
-
-    if (estaLogado()) {
-        elemento.classList.toggle('is-favorite');
-        salvarFavorito(pokemonId);                
-        console.log(`Pokemon ${pokemonId} adicionado aos favoritos.`);
-    } else {
-        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");        
-        window.location.href = 'login.html';
-    }
+    atualizarInterfaceLogin(); 
 }
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
@@ -86,20 +57,20 @@ function atualizarInterfaceLogin() {
 function configurarPaginaLogin() {
     const loginForm = document.querySelector('.login-form');
     const loginCard = document.querySelector('.login-card');
-    const loginTitle = document.querySelector('.login-card-title');
+    const loginTitle = document.querySelector('.login-card__title');
 
     if (!loginForm || !loginCard) return;
 
     if (estaLogado()) {
         // Altera visual para estado logado
         loginForm.style.display = 'none';
-        if (loginTitle) loginTitle.textContent = "Status";
+        if (loginTitle) loginTitle.textContent = "Você já está logado.";
 
         const logoutContainer = document.createElement('div');
         logoutContainer.innerHTML = `
-            <p style="margin-bottom: 20px; font-size: 1.2rem; color: white;">Você já está logado.</p>
+            <p style="margin-bottom: 20px;"></p>
             <p style="margin-bottom: 30px; color: white;">Deseja deslogar?</p>
-            <button id="btn-logout" class="btn btn--primary">Deslogar</button>
+            <button id="btn-logout" class="btn btn-start">Deslogar</button>
         `;
         loginCard.appendChild(logoutContainer);
 
@@ -159,6 +130,10 @@ async function inicializar() {
     } else if (path.includes('login.html')) {
         
         configurarPaginaLogin();
+
+    } else if (path.includes('favoritos.html')) {
+        
+        await carregarFavoritos();
 
     } else {
         
@@ -262,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(carregarMaisObserver);
 });
 
-/* LÓGICA DA INDEX E CARROSSEL (ORIGINAL) */
+/* LÓGICA DA INDEX E CARROSSEL */
 
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');
@@ -320,6 +295,7 @@ function scrollCarouselCompare(direction) {
         behavior: 'smooth'
     });
 }
+
 /* LÓGICA DE COMPARAÇÃO */
 
 const divUltimasComp = document.getElementById('divUltimasComparacoes');
@@ -562,7 +538,7 @@ function renderizarCard(p, container, isMainPage, origem) {
         card.style.flex = "0 0 250px";
     }
 
-    const listaFavs = obterFavoritos();
+    const listaFavs = buscarLS('pokemonFavoritos', []);
     const jaEFavorito = listaFavs.includes(p.id) ? 'is-favorite' : '';
 
     const favButton = isMainPage ? `
@@ -621,7 +597,7 @@ function renderizarCard(p, container, isMainPage, origem) {
     if (document.querySelector('.modal-container')) {
         const btnAdd = card.querySelector(".glass-info-panel");
 
-        if(btnAdd){
+        if(btnAdd && origem){
             btnAdd.addEventListener('click', () => {
                 if(origem === 'card1'){
                     if(!cardcompare[1] || p.id != cardcompare[1].id){
@@ -687,38 +663,14 @@ function verificarFavorito(id) {
     return buscarLS('pokemonFavoritos', []).includes(id);
 }
 
-/* Carrega e renderiza a página de favoritos */
-async function carregarFavoritos() {
-    const grid = document.getElementById('favoritosGrid');
-    if (!grid) return;
-
-    try {
-        const res = await fetch('pokemon-data.json');
-        const todosPokemons = await res.json();
-
-        const favIds = buscarLS('pokemonFavoritos', []);
-        const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
-
-        grid.innerHTML = '';
-
-        pokemonsFavoritos.forEach(pokemon => {
-            renderizarCard(pokemon, grid, true);
-        });
-
-        // Slots vazios para completar até mínimo de 6 células
-        const minSlots = 6;
-        const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
-        for (let i = 0; i < slotsVazios; i++) {
-            const slot = document.createElement('button');
-            slot.type = 'button';
-            slot.classList.add('slot-vazio');
-            slot.textContent = '+';
-            slot.addEventListener('click', adicionarFavoritoManual);
-            grid.appendChild(slot);
-        }
-
-    } catch (erro) {
-        console.error('Erro ao carregar favoritos:', erro);
+function tentarFavoritar(event, elemento, pokemonId) {
+    event.stopPropagation(); // Evita que o clique vaze para o card de trás
+    
+    if (estaLogado()) {
+        toggleFavorito(pokemonId, elemento);
+    } else {
+        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");
+        window.location.href = 'login.html';
     }
 }
 
@@ -739,6 +691,52 @@ function toggleFavorito(id, elemento) {
     // Se estiver na página de favoritos, re-renderiza
     if (window.location.pathname.includes('favoritos.html')) {
         carregarFavoritos();
+    }
+}
+
+/* Carrega e renderiza a página de favoritos */
+async function carregarFavoritos() {
+    const grid = document.getElementById('favoritosGrid') || document.querySelector('.favoritos-grid') || document.getElementById('pokemonGrid');
+    if (!grid) return;
+
+    if (!estaLogado()) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: white;">
+                <h2 style="margin-bottom: 20px; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Faça login para acessar sua lista de favoritos</h2>
+                <br>
+                <button onclick="window.location.href='login.html'" class="btn-start">Ir para Login</button>
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        const res = await fetch('pokemon-data.json');
+        const todosPokemons = await res.json();
+
+        const favIds = buscarLS('pokemonFavoritos', []);
+        const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
+
+        grid.innerHTML = '';
+
+        pokemonsFavoritos.forEach(pokemon => {
+            renderizarCard(pokemon, grid, true, null);
+        });
+
+        // Slots vazios para completar até mínimo de 6 células, gerados exatamente como você determinou
+        const minSlots = 6;
+        const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
+        for (let i = 0; i < slotsVazios; i++) {
+            const slot = document.createElement('button');
+            slot.type = 'button';
+            slot.classList.add('slot-vazio');
+            slot.textContent = '+';
+            slot.addEventListener('click', adicionarFavoritoManual);
+            grid.appendChild(slot);
+        }
+
+    } catch (erro) {
+        console.error('Erro ao carregar favoritos:', erro);
     }
 }
 
@@ -811,9 +809,6 @@ async function adicionarFavoritoManual() {
     renderizarPokemonsModalFavoritos(todosPokemonsModalFavoritos);
 }
 
-/* ============================================
-   LÓGICA DE FAVORITOS
-   ============================================ */
 function fecharModalFavoritos() {
     const modal = document.getElementById('modalFavoritos');
     if (modal) modal.classList.remove('ativo');
@@ -846,7 +841,7 @@ function renderizarPokemonsModalFavoritos(listaPokemons) {
     listaPokemons.slice(0, 80).forEach(pokemon => {
         const jaAdicionado = favIds.includes(pokemon.id);
 
-        renderizarCard(pokemon, grid, true);
+        renderizarCard(pokemon, grid, true, null);
 
         const card = grid.lastElementChild;
 
