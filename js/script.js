@@ -261,7 +261,7 @@ function scrollCarouselCompare(direction) {
 }
 /* LÓGICA DE COMPARAÇÃO */
 
-const divUltimasComp = document.getElementById('pokemon-list');
+const divUltimasComp = document.getElementById('divUltimasComparacoes');
 
 if(divUltimasComp){
     
