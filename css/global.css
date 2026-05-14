@@ -421,3 +421,251 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 ::-webkit-scrollbar-thumb:hover {
   background: #555; /* Cor da alça ao passar o mouse */
 }
+
+/* =========================================================
+   POP-UP GLOBAL PERSONALIZADO
+   Usado por mostrarPopup(mensagem, tipo, opcoes) no script.js
+   Tipos: success, error, warning, info
+========================================================= */
+
+.app-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.48);
+
+    opacity: 0;
+    pointer-events: none;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    transition: opacity 0.22s ease;
+}
+
+.app-popup-overlay.ativo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.app-popup-card {
+    width: 100%;
+    max-width: 430px;
+
+    background: rgba(255, 255, 255, 0.22);
+
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 28px;
+
+    padding: 30px 26px 26px;
+
+    text-align: center;
+    color: white;
+
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.34),
+        inset 0 0 24px rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    transform: translateY(24px) scale(0.96);
+    opacity: 0;
+
+    animation: appPopupEntrada 0.28s ease forwards;
+}
+
+.app-popup-card.saindo {
+    animation: appPopupSaida 0.22s ease forwards;
+}
+
+@keyframes appPopupEntrada {
+    from {
+        transform: translateY(24px) scale(0.96);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes appPopupSaida {
+    from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(16px) scale(0.96);
+        opacity: 0;
+    }
+}
+
+.app-popup-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.7);
+
+    box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.24),
+        inset 0 0 18px rgba(255, 255, 255, 0.24);
+}
+
+.app-popup-success .app-popup-icon {
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+}
+
+.app-popup-error .app-popup-icon {
+    background: linear-gradient(to bottom, #ff6b6b, #d91f1f);
+}
+
+.app-popup-warning .app-popup-icon {
+    background: linear-gradient(to bottom, #ffcb05, #c95b00);
+}
+
+.app-popup-info .app-popup-icon {
+    background: linear-gradient(to bottom, #6493eb, #2456a6);
+}
+
+.app-popup-title {
+    margin: 0 0 10px;
+
+    font-size: 1.55rem;
+    font-weight: 900;
+
+    color: white;
+
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.42);
+}
+
+.app-popup-message {
+    margin: 0 auto 24px;
+
+    max-width: 340px;
+
+    color: rgba(255, 255, 255, 0.92);
+
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.55;
+
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.35);
+}
+
+.app-popup-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+.app-popup-btn {
+    min-width: 140px;
+
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 999px;
+
+    padding: 12px 24px;
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.app-popup-btn-primary {
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+}
+
+.app-popup-btn-secondary {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.app-popup-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.30);
+}
+
+.app-popup-btn:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 4px;
+}
+
+@media (max-width: 520px) {
+    .app-popup-overlay {
+        padding: 16px;
+        align-items: center;
+    }
+
+    .app-popup-card {
+        max-width: 100%;
+        border-radius: 24px;
+        padding: 26px 20px 22px;
+    }
+
+    .app-popup-icon {
+        width: 62px;
+        height: 62px;
+        font-size: 31px;
+        margin-bottom: 16px;
+    }
+
+    .app-popup-title {
+        font-size: 1.32rem;
+    }
+
+    .app-popup-message {
+        font-size: 0.96rem;
+        line-height: 1.45;
+        margin-bottom: 22px;
+    }
+
+    .app-popup-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .app-popup-btn {
+        width: 100%;
+        min-height: 48px;
+        font-size: 1rem;
+    }
+}
