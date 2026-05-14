@@ -15,6 +15,28 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+
+.favorite-toggle {
+    display: flex !important;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+.favorite-toggle:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
+/* Se não houver a classe 'user-logged-in' no body, forçamos o ícone preenchido a sumir */
+body:not(.user-logged-in) .icon-filled {
+    opacity: 0 !important;
+}
+
+body:not(.user-logged-in) .icon-outline {
+    opacity: 1 !important;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background: url('../assets/background-pokedex.jpg') no-repeat center center fixed;
