@@ -125,7 +125,8 @@ async function inicializar() {
 
     } else if (path.includes('compare.html')) {
         
-        await carregarPokedex();
+        await carregarPokedex();      
+
 
     } else if (path.includes('login.html')) {
         
@@ -422,17 +423,13 @@ function abrirmodal(card){
         <div id="fade"></div>
         <div id="modal">
             <div class="search-sort-bar" id="modal-header">
-                
-                    <div class="search-container">
-                        <span>🔍</span>
-                        <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                    </div>
-              
-                    <div class="sort-container" id="btn-modal-compare">
-                        <span>Buscar</span>
-                    </div>
-                    <a href="compare.html" id="buttonFecharX">X</a>
-               
+                <div class="search-container">
+                    <span>🔍</span>
+                    <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
+                </div>
+                <div class="sort-container" id="btn-modal-compare">
+                    <span>Buscar</span>
+                </div>
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -441,19 +438,35 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
-    
+
+    // Renderiza a lista inicial
     filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true, card);
+        renderizarCard(p, bodymodal, true);
     });
 
-    const btnBusca = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
+    // --- LÓGICA DE FILTRO PARA O MODAL ---
+    const inputBusca = document.getElementById('modalSearchInput');
+    
+    inputBusca.addEventListener('input', (e) => {
+        const termo = e.target.value.toLowerCase();
+        
+        // Filtra os dados
+        const pokemonsFiltradosModal = pokemonData.filter(p => 
+            p.name.toLowerCase().includes(termo) || 
+            p.id.toString().includes(termo)
+        );
 
-    //Para fechar o modal
+        // Limpa e renderiza apenas no grid do modal
+        bodymodal.innerHTML = "";
+        pokemonsFiltradosModal.forEach(p => {
+            renderizarCard(p, bodymodal, true);
+        });
+    });
+
+    const fadearea = document.getElementById('fade');
     fadearea.addEventListener('click', () => {
          modal.innerHTML = "";
     });
-    //--------//--------//
 }
 
 function battle() {
