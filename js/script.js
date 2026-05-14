@@ -22,16 +22,6 @@ const cores = {
     fairy: '#d685ad'
 };
 
-/* -------------------------------------------------
-   POP-UP GLOBAL PERSONALIZADO
-   Use:
-   mostrarPopup("Mensagem", "success");
-   mostrarPopup("Mensagem", "error");
-   mostrarPopup("Mensagem", "warning");
-   mostrarPopup("Mensagem", "info");
-   Também retorna Promise para ações após confirmação:
-   await mostrarPopup("Sessão encerrada.", "success");
-------------------------------------------------- */
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -568,9 +558,11 @@ function abrirmodal(card){
                     <span>🔍</span>
                     <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
                 </div>
+              
                 <div class="sort-container" id="btn-modal-compare">
                     <span>Buscar</span>
                 </div>
+                <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -579,35 +571,35 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
-
-    // Renderiza a lista inicial
-    filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true);
-    });
-
-    // --- LÓGICA DE FILTRO PARA O MODAL ---
-    const inputBusca = document.getElementById('modalSearchInput');
+    const modalSearchInput = document.getElementById('modalSearchInput');
     
-    inputBusca.addEventListener('input', (e) => {
+    const renderizarFiltradosNoModal = (lista) => {
+        bodymodal.innerHTML = ""; 
+        lista.forEach(p => {            
+            renderizarCard(p, bodymodal, true, card);
+        });
+    };
+
+    // Renderização inicial (todos os pokémons)
+    renderizarFiltradosNoModal(filteredPokemon);
+
+    // Lógica do Filtro dentro do Modal
+    modalSearchInput.addEventListener('input', (e) => {
         const termo = e.target.value.toLowerCase();
         
-        // Filtra os dados
-        const pokemonsFiltradosModal = pokemonData.filter(p => 
+        const resultados = pokemonData.filter(p => 
             p.name.toLowerCase().includes(termo) || 
             p.id.toString().includes(termo)
         );
 
-        // Limpa e renderiza apenas no grid do modal
-        bodymodal.innerHTML = "";
-        pokemonsFiltradosModal.forEach(p => {
-            renderizarCard(p, bodymodal, true);
-        });
+        renderizarFiltradosNoModal(resultados);
     });
 
-    const fadearea = document.getElementById('fade');
-    fadearea.addEventListener('click', () => {
-         modal.innerHTML = "";
-    });
+    // Para fechar o modal
+    const fecharModal = () => { modal.innerHTML = ""; };
+    
+    document.getElementById('fade').addEventListener('click', fecharModal);
+    document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
 }
 
 function battle() {
