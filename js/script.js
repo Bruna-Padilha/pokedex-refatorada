@@ -173,7 +173,66 @@ function estaLogado() {
 function loginSimulado(status) {
     localStorage.setItem('usuarioLogado', status);
     console.log(`Estado de login alterado para: ${status}`);
-    atualizarInterfaceLogin(); 
+    atualizarInterfaceLogin(); // Garante que a classe do body mude imediatamente
+}
+
+//---USERBAR - INICIO---//
+
+const userBarSaudacao = document.getElementById('userBarSaudacao');
+const userBarIcon = document.getElementById('userBarIcon');
+const userBarLogin = document.getElementById('userBarLogin');
+const userBarLogout = document.getElementById('userBarLogout');
+
+if(estaLogado()){
+    userBarSaudacao.innerText = "Bem-vindo Admin";
+    userBarIcon.classList.replace('userBarIconDeslogado', 'userBarIconLogado');
+    userBarLogin.style.display = "none";
+    userBarLogout.style.display = "inline";
+
+} else{
+    userBarSaudacao.innerText = "Voce está deslogado";
+    userBarIcon.classList.replace('userBarIconLogado', 'userBarIconDeslogado');
+    userBarLogin.style.display = "inline";
+    userBarLogout.style.display = "none";
+}
+/*
+const userBarLogout = document.getElementById('userBarLogout');
+
+userBarLogout.addEventListener('click', () => {
+    loginSimulado('false');
+    alert("Sessão encerrada.");
+    window.location.href = 'mainpage.html';
+});
+*/
+//---USERBAR - FIM---//
+
+function obterFavoritos() {
+    const favs = localStorage.getItem('pokemonsFavoritos');
+    return favs ? JSON.parse(favs) : [];
+}
+
+function salvarFavorito(id) {
+    let favs = obterFavoritos();
+    if (favs.includes(id)) {
+        favs = favs.filter(favId => favId !== id);
+    } else {
+        favs.push(id);
+    }
+    localStorage.setItem('pokemonsFavoritos', JSON.stringify(favs));
+}
+
+function tentarFavoritar(event, elemento, pokemonId) {
+    
+    event.stopPropagation();
+
+    if (estaLogado()) {
+        elemento.classList.toggle('is-favorite');
+        salvarFavorito(pokemonId);                
+        console.log(`Pokemon ${pokemonId} adicionado aos favoritos.`);
+    } else {
+        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");        
+        window.location.href = 'login.html';
+    }
 }
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
