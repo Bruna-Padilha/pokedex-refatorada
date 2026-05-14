@@ -9,6 +9,13 @@
     <link id="favicon" rel="icon" type="image/png" href="../assets/favicon.png">
 </head>
 <body>
+    <div class="userbar" id="userbar">
+        <div>
+            <span>Bem-vindo, Login</span>
+            <img src="../assets/img/usericon.png" alt="UserIcon" id="userBarIcon">
+            <span>Sair</span>
+        </div>
+    </div>
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
@@ -19,7 +26,7 @@
 
     <header>
         <nav>
-            <div class="logo"><img src="../assets/logo-pokedex.png" alt="Logo"></div>
+            <a href="index.html" class="logo"><img src="../assets/logo-pokedex.png" alt="Logo"></a>
             <ul>
                 <li><a href="index.html" class="btn-nav">Início</a></li>
                 <li><a href="mainpage.html" class="btn-nav">Pokedex</a></li>
@@ -39,6 +46,12 @@
                     <button class="btn-start" onclick="irParaSectionCompare()">COMECE AGORA</button>
                 </div>
                 <div class="hero-image"><img src="../assets/trio-pokemon.png" alt="Hero"></div>
+            </div>
+            <h3>Ultimas Comparações</h3>
+            <div class="carousel-container">
+                <button class="arrow-btn left" onclick="scrollCarouselCompare(-1)">&#10094;</button>
+                <div id="divUltimasComparacoes"></div>
+                <button class="arrow-btn right" onclick="scrollCarouselCompare(1)">&#10095;</button>
             </div>
         </section>
 
@@ -61,7 +74,7 @@
 
     </main>
 
-    <div class="modal-container"></div>
+    <div class="modal-container" id="modal-container"></div>
 
     <script src="../js/script.js"></script>
 </body>
