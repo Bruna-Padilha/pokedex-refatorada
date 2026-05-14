@@ -63,7 +63,7 @@ async function inicializar() {
 
 async function carregarPokedex() {
     try {
-        const res = await fetch('../html/pokemon-data.json'); 
+        const res = await fetch('pokemon-data.json'); 
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
 
@@ -504,7 +504,7 @@ async function carregarFavoritos() {
     if (!grid) return;
 
     try {
-        const res = await fetch('../html/pokemon-data.json');
+        const res = await fetch('pokemon-data.json');
         const todosPokemons = await res.json();
 
         const favIds = buscarLS('pokemonFavoritos', []);
@@ -604,7 +604,7 @@ async function adicionarFavoritoManual() {
 
     if (todosPokemonsModalFavoritos.length === 0) {
         try {
-            const res = await fetch('../html/pokemon-data.json');
+            const res = await fetch('pokemon-data.json');
             todosPokemonsModalFavoritos = await res.json();
         } catch (erro) {
             console.error('Erro ao carregar pokémons no modal:', erro);
@@ -622,6 +622,9 @@ async function adicionarFavoritoManual() {
     renderizarPokemonsModalFavoritos(todosPokemonsModalFavoritos);
 }
 
+/* ============================================
+   LÓGICA DE FAVORITOS
+   ============================================ */
 function fecharModalFavoritos() {
     const modal = document.getElementById('modalFavoritos');
     if (modal) modal.classList.remove('ativo');
@@ -676,7 +679,6 @@ function salvarPokemonNosFavoritos(id) {
     carregarFavoritos();
 }
 
-// Fechar modal com ESC
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') fecharModalFavoritos();
 });

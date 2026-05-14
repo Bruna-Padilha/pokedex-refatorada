@@ -24,7 +24,7 @@
 .hero-content h1 { 
     font-size: 55px; 
     line-height: 1.1; 
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     margin-bottom: 10px; 
 }
 
@@ -46,14 +46,15 @@
 
 /* --- GRID E SLOTS DE COMPARAÇÃO --- */
 .card-add-content {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8%;
-    padding: 2%;
-    visibility: hidden;
+width: 100vw;
+height: 100vh;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+gap: 8%;
+padding: 2%;
+visibility: hidden;
 }
 
 /* Slot Vazio com "+" */
@@ -90,6 +91,26 @@
     font-weight: 100; 
     color: rgba(255, 255, 255, 0.2); 
     margin: 0;
+}
+
+#vs-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#vs-button button {
+    border: 1px solid white;
+    background: linear-gradient(to bottom, #ffee00 0%, #c95b00 100%);
+    color: white; 
+    padding: 15px 40px;
+    border-radius: 30px; 
+    font-weight: bold; 
+    text-transform: uppercase;
+    margin-top: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: 0.3s;
 }
 
 /* --- CARD PREENCHIDO (ESTILO BULBASAUR) --- */
@@ -198,7 +219,210 @@
     animation: slideUp 0.8s ease forwards;
 }
 
+.battle-content {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    gap: 8%;
+    padding: 2%;
+    display: none;
+}
+
+#battleDiv {
+    width: 100vw;
+    height: 100vh;
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+}
+
+#winner-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 350px;
+    height: 500px;
+}
+
+#winner-pokemon-name {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: xxx-large;
+}
+
+.imagem-pokemon-winner {
+    width: 100%;
+}
+
+.imagem-winner {
+    height: auto;
+    width: auto;
+}
+
+.winner-info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.winner-info {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size:x-large
+}
+
 @keyframes slideUp {
     from { transform: translate(0%, -30%); opacity: 0; }
     to { transform: translate(0%, 0%); opacity: 1; }
 }
+
+@keyframes battleWin {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- SEÇÃO MODAL COMPARE --- */
+.modal-hidden{
+  
+    visibility: hidden;
+}
+
+.modal-visivel{
+    visibility: visible;
+}
+
+#fade{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 950px;
+    height: 600px;
+    max-width: 80%;
+    max-height: 80%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    z-index: 20;
+    padding: 1.5rem;
+    animation: modalAnimation 0.3s ease forwards;
+}
+
+@keyframes modalAnimation {
+    from { transform: translate(-50%, 0%); opacity: 0; }
+    to { transform: translate(-50%, -50%); opacity: 1; }
+}
+
+#modal-header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 15%;
+    min-height: 4rem;
+    align-items: center;
+    border-bottom: 1px solid white;
+}
+
+/* --- BARRA DE BUSCA E ORDENAÇÃO --- */
+.search-sort-bar {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-container {
+    width: 70%;
+    background: rgba(255,255,255,0.7);
+    border-radius: 30px;
+    padding: 12px 25px;
+    display: flex;
+    backdrop-filter: blur(10px);
+}
+
+.search-container input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+.sort-container {
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.sort-container:hover { 
+    transform: translateY(-2px); 
+    filter: brightness(1.1); 
+}
+
+#modal-body {
+    width: 95%;
+    height: 80%;
+    position:absolute;
+    left: 50%;
+    padding: 1rem;
+    translate: -50%;
+    bottom: 0px;
+    display: grid;
+    overflow-y: auto;
+}
+
+#modal-body-grid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill , minmax(240px, 1fr));
+    gap: 55px 25px;
+}
+
+#modal-body::-webkit-scrollbar{
+    width: 8px;
+}
+
+#modal-body-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 1rem;
+}
+
+#modal-body-grid::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cor da alça */
+  border-radius: 10px;
+}
+
+#modal-body-grid::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor da alça ao passar o mouse */
+}
+

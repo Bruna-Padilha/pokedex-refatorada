@@ -1,0 +1,122 @@
+/* Fundo com imagem de paisagem Pokémon */
+.login-card-container {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Card translúcido central */
+.login-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 8rem 2.5rem;
+  width: 900px;
+  min-width: 320px;
+  text-align: center;
+  z-index: 1;
+}
+
+.login-form{
+
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-card__title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #f9cf30;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1.25rem;
+}
+
+/* Personagens posicionados */
+.char {
+  position: absolute;
+  bottom: 0;
+  width: 140px;
+  z-index: 0;
+}
+
+.char--left {
+  left: 2rem;
+}
+
+.char--right {
+  right: 2rem;
+}
+
+/* Campo com label vermelha + input verde */
+.form-field {
+  display: flex;
+  align-items: center;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-bottom: 0.75rem;
+  
+}
+
+.form-field__label {
+  background: linear-gradient(to bottom, #FF8079, #F72B20);
+  border: 1px solid #fff;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  margin: -65px -25px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+  z-index: 3;
+}
+
+.form-field__input {
+  flex: 1;
+  background: #c6f6d568;
+  border: none;
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-field__input:focus {
+  background: #9ae6b4;
+}
+
+/* Botão principal — Entrar */
+.btn--primary {
+  text-decoration: none;
+  color: white;
+  padding: 10px 30px;
+  background: linear-gradient(to bottom, #FF8079, #F72B20);
+  border-radius: 25px;
+  border: 1px solid #fff; 
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.3s;
+  display: inline-block;
+}
+
+.btn--primary:hover {
+  background: #c53030;
+}
+
+/* Container dos links inferiores */
+.login-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
