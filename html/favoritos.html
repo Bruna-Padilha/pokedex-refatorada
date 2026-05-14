@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex - Favoritos</title>
     <link rel="stylesheet" href="../css/global.css">
-    
+    <link rel="stylesheet" href="../css/style-favoritos.css">
     <link id="favicon" rel="icon" type="image/png" href="../assets/favicon.png">
-    </head>
+</head>
 <body>
-    
+
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     </div>
 
     <div class="pokeballs-container">
-        <div class="pokeball p-1"></div><div class="pokeball p-2"></div><div class="pokeball p-3"></div>
+        <div class="pokeball p-1"></div><div class="pokeball p-2"></div><div class="pokeball p-8"></div>
     </div>
 
     <header>
@@ -32,8 +32,12 @@
         </nav>
     </header>
 
-    <main>
-        </main>
+    <main class="favoritos-main">
+        <section class="favoritos-box">
+            <h1>Pokemons favoritos:</h1>
+            <div class="favoritos-grid" id="favoritosGrid"></div>
+        </section>
+    </main>
 
     <button id="backToTop" onclick="scrollToTop()">↑</button>
 
