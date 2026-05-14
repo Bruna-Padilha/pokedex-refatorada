@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex - Login</title>
     <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/style-login.css">
     <link id="favicon" rel="icon" type="image/png" href="../assets/favicon.png">
 </head>
 <body>
-    
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
     </div>
-
     <div class="pokeballs-container">
-        <div class="pokeball p-1"></div><div class="pokeball p-2"></div><div class="pokeball p-8"></div>
+        <div class="pokeball p-1"></div><div class="pokeball p-2"></div><div class="pokeball p-3"></div>
     </div>
-
     <header>
         <nav>
             <div class="logo"><img src="../assets/logo-pokedex.png" alt="Logo"></div>
@@ -30,10 +28,26 @@
             </ul>
         </nav>
     </header>
-
-    <main>
-        </main>
-
+    <main class="login-card-container">
+        <div class="login-card">
+            <img src="../assets/img/pikachu.png" alt="Pikachu" class="char-one char--left">
+            <img src="../assets/img/squirtle.png" alt="Squirtle" class="char-two char--right">
+            <h1 class="login-card__title">Login</h1>
+            <form class="login-form" action="/login" method="POST">
+            <div class="form-field">
+                <img src="../assets/img/username.png" alt="Username" class="form-field-icon">
+                <input id="usuario" type="text" name="usuario"
+                    class="form-field-input" autocomplete="username" placeholder="Digite seu usuário">
+            </div>
+            <div class="form-field">
+                <img src="../assets/img/password.png" alt="Password" class="form-field-icon form-field-icon--password">
+                <input id="senha" type="password" name="senha"
+                    class="form-field-input" autocomplete="current-password" placeholder="Digite sua senha">
+            </div>
+            <button type="submit" class="btn btn--primary">Entrar</button>
+            </form>
+        </div>
+    </main>
     <script src="../js/script.js"></script>
 </body>
 </html>
