@@ -247,7 +247,7 @@ function scrollCarousel(direction) {
 }
 
 function scrollCarouselCompare(direction) {
-    const container = document.getElementById('pokemon-list');
+    const container = document.getElementById('divUltimasComparacoes');
     const cardWidth = 250;
     const gap = 16;
     const visibleCards = 4;
