@@ -44,6 +44,36 @@ function loginSimulado(status) {
     atualizarInterfaceLogin(); // Garante que a classe do body mude imediatamente
 }
 
+//---USERBAR - INICIO---//
+
+const userBarSaudacao = document.getElementById('userBarSaudacao');
+const userBarIcon = document.getElementById('userBarIcon');
+const userBarLogin = document.getElementById('userBarLogin');
+const userBarLogout = document.getElementById('userBarLogout');
+
+if(estaLogado()){
+    userBarSaudacao.innerText = "Bem-vindo Admin";
+    userBarIcon.classList.replace('userBarIconDeslogado', 'userBarIconLogado');
+    userBarLogin.style.display = "none";
+    userBarLogout.style.display = "inline";
+
+} else{
+    userBarSaudacao.innerText = "Voce está deslogado";
+    userBarIcon.classList.replace('userBarIconLogado', 'userBarIconDeslogado');
+    userBarLogin.style.display = "inline";
+    userBarLogout.style.display = "none";
+}
+/*
+const userBarLogout = document.getElementById('userBarLogout');
+
+userBarLogout.addEventListener('click', () => {
+    loginSimulado('false');
+    alert("Sessão encerrada.");
+    window.location.href = 'mainpage.html';
+});
+*/
+//---USERBAR - FIM---//
+
 function obterFavoritos() {
     const favs = localStorage.getItem('pokemonsFavoritos');
     return favs ? JSON.parse(favs) : [];
