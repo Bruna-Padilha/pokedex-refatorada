@@ -22,6 +22,138 @@ const cores = {
     fairy: '#d685ad'
 };
 
+/* -------------------------------------------------
+   POP-UP GLOBAL PERSONALIZADO
+   Use:
+   mostrarPopup("Mensagem", "success");
+   mostrarPopup("Mensagem", "error");
+   mostrarPopup("Mensagem", "warning");
+   mostrarPopup("Mensagem", "info");
+   Também retorna Promise para ações após confirmação:
+   await mostrarPopup("Sessão encerrada.", "success");
+------------------------------------------------- */
+
+function obterDadosPopupSistema(tipo = 'info') {
+    const tipos = {
+        success: {
+            titulo: 'Sucesso',
+            icone: '✓',
+            classe: 'success'
+        },
+        error: {
+            titulo: 'Erro',
+            icone: '!',
+            classe: 'error'
+        },
+        warning: {
+            titulo: 'Atenção',
+            icone: '!',
+            classe: 'warning'
+        },
+        info: {
+            titulo: 'Informação',
+            icone: 'i',
+            classe: 'info'
+        }
+    };
+
+    return tipos[tipo] || tipos.info;
+}
+
+function mostrarPopup(mensagem, tipo = 'info', opcoes = {}) {
+    return new Promise((resolver) => {
+        const dados = obterDadosPopupSistema(tipo);
+        const overlayAnterior = document.querySelector('.app-popup-overlay');
+
+        if (overlayAnterior) {
+            overlayAnterior.remove();
+        }
+
+        const titulo = opcoes.titulo || dados.titulo;
+        const textoBotao = opcoes.textoBotao || 'Entendi';
+        const textoCancelar = opcoes.textoCancelar || 'Cancelar';
+        const mostrarCancelar = Boolean(opcoes.mostrarCancelar);
+
+        const overlay = document.createElement('div');
+        overlay.className = 'app-popup-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+
+        overlay.innerHTML = `
+            <div class="app-popup-card app-popup-${dados.classe}">
+                <div class="app-popup-icon" aria-hidden="true">
+                    ${dados.icone}
+                </div>
+
+                <h2 class="app-popup-title">${titulo}</h2>
+
+                <p class="app-popup-message">${mensagem}</p>
+
+                <div class="app-popup-actions">
+                    ${mostrarCancelar ? `
+                        <button type="button" class="app-popup-btn app-popup-btn-secondary" data-popup-action="cancelar">
+                            ${textoCancelar}
+                        </button>
+                    ` : ''}
+
+                    <button type="button" class="app-popup-btn app-popup-btn-primary" data-popup-action="confirmar">
+                        ${textoBotao}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        const card = overlay.querySelector('.app-popup-card');
+        const botaoConfirmar = overlay.querySelector('[data-popup-action="confirmar"]');
+        const botaoCancelar = overlay.querySelector('[data-popup-action="cancelar"]');
+
+        function fecharPopup(resultado) {
+            overlay.classList.remove('ativo');
+            card.classList.add('saindo');
+
+            setTimeout(() => {
+                overlay.remove();
+                document.removeEventListener('keydown', fecharComEsc);
+                resolver(resultado);
+            }, 220);
+        }
+
+        function fecharComEsc(event) {
+            if (event.key === 'Escape') {
+                fecharPopup(false);
+            }
+        }
+
+        botaoConfirmar.addEventListener('click', () => fecharPopup(true));
+
+        if (botaoCancelar) {
+            botaoCancelar.addEventListener('click', () => fecharPopup(false));
+        }
+
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                fecharPopup(false);
+            }
+        });
+
+        document.addEventListener('keydown', fecharComEsc);
+
+        requestAnimationFrame(() => {
+            overlay.classList.add('ativo');
+            botaoConfirmar.focus();
+        });
+    });
+}
+
+/* Fallback: qualquer alert antigo que ainda surgir no projeto vira popup visual */
+window.alert = function(mensagem) {
+    mostrarPopup(String(mensagem), 'info');
+};
+
+
+
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
 /* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
@@ -74,24 +206,33 @@ function configurarPaginaLogin() {
         `;
         loginCard.appendChild(logoutContainer);
 
-        document.getElementById('btn-logout').addEventListener('click', () => {
+        document.getElementById('btn-logout').addEventListener('click', async () => {
             loginSimulado('false');
-            alert("Sessão encerrada.");
+            await mostrarPopup('Sessão encerrada.', 'success', {
+                titulo: 'Sessão encerrada',
+                textoBotao: 'OK'
+            });
             window.location.href = 'mainpage.html';
         });
     } else {
         // Validação admin/1234
-        loginForm.addEventListener('submit', (event) => {
+        loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const usuarioInput = document.getElementById('usuario').value;
             const senhaInput = document.getElementById('senha').value;
 
             if (usuarioInput === 'admin' && senhaInput === '1234') {
                 loginSimulado('true');
-                alert("Login realizado com sucesso!");
+                await mostrarPopup('Login realizado com sucesso!', 'success', {
+                    titulo: 'Bem-vindo!',
+                    textoBotao: 'Continuar'
+                });
                 window.location.href = 'index.html';
             } else {
-                alert("Usuário ou senha incorretos.");
+                await mostrarPopup('Usuário ou senha incorretos.', 'error', {
+                    titulo: 'Dados inválidos',
+                    textoBotao: 'Tentar novamente'
+                });
             }
         });
     }
@@ -517,7 +658,10 @@ function battle() {
         cardcompare[1] = [];
     }
     else {
-        alert("Você precisa adicionar os dois pokemons nos cards!")
+        mostrarPopup('Você precisa adicionar os dois Pokémons nos cards!', 'warning', {
+            titulo: 'Atenção',
+            textoBotao: 'OK'
+        })
     } 
     
 }
@@ -618,7 +762,10 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
-                        alert("Voce não pode escolher o mesmo pokemon!");
+                        mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
+                            titulo: 'Escolha inválida',
+                            textoBotao: 'OK'
+                        });
                     }
                 } else{
                     if(!cardcompare[0] || p.id != cardcompare[0].id){
@@ -626,7 +773,10 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
-                        alert("Voce não pode escolher o mesmo pokemon!");
+                        mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
+                            titulo: 'Escolha inválida',
+                            textoBotao: 'OK'
+                        });
                     }
                 }
             }); 
@@ -676,13 +826,16 @@ function verificarFavorito(id) {
     return buscarLS('pokemonFavoritos', []).includes(id);
 }
 
-function tentarFavoritar(event, elemento, pokemonId) {
+async function tentarFavoritar(event, elemento, pokemonId) {
     event.stopPropagation(); // Evita que o clique vaze para o card de trás
-    
+
     if (estaLogado()) {
         toggleFavorito(pokemonId, elemento);
     } else {
-        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");
+        await mostrarPopup('Você precisa estar logado para favoritar um Pokémon!', 'warning', {
+            titulo: 'Login necessário',
+            textoBotao: 'Ir para login'
+        });
         window.location.href = 'login.html';
     }
 }
@@ -808,7 +961,10 @@ async function adicionarFavoritoManual() {
             todosPokemonsModalFavoritos = await res.json();
         } catch (erro) {
             console.error('Erro ao carregar pokémons no modal:', erro);
-            alert('Não foi possível carregar a lista de Pokémons.');
+            await mostrarPopup('Não foi possível carregar a lista de Pokémons.', 'error', {
+                titulo: 'Erro ao carregar',
+                textoBotao: 'OK'
+            });
             return;
         }
     }
