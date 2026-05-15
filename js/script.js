@@ -236,7 +236,7 @@ function configurarPaginaLogin() {
                 titulo: 'Sessão encerrada',
                 textoBotao: 'OK'
             });
-            window.location.href = 'mainpage.html';
+            window.location.href = 'index.html';
         });
     } else {
         // Validação admin/1234
