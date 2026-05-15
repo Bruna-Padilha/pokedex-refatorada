@@ -7,6 +7,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
+let ultimasComparacoes2 = JSON.parse(localStorage.getItem('ultimasComparacoes2')) || [];
 
 
 const cores = {
@@ -459,23 +460,45 @@ const divUltimasComp = document.getElementById('divUltimasComparacoes');
 if(divUltimasComp){
     
     if(ultimasComparacoes.length){
-        console.log(ultimasComparacoes);
-        ultimasComparacoes.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
+
+        ultimasComparacoes2.forEach(compcard => {
+            const cardComparacao = document.createElement('div');
+            cardComparacao.classList.add('cardComparacao');
+
+            cardComparacao.innerHTML = `
+                <div style="background: ${obterBackground(compcard.ganhador.type)};">
+                    <div>
+                        <div>
+                            <img src="" alt="Ganhador">
+                            <img src="${compcard.ganhador.image}" alt="${compcard.ganhador.name}">
+                        </div>
+                        <div>
+                            <spam>${compcard.ganhador.name}</spam>
+                            <spam>${compcard.ganhador.id}</spam>
+                        </div>
+                    </div>
+                    <div>
+                        VS
+                    </div>
+                    <div>
+                        <div>
+                            <img src="" alt="Perdedor">
+                            <img src="${compcard.perdedor.image}" alt="${compcard.perdedor.name}">
+                        </div>
+                        <div>
+                            <spam>${compcard.perdedor.name}</spam>
+                            <spam>${compcard.perdedor.id}</spam>
+                        </div>                        
+                    </div>
+                </div>
+            `;
+
+            divUltimasComp.appendChild(cardComparacao);
         });
     } else{
         const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
-
         carouselContainerComparacao.innerHTML = "";
     }
-     
-    /*
-    window.addEventListener('pokemonsCarregados',() => {
-        filteredPokemon.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
-        });
-    });
-    */
 }
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -615,6 +638,7 @@ function battle() {
     if(cardcompare[0] && cardcompare[1]){
         let pontuacaoPokemon = [];
         let ganhador = [];
+        let perdedor = [];
 
         //adiciono aqui os ultimos comparados na Array de historico
         ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
@@ -629,8 +653,10 @@ function battle() {
 
          if(pontuacaoPokemon[0] > pontuacaoPokemon[1]){
             ganhador = cardcompare[0];
+            perdedor = cardcompare[1];
          } else {
             ganhador = cardcompare[1];
+            perdedor = cardcompare[0];
          }
 
         const section = document.getElementById('sectionCompare');
@@ -652,6 +678,23 @@ function battle() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor(ganhador);
+
+            //adiciono aqui os ultimos comparados na Array de historico
+            ultimasComparacoes2.unshift({
+                ganhador: {
+                    id: ganhador.id,
+                    name: ganhador.name,
+                    type: ganhador.type,
+                    img: ganhador.image
+                },
+                perdedor: {
+                    id: perdedor.id,
+                    name: perdedor.name,
+                    type: perdedor.type,
+                    img: perdedor.image
+                }
+            });
+            localStorage.setItem('ultimasComparacoes2', JSON.stringify(ultimasComparacoes2));
         }, 500);
 
         cardcompare[0] = [];
