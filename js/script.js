@@ -498,18 +498,47 @@ function scrollCarouselCompare(direction) {
 /* LÓGICA DE COMPARAÇÃO */
 
 const divUltimasComp = document.getElementById('divUltimasComparacoes');
+const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
+const carouselContainerComparacaoTitle = document.getElementById('carouselContainerComparacaoTitle');
 
 if(divUltimasComp){
     
     if(ultimasComparacoes.length){
-        console.log(ultimasComparacoes);
-        ultimasComparacoes.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
+        carouselContainerComparacaoTitle.innerHTML = "Ultimas Comparações";
+
+        ultimasComparacoes.forEach(compcard => {
+            const cardComparacao = document.createElement('div');
+            cardComparacao.classList.add('cardComparacao');
+            
+            cardComparacao.innerHTML = `
+                <div class="card-comp-base" >
+                    <img src="../assets/img/winner.png" alt="Ganhador" class="card-comp-img-w">
+                    <img src="${compcard.ganhador.image}" alt="${compcard.ganhador.name}" class="card-comp-img-poke">
+                        
+                    <img src="../assets/img/loser.png" alt="Perdedor" class="card-comp-img-l">
+                    <img src="${compcard.perdedor.image}" alt="${compcard.perdedor.name}" class="card-comp-img-poke">
+                </div>
+
+                <div class="card-comp-info">
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.ganhador.name}</spam>
+                        <spam class="card-comp-id">#${compcard.ganhador.id}</spam>
+                    </div>
+
+                    <h3 class="card-comp-vs">VS</h3>
+
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.perdedor.name}</spam>
+                        <spam class="card-comp-id">#${compcard.perdedor.id}</spam>
+                    </div> 
+                </div>
+            `;
+
+            divUltimasComp.appendChild(cardComparacao);
         });
     } else{
-        const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
-
         carouselContainerComparacao.innerHTML = "";
+        carouselContainerComparacaoTitle.innerHTML = "";
     }
      
 }
@@ -646,9 +675,7 @@ function battle() {
     if(cardcompare[0] && cardcompare[1]){
         let pontuacaoPokemon = [];
         let ganhador = [];
-
-        ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
-        localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
+        let perdedor = [];  
 
         cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
         cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
@@ -659,8 +686,10 @@ function battle() {
 
          if(pontuacaoPokemon[0] > pontuacaoPokemon[1]){
             ganhador = cardcompare[0];
+            perdedor = cardcompare[1];
          } else {
             ganhador = cardcompare[1];
+            perdedor = cardcompare[0];
          }
 
         const section = document.getElementById('sectionCompare');
@@ -679,6 +708,23 @@ function battle() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor(ganhador);
+
+            //adiciono aqui os ultimos comparados na Array de historico
+            ultimasComparacoes.unshift({
+                ganhador: {
+                    id: ganhador.id,
+                    name: ganhador.name,
+                    type: ganhador.type,
+                    image: ganhador.image
+                },
+                perdedor: {
+                    id: perdedor.id,
+                    name: perdedor.name,
+                    type: perdedor.type,
+                    image: perdedor.image
+                }
+            });
+            localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
         }, 500);
 
         cardcompare[0] = [];
