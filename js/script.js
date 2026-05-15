@@ -823,7 +823,7 @@ function renderizarCard(p, container, isMainPage, origem) {
     `;
 
     if (document.querySelector('.modal-container')) {
-        const btnAdd = card.querySelector(".glass-info-panel");
+        const btnAdd = card.querySelector(".pokemon-card-base");
 
         if(btnAdd && origem){
             btnAdd.addEventListener('click', () => {
