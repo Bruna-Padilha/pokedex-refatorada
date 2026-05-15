@@ -52,22 +52,109 @@
 .carousel-container-compare {
     position: relative;
     width: 1000px;
-    max-width: 80%;
+    max-width: 70%;
     margin: 0 auto;
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
     justify-content: center;
 }
 
 #divUltimasComparacoes {
     width: 100%;
-    min-height: 40%;
+    min-height: 50%;
     padding: 1rem 0rem 0rem 0rem;
     margin-bottom: 3rem;
     display: flex;
-    overflow-x: hidden;
+    overflow-x:scroll;
     overflow-y: hidden;
-    gap: 3rem;
+    gap: 4rem;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar{
+    width: 1px;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+  padding: 1px;
+  margin: 1rem;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-thumb {
+  background: #d3d3d3; /* Cor da alça */
+  border-radius: 1px;
+}
+
+#divUltimasComparacoes::-webkit-scrollbar-thumb:hover {
+  background: #5none55; /* Cor da alça ao passar o mouse */
+}
+
+.cardComparacao{
+    width: 270px;
+    min-height: 100px;
+    display: flex;
+    border-radius: 35px;
+    position: relative;
+}
+
+.card-comp-base{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.card-comp-img-poke{
+     width: 150px;
+     margin-bottom: 3rem;
+}
+
+.card-comp-img-w{
+    width: 70px;
+    position: absolute;
+    bottom: 5.5rem;
+    left: 0.5rem;
+}
+
+.card-comp-img-l{
+    width: 70px;
+    position: absolute;
+    bottom: 5.5rem;
+    right: 0.5rem;
+}
+
+.card-comp-info{
+    position: absolute; 
+    bottom: 0;
+    z-index: 100; 
+    width: 100%; 
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(110, 110, 110, 0.3);      
+    backdrop-filter: blur(5px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 35px; 
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+.card-comp-coluna{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.card-comp-vs{
+    align-content: center;
 }
 
 .arrow-btn {
@@ -100,24 +187,22 @@
 .arrow-btn.right { right: -60px; }
 
 #divUltimasComparacoes::-webkit-scrollbar{
-    height: 10px;
-    width: 8px;
+    height: 1px;
+    width: 1px;
+    background: none;
+    
 }
 
 #divUltimasComparacoes::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  padding: 0.5rem;
-  margin: 3rem;
+  background: none;
 }
 
 #divUltimasComparacoes::-webkit-scrollbar-thumb {
-  background: #d3d3d3; /* Cor da alça */
-  border-radius: 10px;
+  background: none;
 }
 
 #divUltimasComparacoes::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Cor da alça ao passar o mouse */
+  background: none;
 }
 
 /* --- GRID E SLOTS DE COMPARAÇÃO --- */
@@ -293,72 +378,6 @@ visibility: hidden;
     font-weight: bold;
     font-size: 0.9rem;
     animation: slideUp 0.8s ease forwards;
-}
-
-
-.cardComparacao{
-    width: 300px;
-    min-height: 100px;
-    display: flex;
-    border-radius: 35px;
-    position: relative;
-}
-
-.card-comp-base{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-.card-comp-img-poke{
-     width: 150px;
-     margin-bottom: 3rem;
-}
-
-.card-comp-img-w{
-    width: 70px;
-    position: absolute;
-    bottom: 5.5rem;
-    left: 0.5rem;
-}
-
-.card-comp-img-l{
-    width: 70px;
-    position: absolute;
-    bottom: 5.5rem;
-    right: 0.5rem;
-}
-
-.card-comp-info{
-    position: absolute; 
-    bottom: 0;
-    z-index: 100; 
-    width: 300px; 
-    height: 80px;
-    display: flex;
-    justify-content: space-around;
-    background: rgba(110, 110, 110, 0.3);      
-    backdrop-filter: blur(5px); 
-    -webkit-backdrop-filter: blur(20px); 
-    border: 1px solid rgba(255, 255, 255, 0.3); 
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 35px; 
-    padding: 5px 20px;
-    cursor: pointer;
-}
-
-.card-comp-coluna{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.card-comp-vs{
-    align-content: center;
 }
 
 .battle-content {

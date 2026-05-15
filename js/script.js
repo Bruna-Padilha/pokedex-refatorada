@@ -483,9 +483,9 @@ function scrollCarousel(direction) {
 }
 function scrollCarouselCompare(direction) {
     const container = document.getElementById('divUltimasComparacoes');
-    const cardWidth = 250;
-    const gap = 16;
-    const visibleCards = 4;
+    const cardWidth = 270;
+    const gap = 64;
+    const visibleCards = 1;
 
     const scrollAmount = (cardWidth + gap) * visibleCards;
 
