@@ -22,11 +22,133 @@ const cores = {
     fairy: '#d685ad'
 };
 
+
+function obterDadosPopupSistema(tipo = 'info') {
+    const tipos = {
+        success: {
+            titulo: 'Sucesso',
+            icone: '✓',
+            classe: 'success'
+        },
+        error: {
+            titulo: 'Erro',
+            icone: '!',
+            classe: 'error'
+        },
+        warning: {
+            titulo: 'Atenção',
+            icone: '!',
+            classe: 'warning'
+        },
+        info: {
+            titulo: 'Informação',
+            icone: 'i',
+            classe: 'info'
+        }
+    };
+
+    return tipos[tipo] || tipos.info;
+}
+
+function mostrarPopup(mensagem, tipo = 'info', opcoes = {}) {
+    return new Promise((resolver) => {
+        const dados = obterDadosPopupSistema(tipo);
+        const overlayAnterior = document.querySelector('.app-popup-overlay');
+
+        if (overlayAnterior) {
+            overlayAnterior.remove();
+        }
+
+        const titulo = opcoes.titulo || dados.titulo;
+        const textoBotao = opcoes.textoBotao || 'Entendi';
+        const textoCancelar = opcoes.textoCancelar || 'Cancelar';
+        const mostrarCancelar = Boolean(opcoes.mostrarCancelar);
+
+        const overlay = document.createElement('div');
+        overlay.className = 'app-popup-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+
+        overlay.innerHTML = `
+            <div class="app-popup-card app-popup-${dados.classe}">
+                <div class="app-popup-icon" aria-hidden="true">
+                    ${dados.icone}
+                </div>
+
+                <h2 class="app-popup-title">${titulo}</h2>
+
+                <p class="app-popup-message">${mensagem}</p>
+
+                <div class="app-popup-actions">
+                    ${mostrarCancelar ? `
+                        <button type="button" class="app-popup-btn app-popup-btn-secondary" data-popup-action="cancelar">
+                            ${textoCancelar}
+                        </button>
+                    ` : ''}
+
+                    <button type="button" class="app-popup-btn app-popup-btn-primary" data-popup-action="confirmar">
+                        ${textoBotao}
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        const card = overlay.querySelector('.app-popup-card');
+        const botaoConfirmar = overlay.querySelector('[data-popup-action="confirmar"]');
+        const botaoCancelar = overlay.querySelector('[data-popup-action="cancelar"]');
+
+        function fecharPopup(resultado) {
+            overlay.classList.remove('ativo');
+            card.classList.add('saindo');
+
+            setTimeout(() => {
+                overlay.remove();
+                document.removeEventListener('keydown', fecharComEsc);
+                resolver(resultado);
+            }, 220);
+        }
+
+        function fecharComEsc(event) {
+            if (event.key === 'Escape') {
+                fecharPopup(false);
+            }
+        }
+
+        botaoConfirmar.addEventListener('click', () => fecharPopup(true));
+
+        if (botaoCancelar) {
+            botaoCancelar.addEventListener('click', () => fecharPopup(false));
+        }
+
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                fecharPopup(false);
+            }
+        });
+
+        document.addEventListener('keydown', fecharComEsc);
+
+        requestAnimationFrame(() => {
+            overlay.classList.add('ativo');
+            botaoConfirmar.focus();
+        });
+    });
+}
+
+/* Fallback: qualquer alert antigo que ainda surgir no projeto vira popup visual */
+window.alert = function(mensagem) {
+    mostrarPopup(String(mensagem), 'info');
+};
+
+
+
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
 /* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
 
-/* PARA RESETAR O LOGIN SIMULADO, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
+/* PARA RESETAR O LOCAL STORAGE, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
 localStorage.clear();
 location.reload() */
 
@@ -41,11 +163,10 @@ function estaLogado() {
 function loginSimulado(status) {
     localStorage.setItem('usuarioLogado', status);
     console.log(`Estado de login alterado para: ${status}`);
-    atualizarInterfaceLogin(); // Garante que a classe do body mude imediatamente
+    atualizarInterfaceLogin(); 
 }
 
 //---USERBAR - INICIO---//
-
 const userBarSaudacao = document.getElementById('userBarSaudacao');
 const userBarIcon = document.getElementById('userBarIcon');
 const userBarLogin = document.getElementById('userBarLogin');
@@ -63,45 +184,13 @@ if(estaLogado()){
     userBarLogin.style.display = "inline";
     userBarLogout.style.display = "none";
 }
-/*
-const userBarLogout = document.getElementById('userBarLogout');
 
 userBarLogout.addEventListener('click', () => {
     loginSimulado('false');
     alert("Sessão encerrada.");
     window.location.href = 'mainpage.html';
 });
-*/
 //---USERBAR - FIM---//
-
-function obterFavoritos() {
-    const favs = localStorage.getItem('pokemonsFavoritos');
-    return favs ? JSON.parse(favs) : [];
-}
-
-function salvarFavorito(id) {
-    let favs = obterFavoritos();
-    if (favs.includes(id)) {
-        favs = favs.filter(favId => favId !== id);
-    } else {
-        favs.push(id);
-    }
-    localStorage.setItem('pokemonsFavoritos', JSON.stringify(favs));
-}
-
-function tentarFavoritar(event, elemento, pokemonId) {
-    
-    event.stopPropagation();
-
-    if (estaLogado()) {
-        elemento.classList.toggle('is-favorite');
-        salvarFavorito(pokemonId);                
-        console.log(`Pokemon ${pokemonId} adicionado aos favoritos.`);
-    } else {
-        alert("Aviso: Você precisa estar logado para favoritar um Pokémon!");        
-        window.location.href = 'login.html';
-    }
-}
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
 
@@ -116,41 +205,50 @@ function atualizarInterfaceLogin() {
 function configurarPaginaLogin() {
     const loginForm = document.querySelector('.login-form');
     const loginCard = document.querySelector('.login-card');
-    const loginTitle = document.querySelector('.login-card-title');
+    const loginTitle = document.querySelector('.login-card__title');
 
     if (!loginForm || !loginCard) return;
 
     if (estaLogado()) {
         // Altera visual para estado logado
         loginForm.style.display = 'none';
-        if (loginTitle) loginTitle.textContent = "Status";
+        if (loginTitle) loginTitle.textContent = "Você já está logado.";
 
         const logoutContainer = document.createElement('div');
         logoutContainer.innerHTML = `
-            <p style="margin-bottom: 20px; font-size: 1.2rem; color: white;">Você já está logado.</p>
+            <p style="margin-bottom: 20px;"></p>
             <p style="margin-bottom: 30px; color: white;">Deseja deslogar?</p>
-            <button id="btn-logout" class="btn btn--primary">Deslogar</button>
+            <button id="btn-logout" class="btn btn-start">Deslogar</button>
         `;
         loginCard.appendChild(logoutContainer);
 
-        document.getElementById('btn-logout').addEventListener('click', () => {
+        document.getElementById('btn-logout').addEventListener('click', async () => {
             loginSimulado('false');
-            alert("Sessão encerrada.");
+            await mostrarPopup('Sessão encerrada.', 'success', {
+                titulo: 'Sessão encerrada',
+                textoBotao: 'OK'
+            });
             window.location.href = 'mainpage.html';
         });
     } else {
         // Validação admin/1234
-        loginForm.addEventListener('submit', (event) => {
+        loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const usuarioInput = document.getElementById('usuario').value;
             const senhaInput = document.getElementById('senha').value;
 
             if (usuarioInput === 'admin' && senhaInput === '1234') {
                 loginSimulado('true');
-                alert("Login realizado com sucesso!");
+                await mostrarPopup('Login realizado com sucesso!', 'success', {
+                    titulo: 'Bem-vindo!',
+                    textoBotao: 'Continuar'
+                });
                 window.location.href = 'index.html';
             } else {
-                alert("Usuário ou senha incorretos.");
+                await mostrarPopup('Usuário ou senha incorretos.', 'error', {
+                    titulo: 'Dados inválidos',
+                    textoBotao: 'Tentar novamente'
+                });
             }
         });
     }
@@ -184,11 +282,16 @@ async function inicializar() {
 
     } else if (path.includes('compare.html')) {
         
-        await carregarPokedex();
+        await carregarPokedex();      
+
 
     } else if (path.includes('login.html')) {
         
         configurarPaginaLogin();
+
+    } else if (path.includes('favoritos.html')) {
+        
+        await carregarFavoritos();
 
     } else {
         
@@ -292,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(carregarMaisObserver);
 });
 
-/* LÓGICA DA INDEX E CARROSSEL (ORIGINAL) */
+/* LÓGICA DA INDEX E CARROSSEL */
 
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');
@@ -350,6 +453,7 @@ function scrollCarouselCompare(direction) {
         behavior: 'smooth'
     });
 }
+
 /* LÓGICA DE COMPARAÇÃO */
 
 const divUltimasComp = document.getElementById('divUltimasComparacoes');
@@ -476,17 +580,15 @@ function abrirmodal(card){
         <div id="fade"></div>
         <div id="modal">
             <div class="search-sort-bar" id="modal-header">
-                
-                    <div class="search-container">
-                        <span>🔍</span>
-                        <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                    </div>
+                <div class="search-container">
+                    <span>🔍</span>
+                    <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
+                </div>
               
-                    <div class="sort-container" id="btn-modal-compare">
-                        <span>Buscar</span>
-                    </div>
-                    <a href="compare.html" id="buttonFecharX">X</a>
-               
+                <div class="sort-container" id="btn-modal-compare">
+                    <span>Buscar</span>
+                </div>
+                <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -495,19 +597,35 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
+    const modalSearchInput = document.getElementById('modalSearchInput');
     
-    filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true, card);
+    const renderizarFiltradosNoModal = (lista) => {
+        bodymodal.innerHTML = ""; 
+        lista.forEach(p => {            
+            renderizarCard(p, bodymodal, true, card);
+        });
+    };
+
+    // Renderização inicial (todos os pokémons)
+    renderizarFiltradosNoModal(filteredPokemon);
+
+    // Lógica do Filtro dentro do Modal
+    modalSearchInput.addEventListener('input', (e) => {
+        const termo = e.target.value.toLowerCase();
+        
+        const resultados = pokemonData.filter(p => 
+            p.name.toLowerCase().includes(termo) || 
+            p.id.toString().includes(termo)
+        );
+
+        renderizarFiltradosNoModal(resultados);
     });
 
-    const btnBusca = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
-
-    //Para fechar o modal
-    fadearea.addEventListener('click', () => {
-         modal.innerHTML = "";
-    });
-    //--------//--------//
+    // Para fechar o modal
+    const fecharModal = () => { modal.innerHTML = ""; };
+    
+    document.getElementById('fade').addEventListener('click', fecharModal);
+    document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
 }
 
 function battle() {
@@ -558,7 +676,10 @@ function battle() {
         cardcompare[1] = [];
     }
     else {
-        alert("Você precisa adicionar os dois pokemons nos cards!")
+        mostrarPopup('Você precisa adicionar os dois Pokémons nos cards!', 'warning', {
+            titulo: 'Atenção',
+            textoBotao: 'OK'
+        })
     } 
     
 }
@@ -592,7 +713,7 @@ function renderizarCard(p, container, isMainPage, origem) {
         card.style.flex = "0 0 250px";
     }
 
-    const listaFavs = obterFavoritos();
+    const listaFavs = buscarLS('pokemonFavoritos', []);
     const jaEFavorito = listaFavs.includes(p.id) ? 'is-favorite' : '';
 
     const favButton = isMainPage ? `
@@ -651,7 +772,7 @@ function renderizarCard(p, container, isMainPage, origem) {
     if (document.querySelector('.modal-container')) {
         const btnAdd = card.querySelector(".glass-info-panel");
 
-        if(btnAdd){
+        if(btnAdd && origem){
             btnAdd.addEventListener('click', () => {
                 if(origem === 'card1'){
                     if(!cardcompare[1] || p.id != cardcompare[1].id){
@@ -659,7 +780,10 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
-                        alert("Voce não pode escolher o mesmo pokemon!");
+                        mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
+                            titulo: 'Escolha inválida',
+                            textoBotao: 'OK'
+                        });
                     }
                 } else{
                     if(!cardcompare[0] || p.id != cardcompare[0].id){
@@ -667,7 +791,10 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
-                        alert("Voce não pode escolher o mesmo pokemon!");
+                        mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
+                            titulo: 'Escolha inválida',
+                            textoBotao: 'OK'
+                        });
                     }
                 }
             }); 
@@ -717,38 +844,17 @@ function verificarFavorito(id) {
     return buscarLS('pokemonFavoritos', []).includes(id);
 }
 
-/* Carrega e renderiza a página de favoritos */
-async function carregarFavoritos() {
-    const grid = document.getElementById('favoritosGrid');
-    if (!grid) return;
+async function tentarFavoritar(event, elemento, pokemonId) {
+    event.stopPropagation(); // Evita que o clique vaze para o card de trás
 
-    try {
-        const res = await fetch('pokemon-data.json');
-        const todosPokemons = await res.json();
-
-        const favIds = buscarLS('pokemonFavoritos', []);
-        const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
-
-        grid.innerHTML = '';
-
-        pokemonsFavoritos.forEach(pokemon => {
-            renderizarCard(pokemon, grid, true);
+    if (estaLogado()) {
+        toggleFavorito(pokemonId, elemento);
+    } else {
+        await mostrarPopup('Você precisa estar logado para favoritar um Pokémon!', 'warning', {
+            titulo: 'Login necessário',
+            textoBotao: 'Ir para login'
         });
-
-        // Slots vazios para completar até mínimo de 6 células
-        const minSlots = 6;
-        const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
-        for (let i = 0; i < slotsVazios; i++) {
-            const slot = document.createElement('button');
-            slot.type = 'button';
-            slot.classList.add('slot-vazio');
-            slot.textContent = '+';
-            slot.addEventListener('click', adicionarFavoritoManual);
-            grid.appendChild(slot);
-        }
-
-    } catch (erro) {
-        console.error('Erro ao carregar favoritos:', erro);
+        window.location.href = 'login.html';
     }
 }
 
@@ -769,6 +875,52 @@ function toggleFavorito(id, elemento) {
     // Se estiver na página de favoritos, re-renderiza
     if (window.location.pathname.includes('favoritos.html')) {
         carregarFavoritos();
+    }
+}
+
+/* Carrega e renderiza a página de favoritos */
+async function carregarFavoritos() {
+    const grid = document.getElementById('favoritosGrid') || document.querySelector('.favoritos-grid') || document.getElementById('pokemonGrid');
+    if (!grid) return;
+
+    if (!estaLogado()) {
+        grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: white;">
+                <h2 style="margin-bottom: 20px; font-size: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Faça login para acessar sua lista de favoritos</h2>
+                <br>
+                <button onclick="window.location.href='login.html'" class="btn-start">Ir para Login</button>
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        const res = await fetch('pokemon-data.json');
+        const todosPokemons = await res.json();
+
+        const favIds = buscarLS('pokemonFavoritos', []);
+        const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
+
+        grid.innerHTML = '';
+
+        pokemonsFavoritos.forEach(pokemon => {
+            renderizarCard(pokemon, grid, true, null);
+        });
+
+        // Slots vazios para completar até mínimo de 6 células, gerados exatamente como você determinou
+        const minSlots = 6;
+        const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
+        for (let i = 0; i < slotsVazios; i++) {
+            const slot = document.createElement('button');
+            slot.type = 'button';
+            slot.classList.add('slot-vazio');
+            slot.textContent = '+';
+            slot.addEventListener('click', adicionarFavoritoManual);
+            grid.appendChild(slot);
+        }
+
+    } catch (erro) {
+        console.error('Erro ao carregar favoritos:', erro);
     }
 }
 
@@ -827,7 +979,10 @@ async function adicionarFavoritoManual() {
             todosPokemonsModalFavoritos = await res.json();
         } catch (erro) {
             console.error('Erro ao carregar pokémons no modal:', erro);
-            alert('Não foi possível carregar a lista de Pokémons.');
+            await mostrarPopup('Não foi possível carregar a lista de Pokémons.', 'error', {
+                titulo: 'Erro ao carregar',
+                textoBotao: 'OK'
+            });
             return;
         }
     }
@@ -841,9 +996,6 @@ async function adicionarFavoritoManual() {
     renderizarPokemonsModalFavoritos(todosPokemonsModalFavoritos);
 }
 
-/* ============================================
-   LÓGICA DE FAVORITOS
-   ============================================ */
 function fecharModalFavoritos() {
     const modal = document.getElementById('modalFavoritos');
     if (modal) modal.classList.remove('ativo');
@@ -876,7 +1028,7 @@ function renderizarPokemonsModalFavoritos(listaPokemons) {
     listaPokemons.slice(0, 80).forEach(pokemon => {
         const jaAdicionado = favIds.includes(pokemon.id);
 
-        renderizarCard(pokemon, grid, true);
+        renderizarCard(pokemon, grid, true, null);
 
         const card = grid.lastElementChild;
 
