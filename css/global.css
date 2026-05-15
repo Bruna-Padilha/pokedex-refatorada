@@ -1,16 +1,25 @@
 /* --- 1. VARIÁVEIS E CONFIGURAÇÃO BASE --- */
 :root {
-    --clr-grass: #74cb48;
-    --clr-fire: #f57d31;
-    --clr-water: #6493eb;
-    --clr-electric: #f9cf30;
-    --clr-bug: #A7B723;
-    --clr-normal: #aaa67f;
-    --clr-poison: #a33ea1;
-    --clr-ground: #e2bf65;
-    --clr-flying: #a98ff3;
+    --clr-grass: #7AC74C;
+    --clr-fire: #EE8130;
+    --clr-water: #6390F0;
+    --clr-electric: #F7D02C;
+    --clr-bug: #A6B91A;
+    --clr-normal: #A8A77A;
+    --clr-poison: #A33EA1;
+    --clr-ground: #E2BF65;
+    --clr-flying: #A98FF3;
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
+    --clr-fairy: #d685ad;
+    --clr-ice: #96D9D6;
+    --clr-fighting: #C22E28;
+    --clr-psychic: #F95587;
+    --clr-rock: #B6A136;
+    --clr-ghost: #735797;
+    --clr-dragon: #6F35FC;
+    --clr-dark: #705746;
+    --clr-steel: #B7B7CE;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -109,9 +118,10 @@ body:not(.user-logged-in) .icon-outline {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('../assets/background-pokedex.jpg') no-repeat center center fixed;
+    background-color: #ffffff;
+    background: url('../assets/bg2.png') no-repeat center center fixed;
     background-size: cover;
-    color: white;
+    color: rgb(255, 255, 255);
     min-height: 100vh;
     overflow-x: hidden;
 }

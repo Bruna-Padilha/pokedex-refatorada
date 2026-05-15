@@ -7,6 +7,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
+let observerFavoritos;
 
 
 const cores = {
@@ -19,7 +20,15 @@ const cores = {
     poison: 'var(--clr-poison)',
     ground: 'var(--clr-ground)',
     flying: 'var(--clr-flying)',
-    fairy: '#d685ad'
+    fairy: 'var(--clr-fairy)',
+    ice: 'var(--clr-ice)',
+    fighting: 'var(--clr-fighting)',
+    psychic: 'var(--clr-psychic)',
+    rock: 'var(--clr-rock)',
+    ghost: 'var(--clr-ghost)',
+    dragon: 'var(--clr-dragon)',
+    dark: 'var(--clr-dark)',
+    steel: 'var(--clr-steel)'
 };
 
 /* -------------------------------------------------
@@ -156,7 +165,7 @@ window.alert = function(mensagem) {
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
-/* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
+/* FUNÇÕES DE LOGIN */
 
 /* PARA RESETAR O LOCAL STORAGE, COLE ESTAS DUAS FUNÇÕES NO CONSOLE DO NAVEGADOR E EXECUTE:
 localStorage.clear();
@@ -345,17 +354,42 @@ async function inicializar() {
 
 /* LÓGICA DA POKEDEX (MAINPAGE) */
 
+async function obterDadosPokeAPI() {
+    // 1. Busca a lista dos 1025 Pokémons 
+    const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+    const data = await res.json();
+
+    // 2. Busca os detalhes de cada um e formata igual ao seu antigo JSON
+    const promessas = data.results.map(async (item) => {
+        const respostaDetalhes = await fetch(item.url);
+        const p = await respostaDetalhes.json();
+
+        return {
+            id: p.id,
+            name: p.name,
+            hp: p.stats[0].base_stat,
+            attack: p.stats[1].base_stat,
+            defense: p.stats[2].base_stat,
+            type: p.types.map(t => t.type.name),
+            moves: p.moves.slice(0, 2).map(m => m.move.name),
+            image: p.sprites.other['official-artwork'].front_default
+        };
+    });
+
+    // Aguarda todas as requisições terminarem e retorna a array completa
+    return await Promise.all(promessas);
+}
+
 async function carregarPokedex() {
     try {
-        const res = await fetch('pokemon-data.json'); 
-        pokemonData = await res.json();
+        // SUBSTITUÍDO: Busca direto da PokéAPI já formatado
+        pokemonData = await obterDadosPokeAPI(); 
+        
         filteredPokemon = [...pokemonData];
-
-        //console.log("dados", filteredPokemon);
         window.dispatchEvent(new Event('pokemonsCarregados'));
         renderizarGrid();
     } catch (e) {
-        console.error("Erro no JSON:", e);
+        console.error("Erro ao buscar da PokéAPI:", e);
     }
 }
 
@@ -616,9 +650,11 @@ if (card01 && card02) {
     });
 }
 
-function abrirmodal(card){
+function abrirmodal(card) {
     const modal = document.querySelector('.modal-container');
-  
+    let exibidosNoModal = 20; // Quantidade inicial
+    const incrementoModal = 20;
+
     modal.innerHTML = `
         <div id="fade"></div>
         <div id="modal">
@@ -627,45 +663,47 @@ function abrirmodal(card){
                     <span>🔍</span>
                     <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
                 </div>
-              
-                <div class="sort-container" id="btn-modal-compare">
-                    <span>Buscar</span>
-                </div>
                 <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
-            <div id="modal-body">
+            <div id="modal-body" style="overflow-y: auto; max-height: 70vh;">
                 <div id="modal-body-grid"></div>
+                <div id="modal-sentinel" style="height: 20px;"></div>
             </div>
         </div>
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
+    const sentinel = document.getElementById('modal-sentinel');
     const modalSearchInput = document.getElementById('modalSearchInput');
-    
-    const renderizarFiltradosNoModal = (lista) => {
-        bodymodal.innerHTML = ""; 
-        lista.forEach(p => {            
-            renderizarCard(p, bodymodal, true, card);
-        });
+    let listaFiltradaAtual = [...pokemonData];
+
+    const renderizarParte = () => {
+        const proximos = listaFiltradaAtual.slice(bodymodal.children.length, bodymodal.children.length + incrementoModal);
+        proximos.forEach(p => renderizarCard(p, bodymodal, true, card));
     };
 
-    // Renderização inicial (todos os pokémons)
-    renderizarFiltradosNoModal(filteredPokemon);
+    // Criando o Observador
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && bodymodal.children.length < listaFiltradaAtual.length) {
+            renderizarParte();
+        }
+    }, { root: document.getElementById('modal-body'), threshold: 0.1 });
 
-    // Lógica do Filtro dentro do Modal
+    observer.observe(sentinel);
+
     modalSearchInput.addEventListener('input', (e) => {
         const termo = e.target.value.toLowerCase();
-        
-        const resultados = pokemonData.filter(p => 
-            p.name.toLowerCase().includes(termo) || 
-            p.id.toString().includes(termo)
+        listaFiltradaAtual = pokemonData.filter(p => 
+            p.name.toLowerCase().includes(termo) || p.id.toString().includes(termo)
         );
-
-        renderizarFiltradosNoModal(resultados);
+        bodymodal.innerHTML = ""; // Reseta para nova busca
+        renderizarParte();
     });
 
-    // Para fechar o modal
-    const fecharModal = () => { modal.innerHTML = ""; };
+    const fecharModal = () => { 
+        observer.disconnect(); 
+        modal.innerHTML = ""; 
+    };
     
     document.getElementById('fade').addEventListener('click', fecharModal);
     document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
@@ -939,7 +977,7 @@ async function carregarFavoritos() {
 
     try {
         const res = await fetch('pokemon-data.json');
-        const todosPokemons = await res.json();
+        const todosPokemons = await obterDadosPokeAPI();
 
         const favIds = buscarLS('pokemonFavoritos', []);
         const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
@@ -1018,8 +1056,7 @@ async function adicionarFavoritoManual() {
 
     if (todosPokemonsModalFavoritos.length === 0) {
         try {
-            const res = await fetch('pokemon-data.json');
-            todosPokemonsModalFavoritos = await res.json();
+            todosPokemonsModalFavoritos = await obterDadosPokeAPI();
         } catch (erro) {
             console.error('Erro ao carregar pokémons no modal:', erro);
             await mostrarPopup('Não foi possível carregar a lista de Pokémons.', 'error', {
@@ -1058,31 +1095,53 @@ function filtrarPokemonsModalFavoritos() {
 
 function renderizarPokemonsModalFavoritos(listaPokemons) {
     const grid = document.getElementById('listaPokemonsModalGrid');
-    if (!grid) return;
+    const containerLista = document.getElementById('listaPokemonsModal');
+    if (!grid || !containerLista) return;
 
-    const favIds = buscarLS('pokemonFavoritos', []);
+    // Se já existir um observador de uma renderização anterior, desconecta ele
+    if (observerFavoritos) observerFavoritos.disconnect();
+
     grid.innerHTML = '';
-
-    if (listaPokemons.length === 0) {
-        grid.innerHTML = `<div class="modal-sem-resultado">Nenhum Pokémon encontrado.</div>`;
-        return;
+    const incremento = 20;
+    
+    // Cria o elemento sentinela se não existir
+    let sentinel = document.getElementById('favoritos-sentinel');
+    if (!sentinel) {
+        sentinel = document.createElement('div');
+        sentinel.id = 'favoritos-sentinel';
+        sentinel.style.height = '10px';
+        containerLista.appendChild(sentinel);
     }
 
-    listaPokemons.slice(0, 80).forEach(pokemon => {
-        const jaAdicionado = favIds.includes(pokemon.id);
+    const renderizarMaisFavoritos = () => {
+        const favIds = buscarLS('pokemonFavoritos', []);
+        const inicio = grid.children.length;
+        const fim = inicio + incremento;
+        const fatia = listaPokemons.slice(inicio, fim);
 
-        renderizarCard(pokemon, grid, true, null);
+        fatia.forEach(pokemon => {
+            const jaAdicionado = favIds.includes(pokemon.id);
+            renderizarCard(pokemon, grid, true, null);
+            const card = grid.lastElementChild;
 
-        const card = grid.lastElementChild;
+            if (jaAdicionado) {
+                card.style.opacity = '0.45';
+                card.style.pointerEvents = 'none';
+            } else {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => salvarPokemonNosFavoritos(pokemon.id));
+            }
+        });
+    };
 
-        if (jaAdicionado) {
-            card.style.opacity = '0.45';
-            card.style.pointerEvents = 'none';
-        } else {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', () => salvarPokemonNosFavoritos(pokemon.id));
+    observerFavoritos = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && grid.children.length < listaPokemons.length) {
+            renderizarMaisFavoritos();
         }
-    });
+    }, { root: containerLista, threshold: 0.1 });
+
+    observerFavoritos.observe(sentinel);
+    renderizarMaisFavoritos(); // Carrega os primeiros 20
 }
 
 function salvarPokemonNosFavoritos(id) {
