@@ -7,7 +7,6 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
-let ultimasComparacoes2 = JSON.parse(localStorage.getItem('ultimasComparacoes2')) || [];
 
 
 const cores = {
@@ -456,48 +455,47 @@ function scrollCarouselCompare(direction) {
 /* LÓGICA DE COMPARAÇÃO */
 
 const divUltimasComp = document.getElementById('divUltimasComparacoes');
+const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
+const carouselContainerComparacaoTitle = document.getElementById('carouselContainerComparacaoTitle');
 
 if(divUltimasComp){
     
     if(ultimasComparacoes.length){
+        carouselContainerComparacaoTitle.innerHTML = "Ultimas Comparações";
 
-        ultimasComparacoes2.forEach(compcard => {
+        ultimasComparacoes.forEach(compcard => {
             const cardComparacao = document.createElement('div');
             cardComparacao.classList.add('cardComparacao');
-
+            
             cardComparacao.innerHTML = `
-                <div style="background: ${obterBackground(compcard.ganhador.type)};">
-                    <div>
-                        <div>
-                            <img src="" alt="Ganhador">
-                            <img src="${compcard.ganhador.image}" alt="${compcard.ganhador.name}">
-                        </div>
-                        <div>
-                            <spam>${compcard.ganhador.name}</spam>
-                            <spam>${compcard.ganhador.id}</spam>
-                        </div>
+                <div class="card-comp-base" >
+                    <img src="../assets/img/winner.png" alt="Ganhador" class="card-comp-img-w">
+                    <img src="${compcard.ganhador.image}" alt="${compcard.ganhador.name}" class="card-comp-img-poke">
+                        
+                    <img src="../assets/img/loser.png" alt="Perdedor" class="card-comp-img-l">
+                    <img src="${compcard.perdedor.image}" alt="${compcard.perdedor.name}" class="card-comp-img-poke">
+                </div>
+
+                <div class="card-comp-info">
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.ganhador.name}</spam>
+                        <spam class="card-comp-id">#${compcard.ganhador.id}</spam>
                     </div>
-                    <div>
-                        VS
-                    </div>
-                    <div>
-                        <div>
-                            <img src="" alt="Perdedor">
-                            <img src="${compcard.perdedor.image}" alt="${compcard.perdedor.name}">
-                        </div>
-                        <div>
-                            <spam>${compcard.perdedor.name}</spam>
-                            <spam>${compcard.perdedor.id}</spam>
-                        </div>                        
-                    </div>
+
+                    <h3 class="card-comp-vs">VS</h3>
+
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.perdedor.name}</spam>
+                        <spam class="card-comp-id">#${compcard.perdedor.id}</spam>
+                    </div> 
                 </div>
             `;
 
             divUltimasComp.appendChild(cardComparacao);
         });
     } else{
-        const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
         carouselContainerComparacao.innerHTML = "";
+        carouselContainerComparacaoTitle.innerHTML = "";
     }
 }
 
@@ -639,10 +637,7 @@ function battle() {
         let pontuacaoPokemon = [];
         let ganhador = [];
         let perdedor = [];
-
-        //adiciono aqui os ultimos comparados na Array de historico
-        ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
-        localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
+  
 
         cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
         cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
@@ -680,21 +675,21 @@ function battle() {
             renderizarVencedor(ganhador);
 
             //adiciono aqui os ultimos comparados na Array de historico
-            ultimasComparacoes2.unshift({
+            ultimasComparacoes.unshift({
                 ganhador: {
                     id: ganhador.id,
                     name: ganhador.name,
                     type: ganhador.type,
-                    img: ganhador.image
+                    image: ganhador.image
                 },
                 perdedor: {
                     id: perdedor.id,
                     name: perdedor.name,
                     type: perdedor.type,
-                    img: perdedor.image
+                    image: perdedor.image
                 }
             });
-            localStorage.setItem('ultimasComparacoes2', JSON.stringify(ultimasComparacoes2));
+            localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
         }, 500);
 
         cardcompare[0] = [];
