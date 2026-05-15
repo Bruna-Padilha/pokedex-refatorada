@@ -142,8 +142,6 @@ window.alert = function(mensagem) {
     mostrarPopup(String(mensagem), 'info');
 };
 
-
-
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
 /* FUNÇÕES DE SALVAMENTO DE FAVORITOS E SIMULAÇÃO DE FLAG DE LOGIN TEMPORÁRIAS - NÃO MEXER */
@@ -173,7 +171,7 @@ const userBarLogin = document.getElementById('userBarLogin');
 const userBarLogout = document.getElementById('userBarLogout');
 
 if(estaLogado()){
-    userBarSaudacao.innerText = "Bem-vindo Admin";
+    userBarSaudacao.innerText = "Bem-vindo, Admin";
     userBarIcon.classList.replace('userBarIconDeslogado', 'userBarIconLogado');
     userBarLogin.style.display = "none";
     userBarLogout.style.display = "inline";
@@ -466,25 +464,9 @@ if(divUltimasComp){
             renderizarCard(p, divUltimasComp, false, "");
         });
     } else{
-        for(i=0; i<5; i++){
-            const card = document.createElement('div');
-            card.classList.add('pokemon-card-container');
+        const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
 
-            card.innerHTML = `
-                <div class="pokemon-card-base" style="background-color: rgba(255, 255, 255, 0.1);">            
-                    <div class="glass-info-panel">
-                        <div class="header-row">
-                            <h3 class="pokemon-name" style="text-transform:capitalize;">Vazio</h3>
-                            <span class="pokemon-number">#</span>
-                        </div>
-                        <div class="types-wrapper">
-                        </div>
-                    </div>
-                </div>                
-            `;
-
-            divUltimasComp.appendChild(card);
-        }
+        carouselContainerComparacao.innerHTML = "";
     }
      
     /*
