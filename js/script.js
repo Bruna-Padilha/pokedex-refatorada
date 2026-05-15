@@ -22,16 +22,6 @@ const cores = {
     fairy: '#d685ad'
 };
 
-/* -------------------------------------------------
-   POP-UP GLOBAL PERSONALIZADO
-   Use:
-   mostrarPopup("Mensagem", "success");
-   mostrarPopup("Mensagem", "error");
-   mostrarPopup("Mensagem", "warning");
-   mostrarPopup("Mensagem", "info");
-   Também retorna Promise para ações após confirmação:
-   await mostrarPopup("Sessão encerrada.", "success");
-------------------------------------------------- */
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -266,7 +256,8 @@ async function inicializar() {
 
     } else if (path.includes('compare.html')) {
         
-        await carregarPokedex();
+        await carregarPokedex();      
+
 
     } else if (path.includes('login.html')) {
         
@@ -563,17 +554,15 @@ function abrirmodal(card){
         <div id="fade"></div>
         <div id="modal">
             <div class="search-sort-bar" id="modal-header">
-                
-                    <div class="search-container">
-                        <span>🔍</span>
-                        <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                    </div>
+                <div class="search-container">
+                    <span>🔍</span>
+                    <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
+                </div>
               
-                    <div class="sort-container" id="btn-modal-compare">
-                        <span>Buscar</span>
-                    </div>
-                    <a href="compare.html" id="buttonFecharX">X</a>
-               
+                <div class="sort-container" id="btn-modal-compare">
+                    <span>Buscar</span>
+                </div>
+                <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -582,19 +571,35 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
+    const modalSearchInput = document.getElementById('modalSearchInput');
     
-    filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true, card);
+    const renderizarFiltradosNoModal = (lista) => {
+        bodymodal.innerHTML = ""; 
+        lista.forEach(p => {            
+            renderizarCard(p, bodymodal, true, card);
+        });
+    };
+
+    // Renderização inicial (todos os pokémons)
+    renderizarFiltradosNoModal(filteredPokemon);
+
+    // Lógica do Filtro dentro do Modal
+    modalSearchInput.addEventListener('input', (e) => {
+        const termo = e.target.value.toLowerCase();
+        
+        const resultados = pokemonData.filter(p => 
+            p.name.toLowerCase().includes(termo) || 
+            p.id.toString().includes(termo)
+        );
+
+        renderizarFiltradosNoModal(resultados);
     });
 
-    const btnBusca = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
-
-    //Para fechar o modal
-    fadearea.addEventListener('click', () => {
-         modal.innerHTML = "";
-    });
-    //--------//--------//
+    // Para fechar o modal
+    const fecharModal = () => { modal.innerHTML = ""; };
+    
+    document.getElementById('fade').addEventListener('click', fecharModal);
+    document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
 }
 
 function battle() {
