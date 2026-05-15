@@ -137,7 +137,6 @@ function mostrarPopup(mensagem, tipo = 'info', opcoes = {}) {
     });
 }
 
-/* Fallback: qualquer alert antigo que ainda surgir no projeto vira popup visual */
 window.alert = function(mensagem) {
     mostrarPopup(String(mensagem), 'info');
 };
@@ -164,7 +163,6 @@ function loginSimulado(status) {
     atualizarInterfaceLogin(); 
 }
 
-//---USERBAR - INICIO---//
 const userBarSaudacao = document.getElementById('userBarSaudacao');
 const userBarIcon = document.getElementById('userBarIcon');
 const userBarLogin = document.getElementById('userBarLogin');
@@ -188,7 +186,6 @@ userBarLogout.addEventListener('click', () => {
     alert("Sessão encerrada.");
     window.location.href = 'mainpage.html';
 });
-//---USERBAR - FIM---//
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
 
@@ -208,7 +205,6 @@ function configurarPaginaLogin() {
     if (!loginForm || !loginCard) return;
 
     if (estaLogado()) {
-        // Altera visual para estado logado
         loginForm.style.display = 'none';
         if (loginTitle) loginTitle.textContent = "Você já está logado.";
 
@@ -229,7 +225,7 @@ function configurarPaginaLogin() {
             window.location.href = 'mainpage.html';
         });
     } else {
-        // Validação admin/1234
+        //admin/1234
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const usuarioInput = document.getElementById('usuario').value;
@@ -270,7 +266,6 @@ function obterBackground(tipos) {
 async function inicializar() {
     const path = window.location.pathname;
     
-    // Atualiza a classe do body em todas as páginas
     atualizarInterfaceLogin();
 
     if (path.includes('mainpage.html')) {
@@ -306,7 +301,6 @@ async function carregarPokedex() {
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
 
-        //console.log("dados", filteredPokemon);
         window.dispatchEvent(new Event('pokemonsCarregados'));
         renderizarGrid();
     } catch (e) {
@@ -371,8 +365,6 @@ function carregarMais() {
     renderizarGrid();
 }
 
-/* OBSERVER PARA CARREGAR MAIS CARDS QUANDO APARECER O BOTAO CARREGAR NA TELA DA POKEDEX */
-
 document.addEventListener("DOMContentLoaded", () => {
     const carregarMaisObserver = document.querySelector("#loadMoreBtn");
     if(!carregarMaisObserver) return;
@@ -387,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }, {
-        threshold: 1 // Carrega quando 100% do elemento estiver visível
+        threshold: 1
     });
 
     observer.observe(carregarMaisObserver);
@@ -423,7 +415,6 @@ async function carregarDestaquesIndex() {
     }
 }
 
-// Carrossel 
 function scrollCarousel(direction) {
     const container = document.getElementById('pokemon-list');
     const cardWidth = 250;
@@ -469,13 +460,6 @@ if(divUltimasComp){
         carouselContainerComparacao.innerHTML = "";
     }
      
-    /*
-    window.addEventListener('pokemonsCarregados',() => {
-        filteredPokemon.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
-        });
-    });
-    */
 }
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -530,18 +514,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 target.style.visibility = 'visible';
                 target.style.animation = 'slideUp 0.5s ease forwards';
                 
-                // Parar de observar após renderizar
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.8 // Carrega quando 80% do elemento estiver visível
+        threshold: 0.8
     });
 
     observer.observe(target);
 });
 
-/* EVENTO DE CLICK NOS CARDS ADD */
 const card01 = document.getElementById('card1');
 const card02 = document.getElementById('card2');
 
@@ -588,10 +570,8 @@ function abrirmodal(card){
         });
     };
 
-    // Renderização inicial (todos os pokémons)
     renderizarFiltradosNoModal(filteredPokemon);
 
-    // Lógica do Filtro dentro do Modal
     modalSearchInput.addEventListener('input', (e) => {
         const termo = e.target.value.toLowerCase();
         
@@ -603,7 +583,6 @@ function abrirmodal(card){
         renderizarFiltradosNoModal(resultados);
     });
 
-    // Para fechar o modal
     const fecharModal = () => { modal.innerHTML = ""; };
     
     document.getElementById('fade').addEventListener('click', fecharModal);
@@ -616,7 +595,6 @@ function battle() {
         let pontuacaoPokemon = [];
         let ganhador = [];
 
-        //adiciono aqui os ultimos comparados na Array de historico
         ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
         localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
 
@@ -636,7 +614,6 @@ function battle() {
         const section = document.getElementById('sectionCompare');
         const bannersection = document.querySelector('.hero-div');
 
-        //section.style.display = 'flex';
         bannersection.style.display = 'none';
         section.style.backgroundColor = 'black';
 
@@ -645,8 +622,6 @@ function battle() {
                 <img src="../assets/img/animacao1.gif" alt="animacao" id="animacaoBattle">
             </div>
         `;
-
-        //section.scrollIntoView({ behavior: 'smooth' });
         
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
@@ -685,7 +660,6 @@ function renderizarVencedor(ganhador){
     `;
 }
 
-/* FUNÇÃO MESTRE DE RENDERIZAÇÃO DE CARD */
 
 function renderizarCard(p, container, isMainPage, origem) {
     const card = document.createElement('div');
@@ -750,14 +724,13 @@ function renderizarCard(p, container, isMainPage, origem) {
         ${detailsPanel} 
     `;
 
-    // Click do card: só ativa lógica de comparação na página compare
     if (document.querySelector('.modal-container')) {
         const btnAdd = card.querySelector(".glass-info-panel");
 
         if(btnAdd && origem){
             btnAdd.addEventListener('click', () => {
                 if(origem === 'card1'){
-                    if(!cardcompare[1] || p.id != cardcompare[1].id){
+                    if(!cardcompare[1] || p.id !== cardcompare[1].id){
                         cardcompare[0] = p;
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
@@ -807,11 +780,8 @@ function scrollToTop() {
     }); 
 }
 
-/* ============================================
-   LÓGICA DE FAVORITOS
-   ============================================ */
+//LÓGICA DE FAVORITOS
 
-/* LocalStorage helpers */
 function salvarLS(chave, valor) {
     localStorage.setItem(chave, JSON.stringify(valor));
 }
@@ -821,13 +791,12 @@ function buscarLS(chave, padrao = null) {
     return item ? JSON.parse(item) : padrao;
 }
 
-/* Verifica se pokemon já é favorito */
 function verificarFavorito(id) {
     return buscarLS('pokemonFavoritos', []).includes(id);
 }
 
 async function tentarFavoritar(event, elemento, pokemonId) {
-    event.stopPropagation(); // Evita que o clique vaze para o card de trás
+    event.stopPropagation();
 
     if (estaLogado()) {
         toggleFavorito(pokemonId, elemento);
@@ -840,7 +809,6 @@ async function tentarFavoritar(event, elemento, pokemonId) {
     }
 }
 
-/* Salva/remove favorito ao clicar na pokébola */
 function toggleFavorito(id, elemento) {
     let favoritos = buscarLS('pokemonFavoritos', []);
 
@@ -854,13 +822,11 @@ function toggleFavorito(id, elemento) {
 
     salvarLS('pokemonFavoritos', favoritos);
 
-    // Se estiver na página de favoritos, re-renderiza
     if (window.location.pathname.includes('favoritos.html')) {
         carregarFavoritos();
     }
 }
 
-/* Carrega e renderiza a página de favoritos */
 async function carregarFavoritos() {
     const grid = document.getElementById('favoritosGrid') || document.querySelector('.favoritos-grid') || document.getElementById('pokemonGrid');
     if (!grid) return;
@@ -889,7 +855,6 @@ async function carregarFavoritos() {
             renderizarCard(pokemon, grid, true, null);
         });
 
-        // Slots vazios para completar até mínimo de 6 células, gerados exatamente como você determinou
         const minSlots = 6;
         const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
         for (let i = 0; i < slotsVazios; i++) {
@@ -943,7 +908,6 @@ function criarModalFavoritos() {
 
     document.body.appendChild(modal);
 
-    // Fechar clicando fora
     modal.addEventListener('click', function (event) {
         if (event.target === modal) fecharModalFavoritos();
     });
@@ -1018,12 +982,29 @@ function renderizarPokemonsModalFavoritos(listaPokemons) {
             card.style.opacity = '0.45';
             card.style.pointerEvents = 'none';
         } else {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', () => salvarPokemonNosFavoritos(pokemon.id));
+            const cardBase = card.querySelector('.pokemon-card-base');
+            
+            cardBase.addEventListener('click', (e) => {
+                salvarPokemonNosFavoritos(pokemon.id);
+            });
+
+            const expandBtn = card.querySelector('.expand-btn');
+            const detailsPanel = card.querySelector('.details-panel');
+
+            if (expandBtn) {
+                expandBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+
+            if (detailsPanel) {
+                detailsPanel.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
         }
     });
 }
-
 function salvarPokemonNosFavoritos(id) {
     let favoritos = buscarLS('pokemonFavoritos', []);
     if (!favoritos.includes(id)) favoritos.push(id);
@@ -1036,5 +1017,4 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') fecharModalFavoritos();
 });
 
-// Inicialização imediata
 inicializar();
