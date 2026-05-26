@@ -8,6 +8,10 @@ let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
 
+//chaves
+let sons = false;
+let musica = false;
+let temaEscuro = false;
 
 const cores = {
     fire: 'var(--clr-fire)',
@@ -163,6 +167,7 @@ function loginSimulado(status) {
     atualizarInterfaceLogin(); 
 }
 
+//UserBar
 const userBarSaudacao = document.getElementById('userBarSaudacao');
 const userBarIcon = document.getElementById('userBarIcon');
 const userBarLogin = document.getElementById('userBarLogin');
@@ -186,6 +191,72 @@ userBarLogout.addEventListener('click', () => {
     alert("Sessão encerrada.");
     window.location.href = 'mainpage.html';
 });
+
+function toggleConfig(){
+    const panelConfig = document.getElementById('configPainel');
+    panelConfig.classList.toggle('open');
+
+    if (panelConfig.classList.contains('open')){
+
+        panelConfig.innerHTML = `
+            <div>
+                <span>Sons</span>
+                <div class="chave ${sons ? 'true' : 'false'}" id="chaveSons">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Música</span>
+                <div class="chave ${musica ? 'true' : 'false'}" id="chaveMusica">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Tema escuro</span>
+                <div class="chave ${temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span id="chaveLimparCache" style="cursor: pointer;">Limpar cache</span>
+            </div>
+        `;
+
+        const chaveSons = document.getElementById('chaveSons');
+        const chaveMusica = document.getElementById('chaveMusica');
+        const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
+        const chaveLimparCache = document.getElementById('chaveLimparCache');
+
+        chaveSons.addEventListener('click', () => {
+            sons = !sons;
+            chaveSons.classList.toggle('true', sons);
+            chaveSons.classList.toggle('false', !sons);
+            console.log("Sons:", sons);
+        });
+
+        chaveMusica.addEventListener('click', () => {
+            musica = !musica;
+            chaveMusica.classList.toggle('true', musica);
+            chaveMusica.classList.toggle('false', !musica);
+            console.log("Música:", musica);
+        });
+
+        chaveTemaEscuro.addEventListener('click', () => {
+            temaEscuro = !temaEscuro;
+            chaveTemaEscuro.classList.toggle('true', temaEscuro);
+            chaveTemaEscuro.classList.toggle('false', !temaEscuro);
+            console.log("Tema Escuro:", temaEscuro);
+        });
+
+        chaveLimparCache.addEventListener('click', () => {
+            localStorage.clear();
+            location.reload();
+        });
+    }else{
+        panelConfig.innerHTML = "";
+        return;
+    }
+}
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
 
@@ -668,6 +739,10 @@ function abrirmodal(card){
     
     document.getElementById('fade').addEventListener('click', fecharModal);
     document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
+
+    document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') fecharModal();
+});
 }
 
 function battle() {
