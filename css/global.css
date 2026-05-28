@@ -12,14 +12,27 @@
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
 
-    --bg-imagem: url('../assets/background-pokedex.jpg');
-    --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
-
-    --bt-nav: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    --bt-nav-active: #4d8c18;
+    --bg-imagem: "";
+    --bg-userbar: "";
+    --bt-nav: "";
+    --bt-nav-active: "";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+html.tema-claro{
+    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bt-nav: slinear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bt-nav-active: #4d8c18;
+}
+
+html.tema-escuro{
+    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
+    --bt-nav: linear-gradient(to bottom, #9539ff, #380058);
+    --bt-nav-active: #33034e;
+}
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
 /* Se não houver a classe 'user-logged-in' no body, forçamos o ícone preenchido a sumir */
@@ -64,13 +77,6 @@ header nav ul {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-}
-
-html.tema-escuro{
-    --bg-imagem: url('../assets/img/background-dark.jpeg');
-    --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
-    --bt-nav: linear-gradient(to bottom, #9539ff, #380058);
-    --bt-nav-active: #33034e;
 }
 
 .logo {

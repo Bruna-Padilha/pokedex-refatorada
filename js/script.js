@@ -21,12 +21,14 @@ const cores = {
     flying: 'var(--clr-flying)',
     fairy: '#d685ad'
 };
-console.log(configuracoes);
-const htmlElement = document.documentElement;
 
 if(configuracoes.temaEscuro === true){
+    const htmlElement = document.documentElement;
     htmlElement.classList.add('tema-escuro');
-} 
+} else {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('tema-claro');
+}
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -253,7 +255,7 @@ function toggleConfig(){
             chaveTemaEscuro.classList.toggle('false', !configuracoes.temaEscuro);
 
             htmlElement.classList.toggle('tema-escuro', configuracoes.temaEscuro);
-            htmlElement.classList.toggle('tema', !configuracoes.temaEscuro);
+            htmlElement.classList.toggle('tema-claro', !configuracoes.temaEscuro);
 
             localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
             console.log(configuracoes);
