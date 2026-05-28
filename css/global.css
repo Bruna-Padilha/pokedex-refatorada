@@ -23,7 +23,7 @@
 html.tema-claro{
     --bg-imagem: url('../assets/background-pokedex.jpg');
     --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    --bt-nav: slinear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bt-nav: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bt-nav-active: #4d8c18;
 }
 
