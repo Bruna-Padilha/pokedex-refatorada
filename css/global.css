@@ -11,9 +11,121 @@
     --clr-flying: #a98ff3;
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
+
+    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
+
+    --bt-nav: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bt-nav-active: #4d8c18;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
+/* Se não houver a classe 'user-logged-in' no body, forçamos o ícone preenchido a sumir */
+body:not(.user-logged-in) .icon-filled {
+    opacity: 0 !important;
+}
+
+body:not(.user-logged-in) .icon-outline {
+    opacity: 1 !important;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg-imagem) no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.5s ease;
+}
+
+/* --- 2. HEADER E NAVBAR --- */
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+}
+
+header nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+header nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+html.tema-escuro{
+    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
+    --bt-nav: linear-gradient(to bottom, #9539ff, #380058);
+    --bt-nav-active: #33034e;
+}
+
+.logo {
+    width: 350px;
+    max-width: 70%;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo img { width: 100%; height: auto; }
+
+nav ul { display: flex; list-style: none; gap: 15px; }
+
+.btn-nav {
+    text-decoration: none;
+    color: white;
+    padding: 10px 30px;
+    background: var(--bt-nav);
+    border-radius: 25px;
+    border: 1px solid #fff; 
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.3s;
+    display: inline-block;
+    transition: background 1s ease;
+}
+
+.btn-nav:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Efeito de Botão Apertado */
+.btn-nav.active {
+    background: var(--bt-nav-active);
+    box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    transform: scale(0.95);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* Botão padrão para o Banner */
+.btn-start {
+    border: 1px solid white;
+    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
+    color: white; 
+    padding: 15px 40px;
+    border-radius: 30px; 
+    font-weight: bold; 
+    text-transform: uppercase; 
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
 
 .userbar{
     position:sticky;
@@ -21,7 +133,7 @@
     width: 100%;
     height: 30px;
     /*background: rgba(255, 255, 255, 0.2);*/
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-userbar);
     /*backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);*/
     border-radius: 0px 0px 30px 30px;
@@ -87,7 +199,7 @@
     width: 30px;
     height: 30px;
     padding: 1px;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-userbar);
     border: 1px solid rgb(255, 255, 255);
     border-radius: 50%;
     transition: 0.3s;
@@ -97,11 +209,11 @@
     width: 30px;
     height: 30px;
     padding: 1px;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-userbar);
     border: 1px solid rgb(255, 255, 255);
     border-radius: 50%;
     filter: brightness(1.1); 
-    transform: translateY(-2px); 
+    transform: translateY(-2px);
 }
 
 #userBarLogin {
@@ -120,6 +232,7 @@
 .configPainel{
     grid-template-rows: 0fr;
     opacity: 0;
+    position: relative;
     margin-top: -16px; 
     width: 200px;
     background: rgba(255, 255, 255, 0.1);
@@ -129,15 +242,15 @@
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-radius: 35px;
     z-index: 0;
-    padding: 20px;
-    animation: transparencia 1s forwards;
+    gap: 5px;
+    padding: 0px 20px;
+    transition: 0.5s ease-out; 
 }
 
 .configPainel.open{
     grid-template-rows: 1fr;
     opacity: 1;
     padding: 30px 0 15px 0;
-    animation: slideUp 1s forwards;
     padding: 20px;
     display: flex;
     justify-items: center;
@@ -154,21 +267,22 @@
 }
 
 .chave.false{
-    background-color: #fff;
+    background: #fff;
     width: 30px;
     height: 15px;
     border-radius: 7.5px;
     cursor: pointer;
-    transition: 1s;
+    transition: background 1s ease;
 }
 
 .chave.true{
     justify-content: end;
-    background: linear-gradient(to bottom, #51ff00, #4ba700);
+    background: var(--bg-userbar);
     width: 30px;
     height: 15px;
     border-radius: 7.5px;
     cursor: pointer;
+    transition: background 1s ease;
 }
 
 .chaveSeletor {
@@ -207,103 +321,6 @@
 .favorite-toggle:hover {
     opacity: 1;
     transform: scale(1.1);
-}
-
-/* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
-/* Se não houver a classe 'user-logged-in' no body, forçamos o ícone preenchido a sumir */
-body:not(.user-logged-in) .icon-filled {
-    opacity: 0 !important;
-}
-
-body:not(.user-logged-in) .icon-outline {
-    opacity: 1 !important;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: url('../assets/background-pokedex.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* --- 2. HEADER E NAVBAR --- */
-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    width: 100%;
-    z-index: 10;
-    position: relative;
-}
-
-header nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-header nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.logo {
-    width: 350px;
-    max-width: 70%;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: center;
-}
-
-.logo img { width: 100%; height: auto; }
-
-nav ul { display: flex; list-style: none; gap: 15px; }
-
-.btn-nav {
-    text-decoration: none;
-    color: white;
-    padding: 10px 30px;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    border-radius: 25px;
-    border: 1px solid #fff; 
-    font-weight: bold;
-    font-size: 15px;
-    transition: 0.3s;
-    display: inline-block;
-}
-
-.btn-nav:hover {
-    transform: scale(1.1);
-    filter: brightness(1.2);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-/* Efeito de Botão Apertado */
-.btn-nav.active {
-    background: #4d8c18;
-    box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
-    transform: scale(0.95);
-    border-color: rgba(255,255,255,0.5);
-}
-
-/* Botão padrão para o Banner */
-.btn-start {
-    border: 1px solid white;
-    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
-    color: white; 
-    padding: 15px 40px;
-    border-radius: 30px; 
-    font-weight: bold; 
-    text-transform: uppercase; 
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: 0.3s;
 }
 
 /* --- COMPONENTES DE CARD --- */

@@ -7,11 +7,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
-
-//chaves
-let sons = false;
-let musica = false;
-let temaEscuro = false;
+let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, temaEscuro: false};
 
 const cores = {
     fire: 'var(--clr-fire)',
@@ -25,7 +21,12 @@ const cores = {
     flying: 'var(--clr-flying)',
     fairy: '#d685ad'
 };
+console.log(configuracoes);
+const htmlElement = document.documentElement;
 
+if(configuracoes.temaEscuro === true){
+    htmlElement.classList.add('tema-escuro');
+} 
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -196,24 +197,24 @@ function toggleConfig(){
     const panelConfig = document.getElementById('configPainel');
     panelConfig.classList.toggle('open');
 
-    if (panelConfig.classList.contains('open')){
+    if (!panelConfig.classList.contains('open')) {return;}
 
         panelConfig.innerHTML = `
             <div>
                 <span>Sons</span>
-                <div class="chave ${sons ? 'true' : 'false'}" id="chaveSons">
+                <div class="chave ${configuracoes.sons ? 'true' : 'false'}" id="chaveSons">
                     <span class="chaveSeletor"></span>
                 </div>
             </div>
             <div>
                 <span>Música</span>
-                <div class="chave ${musica ? 'true' : 'false'}" id="chaveMusica">
+                <div class="chave ${configuracoes.musica ? 'true' : 'false'}" id="chaveMusica">
                     <span class="chaveSeletor"></span>
                 </div>
             </div>
             <div>
                 <span>Tema escuro</span>
-                <div class="chave ${temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
+                <div class="chave ${configuracoes.temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
                     <span class="chaveSeletor"></span>
                 </div>
             </div>
@@ -226,36 +227,43 @@ function toggleConfig(){
         const chaveMusica = document.getElementById('chaveMusica');
         const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
         const chaveLimparCache = document.getElementById('chaveLimparCache');
+        const htmlElement = document.documentElement;
 
         chaveSons.addEventListener('click', () => {
-            sons = !sons;
-            chaveSons.classList.toggle('true', sons);
-            chaveSons.classList.toggle('false', !sons);
-            console.log("Sons:", sons);
+            configuracoes.sons = !configuracoes.sons;
+            chaveSons.classList.toggle('true', configuracoes.sons);
+            chaveSons.classList.toggle('false', !configuracoes.sons);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
         });
 
         chaveMusica.addEventListener('click', () => {
-            musica = !musica;
-            chaveMusica.classList.toggle('true', musica);
-            chaveMusica.classList.toggle('false', !musica);
-            console.log("Música:", musica);
+            configuracoes.musica = !configuracoes.musica;
+            chaveMusica.classList.toggle('true', configuracoes.musica);
+            chaveMusica.classList.toggle('false', !configuracoes.musica);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
         });
 
         chaveTemaEscuro.addEventListener('click', () => {
-            temaEscuro = !temaEscuro;
-            chaveTemaEscuro.classList.toggle('true', temaEscuro);
-            chaveTemaEscuro.classList.toggle('false', !temaEscuro);
-            console.log("Tema Escuro:", temaEscuro);
+            configuracoes.temaEscuro = !configuracoes.temaEscuro;
+            chaveTemaEscuro.classList.toggle('true', configuracoes.temaEscuro);
+            chaveTemaEscuro.classList.toggle('false', !configuracoes.temaEscuro);
+
+            htmlElement.classList.toggle('tema-escuro', configuracoes.temaEscuro);
+            htmlElement.classList.toggle('tema', !configuracoes.temaEscuro);
+
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
         });
 
         chaveLimparCache.addEventListener('click', () => {
             localStorage.clear();
             location.reload();
         });
-    }else{
-        panelConfig.innerHTML = "";
-        return;
-    }
+    
 }
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
