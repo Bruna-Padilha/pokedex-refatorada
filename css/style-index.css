@@ -116,8 +116,10 @@ header nav {
     flex-wrap: nowrap;
     overflow-x: hidden; 
     gap: 15px; 
-    padding: 50px 10px 40px 10px; 
+    padding: 90px 10px 40px 10px;
+    margin-top: -40px; 
     width: 100%;
+    
 }
 
 .pokemon-container .pokemon-card-container {
