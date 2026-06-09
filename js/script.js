@@ -7,7 +7,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
-
+let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, temaEscuro: false};
 
 const cores = {
     fire: 'var(--clr-fire)',
@@ -22,6 +22,13 @@ const cores = {
     fairy: '#d685ad'
 };
 
+if(configuracoes.temaEscuro === true){
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('tema-escuro');
+} else {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('tema-claro');
+}
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -163,6 +170,7 @@ function loginSimulado(status) {
     atualizarInterfaceLogin(); 
 }
 
+//UserBar
 const userBarSaudacao = document.getElementById('userBarSaudacao');
 const userBarIcon = document.getElementById('userBarIcon');
 const userBarLogin = document.getElementById('userBarLogin');
@@ -186,6 +194,79 @@ userBarLogout.addEventListener('click', () => {
     alert("Sessão encerrada.");
     window.location.href = 'mainpage.html';
 });
+
+function toggleConfig(){
+    const panelConfig = document.getElementById('configPainel');
+    panelConfig.classList.toggle('open');
+
+    if (!panelConfig.classList.contains('open')) {return;}
+
+        panelConfig.innerHTML = `
+            <div>
+                <span>Sons</span>
+                <div class="chave ${configuracoes.sons ? 'true' : 'false'}" id="chaveSons">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Música</span>
+                <div class="chave ${configuracoes.musica ? 'true' : 'false'}" id="chaveMusica">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Tema escuro</span>
+                <div class="chave ${configuracoes.temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span id="chaveLimparCache" style="cursor: pointer;">Limpar cache</span>
+            </div>
+        `;
+
+        const chaveSons = document.getElementById('chaveSons');
+        const chaveMusica = document.getElementById('chaveMusica');
+        const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
+        const chaveLimparCache = document.getElementById('chaveLimparCache');
+        const htmlElement = document.documentElement;
+
+        chaveSons.addEventListener('click', () => {
+            configuracoes.sons = !configuracoes.sons;
+            chaveSons.classList.toggle('true', configuracoes.sons);
+            chaveSons.classList.toggle('false', !configuracoes.sons);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveMusica.addEventListener('click', () => {
+            configuracoes.musica = !configuracoes.musica;
+            chaveMusica.classList.toggle('true', configuracoes.musica);
+            chaveMusica.classList.toggle('false', !configuracoes.musica);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveTemaEscuro.addEventListener('click', () => {
+            configuracoes.temaEscuro = !configuracoes.temaEscuro;
+            chaveTemaEscuro.classList.toggle('true', configuracoes.temaEscuro);
+            chaveTemaEscuro.classList.toggle('false', !configuracoes.temaEscuro);
+
+            htmlElement.classList.toggle('tema-escuro', configuracoes.temaEscuro);
+            htmlElement.classList.toggle('tema-claro', !configuracoes.temaEscuro);
+
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveLimparCache.addEventListener('click', () => {
+            localStorage.clear();
+            location.reload();
+        });
+    
+}
 
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
 
@@ -632,6 +713,10 @@ function abrirmodal(card){
     
     document.getElementById('fade').addEventListener('click', fecharModal);
     document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
+
+    document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') fecharModal();
+});
 }
 
 function battle() {
