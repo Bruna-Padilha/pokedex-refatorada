@@ -21,17 +21,21 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html.tema-claro{
-    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-imagem: url('../assets/background-pokedex.png');
     --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bt-nav: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bt-nav-active: #4d8c18;
+    --img-pokebola: url('../assets/Pokebola.png');
+    --img-trio-pokemon: url('../assets/trio-pokemon.png');
 }
 
 html.tema-escuro{
-    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-imagem: url('../assets/img/background-dark.png');
     --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
     --bt-nav: linear-gradient(to bottom, #9539ff, #380058);
     --bt-nav-active: #33034e;
+    --img-pokebola: url('../assets/img/pokebola-dark.png');
+    --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
@@ -576,7 +580,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 .pokeballs-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; overflow: hidden; }
 .pokeball {
     position: absolute;
-    background-image: url('../assets/Pokebola.png');
+    background-image: var(--img-pokebola);
     background-size: contain;
     background-repeat: no-repeat;
     animation: floatPokeball 20s infinite linear;
