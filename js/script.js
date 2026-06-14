@@ -385,7 +385,13 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(carregarMaisObserver);
 });
 
-/* LÓGICA DA INDEX E CARROSSEL */
+function getCardStep(container) {
+    const card = container.querySelector('.pokemon-card-container');
+    if (!card) return 0;
+    const styles = getComputedStyle(container);
+    const gap = parseFloat(styles.columnGap) || 15;
+    return card.getBoundingClientRect().width + gap;
+}
 
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');
@@ -408,8 +414,7 @@ async function carregarDestaquesIndex() {
     }
 
     const cards = [...container.children];
-    const numClones = 4; 
-    const cardFullWidth = 250 + 15; 
+    const numClones = 4;
 
     for (let i = 0; i < numClones; i++) {
         container.appendChild(cards[i].cloneNode(true));
@@ -418,20 +423,25 @@ async function carregarDestaquesIndex() {
         container.insertBefore(cards[cards.length - 1 - i].cloneNode(true), container.firstChild);
     }
 
-    container.scrollLeft = cardFullWidth * numClones;
+    container.scrollLeft = getCardStep(container) * numClones;
 
     container.addEventListener('scroll', () => {
+        const step = getCardStep(container);       
         const scrollPos = container.scrollLeft;
         const maxScroll = container.scrollWidth - container.clientWidth;
 
         if (scrollPos >= maxScroll - 5) {
-            container.style.scrollBehavior = 'auto'; 
-            container.scrollLeft = cardFullWidth * numClones;
-        } 
-        else if (scrollPos <= 5) {
             container.style.scrollBehavior = 'auto';
-            container.scrollLeft = maxScroll - (cardFullWidth * numClones);
+            container.scrollLeft = step * numClones;
+        } else if (scrollPos <= 5) {
+            container.style.scrollBehavior = 'auto';
+            container.scrollLeft = maxScroll - (step * numClones);
         }
+    });
+
+    window.addEventListener('resize', () => {
+        container.style.scrollBehavior = 'auto';
+        container.scrollLeft = getCardStep(container) * numClones;
     });
 }
 
@@ -439,24 +449,9 @@ function scrollCarousel(direction) {
     const container = document.getElementById('pokemon-list');
     if (!container) return;
 
-    const cardFullWidth = 250 + 15; 
-    const scrollAmount = cardFullWidth * 2;
-
+    const step = getCardStep(container);
     container.style.scrollBehavior = 'smooth';
-    container.scrollLeft += (scrollAmount * direction);
-}
-function scrollCarouselCompare(direction) {
-    const container = document.getElementById('divUltimasComparacoes');
-    const cardWidth = 270;
-    const gap = 64;
-    const visibleCards = 1;
-
-    const scrollAmount = (cardWidth + gap) * visibleCards;
-
-    container.scrollBy({
-        left: scrollAmount * direction,
-        behavior: 'smooth'
-    });
+    container.scrollLeft += step * direction;
 }
 
 /* LÓGICA DE COMPARAÇÃO */
