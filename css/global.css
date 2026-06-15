@@ -11,89 +11,32 @@
     --clr-flying: #a98ff3;
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
+
+    --bg-imagem: "";
+    --img-pokebola: "";
+    --bg-userbar: "";
+    --bg-btn-color: "";
+    --bg-btn-color-active: "";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.userbar{
-    position:sticky;
-    top: 0px;
-    width: 100%;
-    height: 30px;
-    /*background: rgba(255, 255, 255, 0.2);*/
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    /*backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);*/
-    border-radius: 0px 0px 30px 30px;
-    z-index: 30;
-    align-content: center;
-    justify-items: center;
+html.tema-claro{
+    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bg-btn-color: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bg-btn-color-active: #4d8c18;
+    --img-pokebola: url('../assets/Pokebola.png');
+    --img-trio-pokemon: url('../assets/trio-pokemon.png');
 }
 
-.userbar div{
-    width: 980px;
-    max-width: 90%;
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    justify-content: end;
-    margin-top: 6px;
-}
-
-.userBarIconLogado {
-    width: 50px;
-    margin-right: 10px;
-    margin-left: 10px;
-    border-radius: 50%;
-    border: 1px solid #fff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: 0.3s;
-}
-
-.userBarIconLogado:hover {
-    transform: translateY(-2px); 
-    filter: brightness(1.1); 
-}
-
-.userBarIconDeslogado {
-    width: 50px;
-    margin-right: 10px;
-    margin-left: 10px;
-    border-radius: 50%;
-    border: 1px solid #fff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: 0.3s;
-    filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
-}
-
-.userBarIconDeslogado:hover {
-    transform: translateY(-2px); 
-    filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
-}
-
-#userBarLogin {
-    color: white;
-    cursor: pointer;
-    height: 0px;
-}
-
-#userBarLogout {
-    color: white;
-    cursor: pointer;
-    height: 0px;
-}
-
-.favorite-toggle {
-    display: flex !important;
-    opacity: 0.7;
-    transition: opacity 0.3s, transform 0.2s;
-}
-
-.favorite-toggle:hover {
-    opacity: 1;
-    transform: scale(1.1);
+html.tema-escuro{
+    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
+    --bg-btn-color: linear-gradient(to bottom, #5200b1, #380058);
+    --bg-btn-color-active: #33034e;
+    --img-pokebola: url('../assets/img/pokebola-dark.png');
+    --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
@@ -108,11 +51,12 @@ body:not(.user-logged-in) .icon-outline {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('../assets/background-pokedex.jpg') no-repeat center center fixed;
+    background: var(--bg-imagem) no-repeat center center fixed;
     background-size: cover;
     color: white;
     min-height: 100vh;
     overflow-x: hidden;
+    transition: background 0.5s ease;
 }
 
 /* --- 2. HEADER E NAVBAR --- */
@@ -156,13 +100,14 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     text-decoration: none;
     color: white;
     padding: 10px 30px;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
     border-radius: 25px;
     border: 1px solid #fff; 
     font-weight: bold;
     font-size: 15px;
     transition: 0.3s;
     display: inline-block;
+    transition: background 1s ease;
 }
 
 .btn-nav:hover {
@@ -173,7 +118,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 
 /* Efeito de Botão Apertado */
 .btn-nav.active {
-    background: #4d8c18;
+    background: var(--bg-btn-color-active);
     box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
     transform: scale(0.95);
     border-color: rgba(255,255,255,0.5);
@@ -182,7 +127,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 /* Botão padrão para o Banner */
 .btn-start {
     border: 1px solid white;
-    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
+    background: var(--bg-btn-color);
     color: white; 
     padding: 15px 40px;
     border-radius: 30px; 
@@ -191,6 +136,202 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     transition: 0.3s;
+}
+
+.userbar{
+    position:sticky;
+    top: 0px;
+    width: 100%;
+    height: 30px;
+    /*background: rgba(255, 255, 255, 0.2);*/
+    background: var(--bg-userbar);
+    /*backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);*/
+    border-radius: 0px 0px 30px 30px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userbarDivButtons{
+    width: 980px;
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: end;
+    margin-top: 6px;
+}
+
+.userbarDivConfig{
+    width: 980px;
+    max-width: 90%;
+    display: flex;
+    justify-content: end;
+}
+
+.userBarIconLogado {
+    width: 50px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.userBarIconLogado:hover {
+    transform: translateY(-2px); 
+    filter: brightness(1.1); 
+}
+
+.userBarIconDeslogado {
+    width: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    z-index: 10;
+}
+
+.userBarIconDeslogado:hover {
+    transform: translateY(-2px); 
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}
+
+#ConfigIcon{
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    background: var(--bg-userbar);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+#ConfigIcon:hover{
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    background: var(--bg-userbar);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    filter: brightness(1.1); 
+    transform: translateY(-2px);
+}
+
+#userBarLogin {
+    color: white;
+    cursor: pointer;
+    height: 0px;
+    margin-left: 5px;
+}
+
+#userBarLogout {
+    color: white;
+    cursor: pointer;
+    height: 0px;
+    margin-left: 5px;
+}
+.configPainel{
+    grid-template-rows: 0fr;
+    opacity: 0;
+    position: relative;
+    margin-top: -16px; 
+    width: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(20px); 
+    border: 1px solid rgba(255, 255, 255, 0.5); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 35px;
+    z-index: 0;
+    gap: 5px;
+    padding: 0px 20px;
+    transition: 0.5s ease-out; 
+}
+
+.configPainel.open{
+    grid-template-rows: 1fr;
+    opacity: 1;
+    padding: 30px 0 15px 0;
+    padding: 20px;
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #ffffff;
+    font-family: 'Arial Narrow Bold', sans-serif;
+    font-weight: 500;
+}
+
+.configPainel div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chave.false{
+    background: #fff;
+    width: 30px;
+    height: 15px;
+    border-radius: 7.5px;
+    cursor: pointer;
+    transition: background 1s ease;
+}
+
+.chave.true{
+    justify-content: end;
+    background: var(--bg-userbar);
+    width: 30px;
+    height: 15px;
+    border-radius: 7.5px;
+    cursor: pointer;
+    transition: background 1s ease;
+}
+
+.chaveSeletor {
+    width: 15px;
+    height: 15px;
+    background-color:#a5a5a5;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.chave.true .chaveSeletor{
+    animation: slideKeyLeft 0.5s ease-in-out;
+}
+
+.chave.false .chaveSeletor{
+    animation: slideKeyRight 0.5s ease-in-out;
+}
+
+@keyframes slideKeyLeft {
+    from { transform: translate(-15px, 0%); opacity: 1; }
+    to { transform: translate(0%, 0%); opacity: 1; }
+}
+
+@keyframes slideKeyRight {
+    from { transform: translate(15px, 0%); opacity: 1; }
+    to { transform: translate(0%, 0%); opacity: 1; }
+}
+
+.favorite-toggle {
+    display: flex !important;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+.favorite-toggle:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 /* --- COMPONENTES DE CARD --- */
@@ -328,7 +469,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 /* --- 4. ROLLDOWN (PAINEL DE DETALHES) --- */
 .expand-btn { 
     width: 30px; height: 30px;  
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18); border: none; color: white;
+    background: var(--bg-btn-color); border: none; color: white;
     border-radius: 25px;
     border: 0.5px solid #fff; 
     position: absolute; 
@@ -361,7 +502,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .stat-row { 
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18); 
+    background: var(--bg-btn-color); 
     border-radius: 20px; 
     padding: 8px 15px; 
     display: flex; 
@@ -440,7 +581,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 .pokeballs-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; overflow: hidden; }
 .pokeball {
     position: absolute;
-    background-image: url('../assets/Pokebola.png');
+    background-image: var(--img-pokebola);
     background-size: contain;
     background-repeat: no-repeat;
     animation: floatPokeball 20s infinite linear;
@@ -606,7 +747,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-success .app-popup-icon {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
 }
 
 .app-popup-error .app-popup-icon {
@@ -679,7 +820,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-btn-primary {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
