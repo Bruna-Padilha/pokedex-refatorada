@@ -32,7 +32,7 @@
 }
 
 .sort-container {
-    background: var(--bg-btn-color);
+    background: var(--bt-nav);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
