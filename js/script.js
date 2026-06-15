@@ -30,6 +30,13 @@ if(configuracoes.temaEscuro === true){
     htmlElement.classList.add('tema-claro');
 }
 
+//Liga a musica tema
+if (configuracoes.musica) {
+            musica.muted = false;
+        } else {
+            musica.muted = true;
+        }
+
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
         success: {
@@ -230,6 +237,7 @@ function toggleConfig(){
         const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
         const chaveLimparCache = document.getElementById('chaveLimparCache');
         const htmlElement = document.documentElement;
+        const musica = document.getElementById('musica');
 
         chaveSons.addEventListener('click', () => {
             configuracoes.sons = !configuracoes.sons;
@@ -244,6 +252,12 @@ function toggleConfig(){
             configuracoes.musica = !configuracoes.musica;
             chaveMusica.classList.toggle('true', configuracoes.musica);
             chaveMusica.classList.toggle('false', !configuracoes.musica);
+
+            if (configuracoes.musica) {
+                musica.muted = false;
+            } else {
+                musica.muted = true;
+            }
             
             localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
             console.log(configuracoes);
