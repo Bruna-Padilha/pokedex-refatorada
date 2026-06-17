@@ -32,7 +32,7 @@
 }
 
 .sort-container {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bt-nav);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
