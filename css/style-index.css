@@ -50,6 +50,26 @@
     display: block;
 }
 
+.hero-image{
+    position: absolute;
+    right: 10%;
+}
+
+.hero-image div{
+    margin-top: 0;
+    width: 400px;
+    height: 400px;
+    background: var(--img-trio-pokemon);
+    z-index: 10;
+    pointer-events: none;
+    background: var(--img-trio-pokemon);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: 0;
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5));
+    overflow: hidden;
+}
+
 .btn-start {
     display: inline-block;
     border: 1px solid white;

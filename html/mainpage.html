@@ -10,11 +10,17 @@
 </head>
 <body>
     <div class="userbar" id="userbar">
-        <div>
+        <div class="userbarDivButtons">
             <span id="userBarSaudacao"></span>
             <img src="../assets/img/usericon.png" alt="UserIcon" class="userBarIconDeslogado" id="userBarIcon">
+            <img src="../assets/img/configicon.svg" alt="ConfigIcon" id="ConfigIcon" onclick="toggleConfig()" class="ConfigIcon">
+            
             <a href="../html/login.html" style="text-decoration: none;" id="userBarLogin">Login</a>
             <a id="userBarLogout">Sair</a>
+        </div>
+            
+        <div class="userbarDivConfig">
+            <span class="configPainel" id="configPainel"></span>
         </div>
     </div>
     
@@ -62,6 +68,7 @@
 
     <button id="backToTop" onclick="scrollToTop()">↑</button>
 
-    <script src="../js/script.js"></script>
+    <script src="../js/global.js"></script>
+    <script src="../js/mainpage.js"></script>
 </body>
 </html>
