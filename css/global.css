@@ -14,6 +14,12 @@
 
     --bg-imagem: "";
     --img-pokebola: "";
+    --img-trio-pokemon: "";
+    --btn-enviar: "";
+    --btn-enviar-hover: "";
+    --img-icon-dark: "";
+    --img-char-one: none;
+    --img-char-two: none;
     --bg-userbar: "";
     --bg-btn-color: "";
     --bg-btn-color-active: "";
@@ -28,6 +34,10 @@ html.tema-claro{
     --bg-btn-color-active: #4d8c18;
     --img-pokebola: url('../assets/Pokebola.png');
     --img-trio-pokemon: url('../assets/trio-pokemon.png');
+    --btn-enviar: linear-gradient(to bottom, #FF8079, #F72B20);
+    --btn-enviar-hover: #F72B20;
+    --img-char-one: url('../assets/img/pikachu.png');
+    --img-char-two: url('../assets/img/squirtle.png');
 }
 
 html.tema-escuro{
@@ -37,6 +47,11 @@ html.tema-escuro{
     --bg-btn-color-active: #33034e;
     --img-pokebola: url('../assets/img/pokebola-dark.png');
     --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
+    --btn-enviar: linear-gradient(to bottom, #9539ff, #380058);
+    --btn-enviar-hover:#33034e;
+    --img-icon-dark: invert(24%) sepia(91%) saturate(3151%) hue-rotate(262deg) brightness(101%) contrast(105%);
+    --img-char-one: url('../assets/img/umbreon.png');
+    --img-char-two: url('../assets/img/darkrai.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
@@ -502,7 +517,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .stat-row { 
-    background: var(--bt-nav);
+    background: var(--bg-btn-color); 
     border-radius: 20px; 
     padding: 8px 15px; 
     display: flex; 
