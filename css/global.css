@@ -17,7 +17,10 @@
     --bt-nav: "";
     --bt-nav-active: "";
     --img-pokebola: "";
-    --img-trio-pokemon: ""
+    --img-trio-pokemon: "";
+    --btn-enviar: "";
+    --btn-enviar-hover: "";
+    --img-icon-dark: "";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,6 +32,8 @@ html.tema-claro{
     --bt-nav-active: #4d8c18;
     --img-pokebola: url('../assets/Pokebola.png');
     --img-trio-pokemon: url('../assets/trio-pokemon.png');
+    --btn-enviar: linear-gradient(to bottom, #FF8079, #F72B20);
+    --btn-enviar-hover: #F72B20;
 }
 
 html.tema-escuro{
@@ -38,6 +43,9 @@ html.tema-escuro{
     --bt-nav-active: #33034e;
     --img-pokebola: url('../assets/img/pokebola-dark.png');
     --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
+    --btn-enviar: linear-gradient(to bottom, #9539ff, #380058);
+    --btn-enviar-hover:#33034e;
+    --img-icon-dark: invert(24%) sepia(91%) saturate(3151%) hue-rotate(262deg) brightness(101%) contrast(105%);
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */

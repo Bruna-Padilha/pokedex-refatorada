@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
+  padding: 80px 50px;
 }
 
 .login-card {
@@ -15,8 +15,9 @@
   -webkit-backdrop-filter: blur(8px);
   border-radius: 50px;
   padding: 4rem 3rem;
-  width: 900px;
-  min-width: 320px;
+  width: 90%;
+  max-width: 900px;
+  min-width: unset;
   text-align: center;
   z-index: 1;
   margin-top: 40px;
@@ -78,10 +79,7 @@
   outline: none;
   font-size: 1.1rem;
   height: 50px;
-}
-
-.form-field-input:focus {
-  background: #c6f6d568;
+  color: #ffffff;
 }
 
 .form-field-input::placeholder {
@@ -96,19 +94,21 @@
   width: 40px;
   height: 40px;
   z-index: 10;
+  filter: var(--img-icon-dark);
 }
 
 .form-field-icon--password {
   width: 28px;
   height: 28px;
   left: 20px;
+  filter: var(--img-icon-dark);
 }
 
 .btn--primary {
   text-decoration: none;
   color: white;
   padding: 1rem 4rem;
-  background: linear-gradient(to bottom, #FF8079, #F72B20);
+  background: var(--btn-enviar);
   border-radius: 30px;
   border: 1px solid #fff;
   font-weight: bold;
@@ -119,7 +119,7 @@
 }
 
 .btn--primary:hover {
-  background: #c53030;
+  background: var(--btn-enviar-hover);
 }
 
 .login-links {
@@ -127,4 +127,13 @@
   gap: 0.8rem;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.form-field-input:-webkit-autofill,
+.form-field-input:-webkit-autofill:hover, 
+.form-field-input:-webkit-autofill:focus, 
+.form-field-input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  font-size: 1.1rem !important;
+  transition: background-color 99999s ease-in-out 0s;
 }
