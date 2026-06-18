@@ -93,26 +93,14 @@ header nav {
 
 .btn-start {
     display: inline-block;
-    display: inline-block;
     border: 1px solid white;
     background: var(--bt-nav);
-    color: white;
     padding: 15px clamp(12px, 4vw, 40px);
     border-radius: 30px;
     font-weight: bold;
     text-transform: uppercase;
     font-size: clamp(0.5rem, 1.5vw, 16px);
     cursor: pointer;
-    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
-    color: white;
-    padding: 15px clamp(12px, 4vw, 40px);
-    border-radius: 30px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: clamp(0.5rem, 1.5vw, 16px);
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
 }
 
 .btn-start:hover {
