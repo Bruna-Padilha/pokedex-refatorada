@@ -8,7 +8,8 @@ function configurarFiltros() {
 
             filteredPokemon = pokemonData.filter(p => 
                 p.name.toLowerCase().includes(termo) || 
-                p.id.toString().includes(termo)
+                p.id.toString().includes(termo) || 
+                p.type.some(tipo => tipo.toLowerCase().includes(termo))
             );
 
             itemsToShow = 8; 
