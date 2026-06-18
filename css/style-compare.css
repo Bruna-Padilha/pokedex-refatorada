@@ -1,5 +1,4 @@
 /* --- BANNER HERO (PADRÃO INDEX) --- */
-
 .hero-div {
     display: flex;
     flex-direction: column;
@@ -7,13 +6,10 @@
     align-items: center;
     width: 100vw;
     height: 70vh;
-    gap: 0.5rem;
-    
 }
 
 .hero-banner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -26,11 +22,14 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.hero-content{
+    width: 70%;
+}
+
 .hero-content h1 { 
     font-size: 25pt;
     line-height: 1;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    
 }
 
 .hero-content p { 
@@ -41,18 +40,24 @@
 
 .hero-content span { color: #ffcb05; }
 
-.hero-image {
-    position: relative;
-    width: 20rem;
-    height: 18rem;
-    z-index: -2;
-    pointer-events: none;
-    overflow: hidden;
+.hero-image{
+    position: absolute;
+    right: 10%;
+}
+
+.hero-image div{
+    margin-top: 0;
+    width: 400px;
+    height: 400px;
     background: var(--img-trio-pokemon);
-    background-size: contain;
+    z-index: 10;
+    pointer-events: none;
+    background: var(--img-trio-pokemon);
+    background-size: 100%;
     background-repeat: no-repeat;
-    max-width: 45%;
+    background-position: 0;
     filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5));
+    overflow: hidden;
 }
 
 .carousel-container-compare {
@@ -377,7 +382,7 @@ visibility: hidden;
     justify-content: center;
     width: 90%;
     padding: 10px 0;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bt-nav);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -537,7 +542,7 @@ visibility: hidden;
 }
 
 .sort-container {
-    background: var(--bg-btn-color);
+    background: var(--bt-nav);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
@@ -556,7 +561,7 @@ visibility: hidden;
 }
 
 #buttonFecharX{
-    background: var(--bg-btn-color);
+    background: var(--bt-nav);
     color: white;
     padding: 10px 16px;
     border-radius: 25px;
@@ -579,7 +584,7 @@ visibility: hidden;
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: var(--bg-btn-color);
+    background: var(--bt-nav);
     color: white;
     padding: 10px 16px;
     border-radius: 25px;

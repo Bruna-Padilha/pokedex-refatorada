@@ -33,6 +33,10 @@ header nav {
     position: relative;
 }
 
+.hero-content{
+    width: 70%;
+}
+
 .hero-content h1 {
     flex: 1;
     font-size: 60px;
@@ -60,6 +64,26 @@ header nav {
     display: block;
 }
 
+.hero-image{
+    position: absolute;
+    right: 10%;
+}
+
+.hero-image div{
+    margin-top: 0;
+    width: 400px;
+    height: 400px;
+    background: var(--img-trio-pokemon);
+    z-index: 10;
+    pointer-events: none;
+    background: var(--img-trio-pokemon);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: 0;
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5));
+    overflow: hidden;
+}
+
 .btn-start {
     border: 1px solid white;
     background: var(--bg-btn-color);
@@ -78,14 +102,6 @@ header nav {
     transform: scale(1.1); 
     filter: brightness(1.2);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.hero-image img {
-    width: 550px;
-    position: absolute;
-    bottom: -40px;
-    right: 10px;
-    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5));
 }
 
 .destaques h2 {
@@ -116,8 +132,10 @@ header nav {
     flex-wrap: nowrap;
     overflow-x: hidden; 
     gap: 15px; 
-    padding: 50px 10px 40px 10px; 
+    padding: 90px 10px 40px 10px;
+    margin-top: -40px; 
     width: 100%;
+    
 }
 
 .pokemon-container .pokemon-card-container {

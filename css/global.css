@@ -11,9 +11,24 @@
     --clr-flying: #a98ff3;
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
+    --clr-fairy: #d685ad;
+    --clr-fighting: #c22e28;
+    --clr-psychic: #f95587;
+    --clr-rock: #b6a136;
+    --clr-ghost: #735797;
+    --clr-ice: #9ad6df;
+    --clr-dragon: #6f35fc;
+    --clr-dark: #705746;
+    --clr-steel: #b7b7ce;
 
     --bg-imagem: "";
     --img-pokebola: "";
+    --img-trio-pokemon: "";
+    --btn-enviar: "";
+    --btn-enviar-hover: "";
+    --img-icon-dark: "";
+    --img-char-one: none;
+    --img-char-two: none;
     --bg-userbar: "";
     --bg-btn-color: "";
     --bg-btn-color-active: "";
@@ -22,21 +37,30 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html.tema-claro{
-    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-imagem: url('../assets/background-pokedex.png');
     --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bg-btn-color: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bg-btn-color-active: #4d8c18;
     --img-pokebola: url('../assets/Pokebola.png');
     --img-trio-pokemon: url('../assets/trio-pokemon.png');
+    --btn-enviar: linear-gradient(to bottom, #FF8079, #F72B20);
+    --btn-enviar-hover: #F72B20;
+    --img-char-one: url('../assets/img/pikachu.png');
+    --img-char-two: url('../assets/img/squirtle.png');
 }
 
 html.tema-escuro{
-    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-imagem: url('../assets/img/background-dark.png');
     --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
     --bg-btn-color: linear-gradient(to bottom, #5200b1, #380058);
     --bg-btn-color-active: #33034e;
     --img-pokebola: url('../assets/img/pokebola-dark.png');
     --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
+    --btn-enviar: linear-gradient(to bottom, #9539ff, #380058);
+    --btn-enviar-hover:#33034e;
+    --img-icon-dark: invert(24%) sepia(91%) saturate(3151%) hue-rotate(262deg) brightness(101%) contrast(105%);
+    --img-char-one: url('../assets/img/umbreon.png');
+    --img-char-two: url('../assets/img/darkrai.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
@@ -465,6 +489,15 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 .type-badge.poison { background-color: var(--clr-poison); }
 .type-badge.flying { background-color: var(--clr-flying); }
 .type-badge.ground { background-color: var(--clr-ground); }
+.type-badge.fairy { background-color: var(--clr-fairy); }
+.type-badge.fighting { background-color: var(--clr-fighting); }
+.type-badge.psychic { background-color: var(--clr-psychic); }
+.type-badge.rock { background-color: var(--clr-rock); }
+.type-badge.ghost { background-color: var(--clr-ghost); }
+.type-badge.ice { background-color: var(--clr-ice); }
+.type-badge.dragon { background-color: var(--clr-dragon); }
+.type-badge.dark { background-color: var(--clr-dark); }
+.type-badge.steel { background-color: var(--clr-steel); }
 
 /* --- 4. ROLLDOWN (PAINEL DE DETALHES) --- */
 .expand-btn { 
