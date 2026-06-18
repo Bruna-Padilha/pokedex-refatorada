@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }, {
+        root: null,
+        rootMargin: '300px',
         threshold: 1
     });
 

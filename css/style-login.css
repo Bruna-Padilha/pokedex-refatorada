@@ -120,6 +120,7 @@
 
 .btn--primary:hover {
   background: #c53030;
+  filter: saturate(50);
 }
 
 .login-links {

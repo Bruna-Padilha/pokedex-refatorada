@@ -35,6 +35,13 @@ if (configuracoes.musica) {
     musica.muted = true;
 }
 
+//Sons
+document.addEventListener('click', async () => {
+    const beep = new Audio('../assets/audio/beep.mp3');
+
+    await beep.play();
+});
+
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
         success: {

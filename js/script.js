@@ -32,10 +32,18 @@ if(configuracoes.temaEscuro === true){
 
 //Liga a musica tema
 if (configuracoes.musica) {
-            musica.muted = false;
-        } else {
-            musica.muted = true;
-        }
+    musica.muted = false;
+} else {
+    musica.muted = true;
+}
+alert('audio');
+//Sons
+document.addEventListener('click', () => {
+    const beep = new Audio('../assets/audio/beep.mp3');
+
+    beep.play();
+    alert('audio');
+});
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
