@@ -21,6 +21,8 @@
     --btn-enviar: "";
     --btn-enviar-hover: "";
     --img-icon-dark: "";
+    --img-char-one: none;
+    --img-char-two: none;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,6 +36,8 @@ html.tema-claro{
     --img-trio-pokemon: url('../assets/trio-pokemon.png');
     --btn-enviar: linear-gradient(to bottom, #FF8079, #F72B20);
     --btn-enviar-hover: #F72B20;
+    --img-char-one: url('../assets/img/pikachu.png');
+    --img-char-two: url('../assets/img/squirtle.png');
 }
 
 html.tema-escuro{
@@ -46,6 +50,8 @@ html.tema-escuro{
     --btn-enviar: linear-gradient(to bottom, #9539ff, #380058);
     --btn-enviar-hover:#33034e;
     --img-icon-dark: invert(24%) sepia(91%) saturate(3151%) hue-rotate(262deg) brightness(101%) contrast(105%);
+    --img-char-one: url('../assets/img/umbreon.png');
+    --img-char-two: url('../assets/img/darkrai.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */

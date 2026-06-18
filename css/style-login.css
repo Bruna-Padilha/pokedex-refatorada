@@ -41,24 +41,48 @@
 
 .char-one {
   position: absolute;
-  width: 210px;
   z-index: 10;
+  background-image: var(--img-char-one);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 
 .char-two {
   position: absolute;
-  width: 230px;
   z-index: 10;
+  background-image: var(--img-char-two);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
 }
 
-.char--left {
+html.tema-claro .char--left {
+  width: 210px;
+  height: 210px;
   top: -110px;
-  left: -30px;
+  left: -50px;
 }
 
-.char--right {
+html.tema-claro .char--right {
+  width: 220px;
+  height: 230px;
   bottom: -48px;
   right: -90px;
+}
+
+html.tema-escuro .char--left {
+  width: 250px;
+  height: 250px;
+  top: -150px;
+  left: -110px;
+}
+
+html.tema-escuro .char--right {
+  width: 250px;
+  height: 250px;
+  bottom: -65px;
+  right: -140px;
 }
 
 .form-field {
@@ -136,4 +160,93 @@
   -webkit-text-fill-color: #ffffff !important;
   font-size: 1.1rem !important;
   transition: background-color 99999s ease-in-out 0s;
+}
+
+
+@media (max-width: 768px) {
+    .login-card-container {
+        padding: 40px 20px;
+    }
+    
+    .login-card {
+        padding: 3rem 2rem;
+    }
+
+    .login-card-title {
+        font-size: 3rem;
+        margin-top: -1.5rem;
+    }
+
+    html.tema-claro .char--left {
+        width: 140px; height: 140px;
+        top: -80px; left: -10px;
+    }
+    html.tema-claro .char--right {
+        width: 140px; height: 150px;
+        bottom: -20px; right: -20px;
+    }
+
+    html.tema-escuro .char--left {
+        width: 160px; height: 160px;
+        top: -100px; left: -20px;
+    }
+    html.tema-escuro .char--right {
+        width: 160px; height: 160px;
+        bottom: -30px; right: -30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card-container {
+        padding: 20px 10px;
+    }
+
+    .login-card {
+        padding: 2.5rem 1.5rem;
+        margin-top: 60px; /* Dá mais espaço no topo para o Pokémon não sobrepor a logo */
+    }
+
+    .login-card-title {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-field-input {
+        font-size: 1rem;
+        height: 45px;
+        padding-left: 50px;
+    }
+
+    .form-field-icon {
+        width: 30px; height: 30px;
+        left: 10px;
+    }
+
+    .form-field-icon--password {
+        width: 22px; height: 22px;
+        left: 14px;
+    }
+
+    .btn--primary {
+        padding: 0.8rem 3rem;
+        font-size: 1.1rem;
+    }
+
+    html.tema-claro .char--left {
+        width: 90px; height: 90px;
+        top: -50px; left: -5px;
+    }
+    html.tema-claro .char--right {
+        width: 90px; height: 100px;
+        bottom: -10px; right: -10px;
+    }
+
+    html.tema-escuro .char--left {
+        width: 100px; height: 100px;
+        top: -60px; left: -10px;
+    }
+    html.tema-escuro .char--right {
+        width: 100px; height: 100px;
+        bottom: -15px; right: -15px;
+    }
 }
