@@ -8,7 +8,7 @@ let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) 
 let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, temaEscuro: false};
 
 const cores = {
-    fire: 'var(--clr-fire)',
+fire: 'var(--clr-fire)',
     grass: 'var(--clr-grass)',
     water: 'var(--clr-water)',
     bug: 'var(--clr-bug)',
@@ -17,7 +17,15 @@ const cores = {
     poison: 'var(--clr-poison)',
     ground: 'var(--clr-ground)',
     flying: 'var(--clr-flying)',
-    fairy: '#d685ad'
+    fairy: 'var(--clr-fairy)',
+    fighting: 'var(--clr-fighting)',
+    psychic: 'var(--clr-psychic)',
+    rock: 'var(--clr-rock)',
+    ghost: 'var(--clr-ghost)',
+    ice: 'var(--clr-ice)',
+    dragon: 'var(--clr-dragon)',
+    dark: 'var(--clr-dark)',
+    steel: 'var(--clr-steel)'
 };
 
 if(configuracoes.temaEscuro === true){
@@ -310,17 +318,118 @@ async function inicializar() {
     }
 }
 
+function sanitizarNomePokemon(nome) {
+    // Whitelist de nomes que devem manter o hífen:
+    const excecoesHifen = [
+        'ho-oh', 'porygon-z', 'jangmo-o', 'hakamo-o', 'kommo-o', 
+        'tapu-koko', 'tapu-lele', 'tapu-bulu', 'tapu-fini', 'type-null',
+        'chien-pao', 'ting-lu', 'wo-chien', 'chi-yu', 'great-tusk', 
+        'scream-tail', 'brute-bonnet', 'flutter-mane', 'slither-wing', 
+        'sandy-shocks', 'iron-treads', 'iron-bundle', 'iron-hands', 
+        'iron-jugulis', 'iron-moth', 'iron-thorns', 'roaring-moon', 
+        'iron-valiant', 'walking-wake', 'iron-leaves', 'gouging-fire', 
+        'raging-bolt', 'iron-boulder', 'iron-crown', 'mr-mime'
+    ];
+
+    // Substitui os hífens por espaços para os nomes que estão na whitelist
+    if (excecoesHifen.includes(nome)) {
+        return nome.split('-').join(' ');
+    }
+
+    // Para todos os outros, corta o nome no primeiro hífen
+    return nome.split('-')[0];
+}
+
+async function fetchPokemonBatch(offset = 0, limit = 100) {
+    // Busca a lista inicial com as URLs de cada Pokémon do lote
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
+    const data = await response.json();
+    
+    // Busca os detalhes de cada Pokémon paralelamente e mapeia para o formato padrão
+    const detailedPokemons = await Promise.all(data.results.map(async (poke) => {
+        const res = await fetch(poke.url);
+        const details = await res.json();
+        
+        // Mesma estrutura usada no pokemon-data.json
+        return {
+            id: details.id,
+            name: sanitizarNomePokemon(details.name),
+            type: details.types.map(t => t.type.name),
+            hp: details.stats.find(s => s.stat.name === 'hp').base_stat,
+            attack: details.stats.find(s => s.stat.name === 'attack').base_stat,
+            defense: details.stats.find(s => s.stat.name === 'defense').base_stat,
+            moves: details.moves.slice(0, 2).map(m => m.move.name), // Pega apenas os 2 primeiros ataques
+            image: details.sprites.other['official-artwork'].front_default || details.sprites.front_default
+        };
+    }));
+    
+    return detailedPokemons.filter(p => p.id <= 1025);
+}
+
+async function iniciarCarregamentoBackground(offsetInicial) {
+    let offset = offsetInicial;
+    const limit = 100;
+    const maxPokemons = 1025; // Limite do total de pokemons presentes na pokéapi
+
+    while (offset < maxPokemons) {
+        try {
+            const lote = await fetchPokemonBatch(offset, limit);
+            
+            // Incrementa o array global com os novos dados
+            pokemonData = [...pokemonData, ...lote];
+            
+            // Só atualiza o array filtrado se o usuário não estiver pesquisando ativamente
+            const searchInput = document.getElementById('searchInput');
+            if (!searchInput || searchInput.value.trim() === '') {
+                // Mantém a ordem atual (seja por ID ou Nome)
+                filteredPokemon = [...pokemonData];
+                if (currentSort === 'name') {
+                    filteredPokemon.sort((a, b) => a.name.localeCompare(b.name));
+                }
+            }
+            
+            // Atualiza a Session Storage para manter os dados durante a navegação
+            sessionStorage.setItem('pokemonDataCache', JSON.stringify(pokemonData));
+            
+            offset += limit;
+        } catch (error) {
+            console.error(`Erro ao carregar o lote no offset ${offset}:`, error);
+            break; // Interrompe o looping em caso de erro de rede para não travar o loop infinito
+        }
+    }
+}
 
 async function carregarPokedex() {
     try {
-        const res = await fetch('pokemon-data.json'); 
-        pokemonData = await res.json();
-        filteredPokemon = [...pokemonData];
-
-        window.dispatchEvent(new Event('pokemonsCarregados'));
-        renderizarGrid();
+        // Verifica se os dados já foram carregados nesta sessão (Session Storage)
+        const cache = sessionStorage.getItem('pokemonDataCache');
+        
+        if (cache) {
+            // Se o cache existir, converte de volta para Objeto e alimenta as variáveis globais
+            pokemonData = JSON.parse(cache);
+            filteredPokemon = [...pokemonData];
+            
+            window.dispatchEvent(new Event('pokemonsCarregados'));
+            renderizarGrid();
+            
+            // Retoma o carregamento do ponto onde parou (caso o usuário atualize a página antes de terminar o carregamento completo)
+            iniciarCarregamentoBackground(pokemonData.length);
+        } else {
+            // Se não houver cache, carrega um lote inicial menor (ex: 50) para a tela não ficar em branco muito tempo
+            const primeiroLote = await fetchPokemonBatch(0, 50);
+            pokemonData = primeiroLote;
+            filteredPokemon = [...pokemonData];
+            
+            sessionStorage.setItem('pokemonDataCache', JSON.stringify(pokemonData));
+            
+            window.dispatchEvent(new Event('pokemonsCarregados'));
+            renderizarGrid();
+            
+            // Inicia o carregamento do restante do banco de dados no looping em segundo plano
+            iniciarCarregamentoBackground(50);
+        }
     } catch (e) {
-        console.error("Erro no JSON:", e);
+        console.error("Erro ao iniciar a Pokedex com a API:", e);
     }
 }
 

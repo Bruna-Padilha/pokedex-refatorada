@@ -11,13 +11,22 @@
     --clr-flying: #a98ff3;
     --clr-glass: rgba(255, 255, 255, 0.4);
     --clr-fav-red: #EE1515;
+    --clr-fairy: #d685ad;
+    --clr-fighting: #c22e28;
+    --clr-psychic: #f95587;
+    --clr-rock: #b6a136;
+    --clr-ghost: #735797;
+    --clr-ice: #9ad6df;
+    --clr-dragon: #6f35fc;
+    --clr-dark: #705746;
+    --clr-steel: #b7b7ce;
 
     --bg-imagem: "";
     --bg-userbar: "";
     --bt-nav: "";
     --bt-nav-active: "";
     --img-pokebola: "";
-    --img-trio-pokemon: ""
+    --img-trio-pokemon: "";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -466,14 +475,22 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 .type-badge.poison { background-color: var(--clr-poison); }
 .type-badge.flying { background-color: var(--clr-flying); }
 .type-badge.ground { background-color: var(--clr-ground); }
+.type-badge.fairy { background-color: var(--clr-fairy); }
+.type-badge.fighting { background-color: var(--clr-fighting); }
+.type-badge.psychic { background-color: var(--clr-psychic); }
+.type-badge.rock { background-color: var(--clr-rock); }
+.type-badge.ghost { background-color: var(--clr-ghost); }
+.type-badge.ice { background-color: var(--clr-ice); }
+.type-badge.dragon { background-color: var(--clr-dragon); }
+.type-badge.dark { background-color: var(--clr-dark); }
+.type-badge.steel { background-color: var(--clr-steel); }
 
 /* --- 4. ROLLDOWN (PAINEL DE DETALHES) --- */
 .expand-btn { 
     width: 30px; height: 30px;  
-    background: var(--bt-nav);
+    background: var(--bt-nav); border: none; color: white;
     border-radius: 25px;
-    border: 0.5px solid #fff;
-    color: white;
+    border: 0.5px solid #fff; 
     position: absolute; 
     top: 165px; 
     left: 50%; 
@@ -504,7 +521,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .stat-row { 
-    background: var(--bt-nav);
+    background: var(--bg-userbar); 
     border-radius: 20px; 
     padding: 8px 15px; 
     display: flex; 
@@ -822,7 +839,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-btn-primary {
-    background: var(--bt-nav);
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
