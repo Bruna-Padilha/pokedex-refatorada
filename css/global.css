@@ -45,7 +45,7 @@ html.tema-escuro{
     --bg-btn-color: linear-gradient(to bottom, #5200b1, #380058);
     --bg-btn-color-active: #33034e;
     --img-pokebola: url('../assets/img/pokebola-dark.png');
-    --img-trio-pokemon: url('../assets/img/trio-pokemon-da.png');
+    --img-trio-pokemon: url('../assets/img/trio-pokemon-dark.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
