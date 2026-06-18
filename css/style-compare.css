@@ -1,4 +1,5 @@
 /* --- BANNER HERO (PADRÃO INDEX) --- */
+
 .hero-div {
     display: flex;
     flex-direction: column;
@@ -40,13 +41,18 @@
 
 .hero-content span { color: #ffcb05; }
 
-.hero-image img { 
+.hero-image {
+    position: relative;
     width: 20rem;
+    height: 18rem;
+    z-index: -2;
+    pointer-events: none;
+    overflow: hidden;
+    background: var(--img-trio-pokemon);
+    background-size: contain;
+    background-repeat: no-repeat;
     max-width: 45%;
-    position: absolute; 
-    bottom: -25px; 
-    right: -20px; 
-    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5)); 
+    filter: drop-shadow(5px 5px 15px rgba(0,0,0,0.5));
 }
 
 .carousel-container-compare {
@@ -531,7 +537,7 @@ visibility: hidden;
 }
 
 .sort-container {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
@@ -550,7 +556,7 @@ visibility: hidden;
 }
 
 #buttonFecharX{
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
     color: white;
     padding: 10px 16px;
     border-radius: 25px;
@@ -573,7 +579,7 @@ visibility: hidden;
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
     color: white;
     padding: 10px 16px;
     border-radius: 25px;

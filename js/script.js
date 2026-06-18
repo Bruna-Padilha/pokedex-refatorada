@@ -30,6 +30,13 @@ if(configuracoes.temaEscuro === true){
     htmlElement.classList.add('tema-claro');
 }
 
+//Liga a musica tema
+if (configuracoes.musica) {
+            musica.muted = false;
+        } else {
+            musica.muted = true;
+        }
+
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
         success: {
@@ -230,6 +237,7 @@ function toggleConfig(){
         const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
         const chaveLimparCache = document.getElementById('chaveLimparCache');
         const htmlElement = document.documentElement;
+        const musica = document.getElementById('musica');
 
         chaveSons.addEventListener('click', () => {
             configuracoes.sons = !configuracoes.sons;
@@ -244,6 +252,12 @@ function toggleConfig(){
             configuracoes.musica = !configuracoes.musica;
             chaveMusica.classList.toggle('true', configuracoes.musica);
             chaveMusica.classList.toggle('false', !configuracoes.musica);
+
+            if (configuracoes.musica) {
+                musica.muted = false;
+            } else {
+                musica.muted = true;
+            }
             
             localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
             console.log(configuracoes);
@@ -467,42 +481,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* LÓGICA DA INDEX E CARROSSEL */
-
-/* Substitua a função carregarDestaquesIndex para incluir a clonagem */
-async function carregarDestaquesIndex() {
-    const container = document.getElementById('pokemon-list');
-    if (!container) return;
-
-    const destaques = [25, 2, 5, 8, 1, 4, 7, 10, 12];
-
-    // Carrega os cards originais
-    for (let id of destaques) {
-        try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const p = await res.json();
-            renderizarCard({
-                name: p.name, id: p.id, hp: p.stats[0].base_stat,
-                attack: p.stats[1].base_stat, defense: p.stats[2].base_stat,
-                type: p.types.map(t => t.type.name),
-                moves: p.moves.slice(0, 2).map(m => m.move.name),
-                image: p.sprites.other['official-artwork'].front_default
-            }, container, false);
-        } catch (e) { console.error(e); }
-    }
-
-    const cards = [...container.children];
-    const numClones = 4;
-    
-    for (let i = 0; i < numClones; i++) {
-        const cloneInicio = cards[i].cloneNode(true);
-        const cloneFim = cards[cards.length - 1 - i].cloneNode(true);
-        container.appendChild(cloneInicio); 
-        container.insertBefore(cloneFim, container.firstChild); 
-    }
-
-    const cardWidth = 250 + 15; 
-    container.scrollLeft = cardWidth * numClones;
-}
 
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');

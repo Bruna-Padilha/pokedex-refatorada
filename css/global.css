@@ -22,25 +22,30 @@
     --clr-steel: #b7b7ce;
 
     --bg-imagem: "";
+    --img-pokebola: "";
     --bg-userbar: "";
-    --bt-nav: "";
-    --bt-nav-active: "";
+    --bg-btn-color: "";
+    --bg-btn-color-active: "";
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html.tema-claro{
-    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-imagem: url('../assets/background-pokedex.png');
     --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    --bt-nav: linear-gradient(to bottom, #a5d63f, #4d8c18);
-    --bt-nav-active: #4d8c18;
+    --bg-btn-color: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    --bg-btn-color-active: #4d8c18;
+    --img-pokebola: url('../assets/Pokebola.png');
+    --img-trio-pokemon: url('../assets/trio-pokemon.png');
 }
 
 html.tema-escuro{
-    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-imagem: url('../assets/img/background-dark.png');
     --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
-    --bt-nav: linear-gradient(to bottom, #9539ff, #380058);
-    --bt-nav-active: #33034e;
+    --bg-btn-color: linear-gradient(to bottom, #5200b1, #380058);
+    --bg-btn-color-active: #33034e;
+    --img-pokebola: url('../assets/img/pokebola-dark.png');
+    --img-trio-pokemon: url('../assets/img/trio-pokemon-da.png');
 }
 
 /* O preenchimento vermelho (icon-filled) só deve funcionar se o usuário estiver logado */
@@ -104,7 +109,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     text-decoration: none;
     color: white;
     padding: 10px 30px;
-    background: var(--bt-nav);
+    background: var(--bg-btn-color);
     border-radius: 25px;
     border: 1px solid #fff; 
     font-weight: bold;
@@ -122,7 +127,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 
 /* Efeito de Botão Apertado */
 .btn-nav.active {
-    background: var(--bt-nav-active);
+    background: var(--bg-btn-color-active);
     box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
     transform: scale(0.95);
     border-color: rgba(255,255,255,0.5);
@@ -131,7 +136,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 /* Botão padrão para o Banner */
 .btn-start {
     border: 1px solid white;
-    background: linear-gradient(to bottom, #a5d63f 0%, #4d8c18 100%);
+    background: var(--bg-btn-color);
     color: white; 
     padding: 15px 40px;
     border-radius: 30px; 
@@ -482,7 +487,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 /* --- 4. ROLLDOWN (PAINEL DE DETALHES) --- */
 .expand-btn { 
     width: 30px; height: 30px;  
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18); border: none; color: white;
+    background: var(--bg-btn-color); border: none; color: white;
     border-radius: 25px;
     border: 0.5px solid #fff; 
     position: absolute; 
@@ -515,7 +520,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .stat-row { 
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18); 
+    background: var(--bg-btn-color); 
     border-radius: 20px; 
     padding: 8px 15px; 
     display: flex; 
@@ -594,7 +599,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 .pokeballs-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; overflow: hidden; }
 .pokeball {
     position: absolute;
-    background-image: url('../assets/Pokebola.png');
+    background-image: var(--img-pokebola);
     background-size: contain;
     background-repeat: no-repeat;
     animation: floatPokeball 20s infinite linear;
@@ -760,7 +765,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-success .app-popup-icon {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
 }
 
 .app-popup-error .app-popup-icon {
@@ -833,7 +838,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-btn-primary {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
