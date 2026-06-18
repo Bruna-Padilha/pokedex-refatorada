@@ -1,5 +1,3 @@
-/* --- ESTILOS ESPECÍFICOS DA INDEX --- */
-
 header nav {
     display: flex;
     flex-direction: column;
@@ -8,7 +6,7 @@ header nav {
 }
 
 .logo {
-    width: 350px; 
+    width: clamp(200px, 60vw, 350px);
     margin-bottom: 5px;
     display: flex;
     justify-content: center;
@@ -23,40 +21,47 @@ header nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: clamp(16px, 3vw, 40px);
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     margin: 20px auto;
-    width: 70%;
-    border-radius: 50px;
-    padding: 30px 40px;
+    width: min(90%, 1100px);
+    border-radius: clamp(24px, 4vw, 50px);
+    padding: clamp(24px, 4vw, 40px);
+    width: min(90%, 1100px);
+    border-radius: clamp(24px, 4vw, 50px);
+    padding: clamp(24px, 4vw, 40px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
 }
 
 .hero-content{
-    width: 70%;
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: left;
+
 }
 
 .hero-content h1 {
-    flex: 1;
-    font-size: 60px;
-    line-height: 1.1;    
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: left;
+    font-size: clamp(1.4rem, 5vw, 60px);
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 20px;
+    font-size: clamp(1.4rem, 5vw, 60px);
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 20px;
 }
 
 .hero-content p {
-    flex: 1;
-    font-size: 20px;
-    line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    text-align: left;
+    font-size: clamp(0.8rem, 2.2vw, 20px);
+    line-height: 1.3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 20px;
+    font-size: clamp(0.8rem, 2.2vw, 20px);
+    line-height: 1.3;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 20px;
 }
 
 .hero-content span {
@@ -65,13 +70,15 @@ header nav {
 }
 
 .hero-image{
-    position: absolute;
-    right: 10%;
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .hero-image div{
     margin-top: 0;
-    width: 400px;
+    width: clamp(250px, 40vw, 550px);
     height: 400px;
     background: var(--img-trio-pokemon);
     z-index: 10;
@@ -85,71 +92,118 @@ header nav {
 }
 
 .btn-start {
+    display: inline-block;
     border: 1px solid white;
     background: var(--bt-nav);
-    color: white; 
-    padding: 15px 40px;
-    border-radius: 30px; 
-    font-weight: bold; 
-    text-transform: uppercase; 
-    font-size: 16px; 
-    cursor: pointer; 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+    padding: 15px clamp(12px, 4vw, 40px);
+    border-radius: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: clamp(0.5rem, 1.5vw, 16px);
+    cursor: pointer;
 }
 
 .btn-start:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
     filter: brightness(1.2);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
+.hero-image {
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.hero-image img {
+    width: clamp(250px, 40vw, 550px);
+    height: auto;
+    margin-bottom: -40px;
+    filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.5));
+}
+
 .destaques h2 {
-    color: white; 
+    color: white;
+    color: white;
     font-family: 'Poppins', sans-serif;
-    font-size: 2rem; 
-    font-weight: 700; 
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
     text-align: left;
-    margin-left: 200px;
-    margin-top: 40px;
-    margin-bottom: 5px;
+    max-width: 1060px;
+    margin: 40px auto 5px;
+    padding-left: clamp(16px, 2vw, 20px);
+    max-width: 1060px;
+    margin: 40px auto 5px;
+    padding-left: clamp(16px, 2vw, 20px);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 1px;
 }
 
 .carousel-container {
     position: relative;
-    max-width: 1060px; 
+    max-width: 1280px;
+    max-width: 1280px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 clamp(112px, 5vw, 60px);
+    box-sizing: border-box;
+    padding: 0 clamp(112px, 5vw, 60px);
+    box-sizing: border-box;
 }
 
 .pokemon-container {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    overflow-x: hidden; 
-    gap: 15px; 
-    padding: 90px 10px 40px 10px;
-    margin-top: -40px; 
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+    padding: 50px 10px 40px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+    padding: 50px 10px 40px;
     width: 100%;
-    
+    box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.pokemon-container::-webkit-scrollbar {
+    display: none;
 }
 
 .pokemon-container .pokemon-card-container {
-    flex: 0 0 250px;
+    flex: 0 0 calc((100% - 3 * 15px) / 4);
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.pokemon-container::-webkit-scrollbar {
+    display: none;
+    flex: 0 0 calc((100% - 3 * 15px) / 4);
+    min-width: 0;
+    scroll-snap-align: start;
 }
 
 .arrow-btn {
     position: absolute;
-    top: 50%; 
+    top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.3); 
+    background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 50%; 
+    border-radius: 50%;
     width: 45px;
     height: 45px;
     cursor: pointer;
@@ -164,9 +218,27 @@ header nav {
 
 .arrow-btn:hover {
     background: rgba(255, 255, 255, 0.6);
-    transform: translateY(-50%) scale(1.1); 
-    color: #4d8c18; 
+    transform: translateY(-50%) scale(1.1);
+    color: #4d8c18;
 }
 
-.arrow-btn.left { left: -60px; }
+.arrow-btn.left  { left: -60px; }
 .arrow-btn.right { right: -60px; }
+
+@media (max-width: 1200px) {
+    .arrow-btn.left  { left: 5px; }
+    .arrow-btn.right { right: 5px; }
+
+    .pokemon-container .pokemon-card-container {
+        flex: 0 0 calc((100% * 15px));
+    }
+}
+
+@media (max-width: 1200px) {
+    .arrow-btn.left  { left: 5px; }
+    .arrow-btn.right { right: 5px; }
+
+    .pokemon-container .pokemon-card-container {
+        flex: 0 0 calc((100% * 15px));
+    }
+}
