@@ -28,7 +28,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html.tema-claro{
-    --bg-imagem: url('../assets/background-pokedex.jpg');
+    --bg-imagem: url('../assets/background-pokedex.png');
     --bg-userbar: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bg-btn-color: linear-gradient(to bottom, #a5d63f, #4d8c18);
     --bg-btn-color-active: #4d8c18;
@@ -41,7 +41,7 @@ html.tema-claro{
 }
 
 html.tema-escuro{
-    --bg-imagem: url('../assets/img/background-dark.jpeg');
+    --bg-imagem: url('../assets/img/background-pokedex-dark.png');
     --bg-userbar: linear-gradient(to bottom,#9539ff, #380058);
     --bg-btn-color: linear-gradient(to bottom, #5200b1, #380058);
     --bg-btn-color-active: #33034e;
