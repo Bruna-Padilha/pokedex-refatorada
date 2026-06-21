@@ -109,6 +109,13 @@ function criarModalFavoritos() {
             filtrarPokemonsModalFavoritos();
         }
     });
+
+    window.addEventListener('pokemonsAtualizados', () => {
+        if (modal.classList.contains('ativo')) {
+            todosPokemonsModalFavoritos = pokemonData;
+            filtrarPokemonsModalFavoritos();
+        }
+    });
 }
 
 async function adicionarFavoritoManual() {
@@ -117,7 +124,7 @@ async function adicionarFavoritoManual() {
     const modal = document.getElementById('modalFavoritos');
     modal.classList.add('ativo');
 
-    await carregarPokedex();
+    carregarPokedex();
     todosPokemonsModalFavoritos = pokemonData;
 
     const inputBusca = document.getElementById('buscaPokemonFavorito');

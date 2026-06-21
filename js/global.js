@@ -388,6 +388,7 @@ async function iniciarCarregamentoBackground(offsetInicial) {
             
             // Atualiza a Session Storage para manter os dados durante a navegação
             sessionStorage.setItem('pokemonDataCache', JSON.stringify(pokemonData));
+            window.dispatchEvent(new Event('pokemonsAtualizados'));
             
             offset += limit;
         } catch (error) {
