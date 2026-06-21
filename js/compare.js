@@ -142,6 +142,7 @@ function abrirmodal(card){
         });
     };
 
+    //primeiro carregamento na lista (array, offset, limit)
     renderizarCardsNoModal(filteredPokemon, 0, contadorCardsModal);
 
     if(loadMoreBtnModal) {
@@ -151,10 +152,26 @@ function abrirmodal(card){
         }); 
     }
 
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                renderizarCardsNoModal(filteredPokemon, contadorCardsModal, 12);
+                contadorCardsModal += 12;
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    observer.observe(loadMoreBtnModal);
+
     modalSearchInput.addEventListener('input', (e) => {               
         const resultados = buscarPokemonsPorTermo(pokemonData, e.target.value)
 
         renderizarFiltradosNoModal(resultados);
+        if(loadMoreBtnModal){
+            loadMoreBtnModal.style.display = 'none';
+        }
     });
 
     const fecharModal = () => { modal.innerHTML = ""; };

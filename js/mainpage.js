@@ -41,15 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
 
-                setTimeout(() => {
-                    carregarMais();
-                }, 100);
+                carregarMais();
             }
         });
     }, {
-        root: null,
-        rootMargin: '300px',
-        threshold: 1
+        threshold: 0.1
     });
 
     observer.observe(carregarMaisObserver);
