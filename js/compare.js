@@ -87,7 +87,6 @@ function renderizarNoSlot(containerId, pokemon) {
                 <li class="card-add-info" style="background: ${obterBackground(pokemon.type)}">Ataque: ${pokemon.attack}</li>
                 <li class="card-add-info" style="background: ${obterBackground(pokemon.type)}">Defesa: ${pokemon.defense}</li>
                 <li class="card-add-info" style="background: ${obterBackground(pokemon.type)}">HP: ${pokemon.hp}</li>
-                <li class="card-add-info" style="background: ${obterBackground(pokemon.type)}">Mov.: ${pokemon.moves}</li>
             </ul>
         </div>
     `;
