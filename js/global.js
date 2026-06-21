@@ -308,7 +308,6 @@ async function inicializar() {
         configurarPaginaLogin();
 
     } else if (path.includes('favoritos.html')) {
-        await carregarPokedex();
         await carregarFavoritos();
     } else {
         
