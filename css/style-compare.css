@@ -5,79 +5,63 @@
     justify-content: space-around;
     align-items: center;
     width: 100vw;
-    height: auto; 
-    min-height: 50vh; 
-    padding-top: 80px;
+    height: 70vh;
 }
 
 .hero-banner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: clamp(16px, 3vw, 40px);
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    margin: 20px auto;
-    width: min(90%, 1100px);
-    border-radius: clamp(24px, 4vw, 50px);
-    padding: clamp(24px, 4vw, 40px);
+    width: 60rem;
+    max-width: 90%;
+    height: 35%;
+    border-radius: 35px;
+    margin-top: 1.5rem;
+    padding: 30px 30px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    position: relative;
 }
 
 .hero-content{
-    flex: 1 1 0;
-    min-width: 0;
-    text-align: left;
-
+    width: 70%;
 }
 
-.hero-content h1 {
-    font-size: clamp(1.4rem, 5vw, 60px);
-    line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin: 0 0 20px;
+.hero-content h1 { 
+    font-size: 25pt;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.hero-content p {
-    font-size: clamp(0.8rem, 2.2vw, 20px);
-    line-height: 1.3;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin: 0 0 20px;
+.hero-content p { 
+    font-size: 18px; 
+    margin-bottom: 10px; 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
 }
-.hero-content span {
-    color: #ffcb05;
-    display: block;
-}
+
+.hero-content span { color: #ffcb05; }
 
 .hero-image{
-    flex: 0 1 auto;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    position: absolute;
+    right: 10%;
 }
 
 @media(max-width:970px){
     .hero-image{
-        position: relative;
-        top: 0;
-        right: 0;
-    }
-
-    .hero-image div {
-        width: clamp(100px, 25vw, 150px);
-        height: clamp(100px, 25vw, 150px);
+        position: absolute;
+        top: -40%;
+        right: -5%;
     }
 }
 
 .hero-image div{
     margin-top: 0;
     max-width: 40vw;
-    width: clamp(200px, 30vw, 350px); 
-    height: clamp(200px, 25vw, 250px);
+    width: 400px;
+    height: 400px;
     background: var(--img-trio-pokemon);
     z-index: 10;
     pointer-events: none;
+    background: var(--img-trio-pokemon);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: 0;
@@ -205,7 +189,7 @@
     width: 45px;
     height: 45px;
     cursor: pointer;
-    z-index: 100;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -263,6 +247,7 @@ visibility: hidden;
         margin-top: 120px;
     }
 }
+
 
 /* Slot Vazio com "+" */
 .card-add-empty {
@@ -396,7 +381,7 @@ visibility: hidden;
 .card-add-head-title .types-wrapper {
     display: flex;
     gap: 5px;
-    margin-top: 8px; 
+    margin-top: 8px; /* Espaço entre nome e badges */
 }
 
 /* --- SEÇÃO DE STATUS INFERIOR --- */
@@ -639,7 +624,7 @@ visibility: hidden;
 #modal-body {
     width: 95%;
     height: 78%;
-    position: absolute;
+    position:absolute;
     left: 50%;
     padding: 1rem;
     translate: -50%;
@@ -655,11 +640,6 @@ visibility: hidden;
     gap: 6rem 1.5rem;
 }
 
-#modal-body-grid .pokemon-card-container {
-    min-width: 0;
-    width: 100%;
-}
-
 #modal-body::-webkit-scrollbar{
     width: 8px;
 }
@@ -672,12 +652,12 @@ visibility: hidden;
 }
 
 #modal-body-grid::-webkit-scrollbar-thumb {
-  background: #d3d3d3;
+  background: #d3d3d3; /* Cor da alça */
   border-radius: 10px;
 }
 
 #modal-body-grid::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #555; /* Cor da alça ao passar o mouse */
 }
 
 #loadMoreBtnModal{
@@ -699,25 +679,143 @@ visibility: hidden;
     transform: translateY(-3px);
 }
 
+/* ajustes de responsividade do modal */
+
 @media (max-width: 768px) {
-    #modal-body-grid {        
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 4.5rem 0.5rem; 
+    #modal-body-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4.5rem 1rem;
+        padding-top: 2.5rem;
+        margin-top: 0;
     }
-    #modal-body-grid .pokemon-image-card { width: 7.5rem; top: -35px; }
-    #modal-body-grid .pokemon-card-base { height: 9rem; }
-    #modal-body-grid .glass-info-panel { height: 68px; padding: 5px 12px; }
-    #modal-body-grid .pokemon-name { font-size: 0.95rem; }
-    #modal-body-grid .pokemon-number { font-size: 0.8rem; }
+    #modal-body-grid .pokemon-card-container {
+        min-width: 0; 
+        width: 100%;
+    }
+    #modal-body-grid .pokemon-image-card {
+        width: 7.5rem;
+        top: -35px;
+    }
+    #modal-body-grid .pokemon-card-base {
+        height: 9rem;
+    }
+    #modal-body-grid .glass-info-panel {
+        height: 68px;
+        padding: 5px 12px;
+    }
+    #modal-body-grid .pokemon-name {
+        font-size: 0.95rem;
+    }
+    #modal-body-grid .pokemon-number {
+        font-size: 0.8rem;
+    }
+    #modal-body-grid .type-badge {
+        padding: 2px 8px;
+        font-size: 0.65rem;
+    }
+    #modal-body-grid .hp-badge {
+        top: 70px;
+        right: 5px;
+        padding: 2px 8px;
+        font-size: 0.65rem;
+    }
+    #modal-body-grid .favorite-toggle {
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+    }
+    #modal-body-grid .pokeball-icons-wrapper {
+        width: 18px;
+        height: 18px;
+    }
+    #modal-body-grid .expand-btn {
+        width: 24px;
+        height: 24px;
+        top: 140px;
+        font-size: 0.75rem;
+    }
+    #modal-body-grid .details-panel.open {
+        padding: 20px 0 10px 0;
+    }
+    #modal-body-grid .stat-row {
+        padding: 4px 10px;
+        margin: 3px 8px;
+        font-size: 0.7rem;
+    }
+    #modal-body-grid .moves-section {
+        margin: 5px 8px 0;
+    }
+    #modal-body-grid .pixel-move-btn {
+        font-size: 8px;
+        padding: 2px 4px;
+    }
 }
 
 @media (max-width: 480px) {
     #modal-body-grid {
-        gap: 3.5rem 0.5rem; 
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3.5rem 0.5rem;
+        padding-top: 2rem;
+        margin-top: 0;
     }
-    #modal-body-grid .pokemon-image-card { width: 5.5rem; top: -25px; }
-    #modal-body-grid .pokemon-card-base { height: 8rem; }
-    #modal-body-grid .glass-info-panel { height: 60px; padding: 3px 8px; }
-    #modal-body-grid .pokemon-name { font-size: 0.8rem; }
-    #modal-body-grid .pokemon-number { font-size: 0.65rem; }
+    #modal-body-grid .pokemon-image-card {
+        width: 5.5rem;
+        top: -25px;
+    }
+    #modal-body-grid .pokemon-card-base {
+        height: 8rem;
+    }
+    #modal-body-grid .glass-info-panel {
+        height: 60px;
+        padding: 3px 8px;
+    }
+    #modal-body-grid .pokemon-name {
+        font-size: 0.8rem;
+    }
+    #modal-body-grid .pokemon-number {
+        font-size: 0.65rem;
+    }
+    #modal-body-grid .type-badge {
+        padding: 1px 4px;
+        font-size: 0.55rem;
+    }
+    #modal-body-grid .hp-badge {
+        top: 55px;
+        right: 4px;
+        padding: 1px 6px;
+        font-size: 0.55rem;
+    }
+    #modal-body-grid .favorite-toggle {
+        top: 6px;
+        right: 6px;
+        width: 22px;
+        height: 22px;
+    }
+    #modal-body-grid .pokeball-icons-wrapper {
+        width: 14px;
+        height: 14px;
+    }
+    #modal-body-grid .expand-btn {
+        width: 20px;
+        height: 20px;
+        top: 124px;
+        font-size: 0.6rem;
+    }
+    #modal-body-grid .details-panel.open {
+        padding: 15px 0 8px 0;
+    }
+    #modal-body-grid .stat-row {
+        padding: 3px 8px;
+        margin: 2px 6px;
+        font-size: 0.6rem;
+    }
+    #modal-body-grid .moves-section {
+        margin: 4px 6px 0;
+    }
+    #modal-body-grid .pixel-move-btn {
+        font-size: 7px;
+        padding: 1px 3px;
+        margin: 1px;
+    }
 }
