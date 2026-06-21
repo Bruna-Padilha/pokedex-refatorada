@@ -221,6 +221,11 @@ function battle() {
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
+
+            const winnerPokemon = new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${ganhador.id}.ogg`)
+
+            configuracoes.sons ? winnerPokemon.play() : null;
+
             renderizarVencedor(ganhador);
 
             //adiciono aqui os ultimos comparados na Array de historico
@@ -245,10 +250,12 @@ function battle() {
         cardcompare[1] = [];
     }
     else {
+        configuracoes.sons ? sons_error.play() : null;
         mostrarPopup('Você precisa adicionar os dois Pokémons nos cards!', 'warning', {
             titulo: 'Atenção',
             textoBotao: 'OK'
-        })
+        });
+
     } 
     
 }

@@ -55,9 +55,9 @@
 
 .hero-image div{
     margin-top: 0;
+    max-width: 40vw;
     width: 400px;
     height: 400px;
-    max-width: 40vw;
     background: var(--img-trio-pokemon);
     z-index: 10;
     pointer-events: none;
