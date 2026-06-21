@@ -14,11 +14,34 @@ async function carregarFavoritos() {
     }
 
     try {
-        const res = await fetch('pokemon-data.json');
-        const todosPokemons = await res.json();
-
+        await carregarPokedex();
         const favIds = buscarLS('pokemonFavoritos', []);
-        const pokemonsFavoritos = todosPokemons.filter(p => favIds.includes(p.id));
+        const pokemonsFavoritos = [];
+        for (const id of favIds) {
+            let pokemon = pokemonData.find(p => p.id === id);
+            if (!pokemon) {
+                try {
+                    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+                    const details = await res.json();
+                    pokemon = {
+                        id: details.id,
+                        name: sanitizarNomePokemon(details.name),
+                        type: details.types.map(t => t.type.name),
+                        hp: details.stats.find(s => s.stat.name === 'hp').base_stat,
+                        attack: details.stats.find(s => s.stat.name === 'attack').base_stat,
+                        defense: details.stats.find(s => s.stat.name === 'defense').base_stat,
+                        moves: details.moves.slice(0, 2).map(m => m.move.name),
+                        image: details.sprites.other['official-artwork'].front_default || details.sprites.front_default
+                    };
+                    pokemonData.push(pokemon);
+                } catch (erro) {
+                    console.error(erro);
+                }
+            }
+            if (pokemon) {
+                pokemonsFavoritos.push(pokemon);
+            }
+        }
 
         grid.innerHTML = '';
 
@@ -80,6 +103,13 @@ function criarModalFavoritos() {
     modal.addEventListener('click', function (event) {
         if (event.target === modal) fecharModalFavoritos();
     });
+
+    window.addEventListener('pokemonsCarregados', () => {
+        if (modal.classList.contains('ativo')) {
+            todosPokemonsModalFavoritos = pokemonData;
+            filtrarPokemonsModalFavoritos();
+        }
+    });
 }
 
 async function adicionarFavoritoManual() {
@@ -88,19 +118,7 @@ async function adicionarFavoritoManual() {
     const modal = document.getElementById('modalFavoritos');
     modal.classList.add('ativo');
 
-    if (todosPokemonsModalFavoritos.length === 0) {
-        try {
-            const res = await fetch('pokemon-data.json');
-            todosPokemonsModalFavoritos = await res.json();
-        } catch (erro) {
-            console.error('Erro ao carregar pokémons no modal:', erro);
-            await mostrarPopup('Não foi possível carregar a lista de Pokémons.', 'error', {
-                titulo: 'Erro ao carregar',
-                textoBotao: 'OK'
-            });
-            return;
-        }
-    }
+    todosPokemonsModalFavoritos = pokemonData;
 
     const inputBusca = document.getElementById('buscaPokemonFavorito');
     if (inputBusca) {
