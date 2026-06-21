@@ -94,26 +94,16 @@ header nav {
 .btn-start {
     display: inline-block;
     border: 1px solid white;
-<<<<<<< HEAD
-    background: var(--bt-nav);
-    padding: 15px clamp(12px, 4vw, 40px);
-    border-radius: 30px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: clamp(0.5rem, 1.5vw, 16px);
-    cursor: pointer;
-=======
     background: var(--bg-btn-color);
     color: white; 
-    padding: 15px 40px;
+    padding: 15px clamp(12px, 4vw, 40px);
     border-radius: 30px; 
     font-weight: bold; 
     text-transform: uppercase; 
-    font-size: 16px; 
+    font-size: clamp(0.8rem, 1.5vw, 16px);
     cursor: pointer; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: 0.3s;
->>>>>>> branch-bruna-clean
 }
 
 .btn-start:hover {

@@ -1,3 +1,7 @@
+let numReaisCarrossel = 0;
+let numClonesCarrossel = 0;
+let listenersCarrosselAtivos = false;
+
 function getCardStep(container) {
     const card = container.querySelector('.pokemon-card-container');
     if (!card) return 0;
@@ -8,55 +12,89 @@ function getCardStep(container) {
     return card.offsetWidth + gap;
 }
 
+async function montarDestaques(container) {
+    const destaquesDia = [25, 2, 5, 8, 1, 4, 7, 10, 12];
+    const destaquesNoite = [94, 197, 169, 200, 229, 198, 215, 164, 92];
+
+    const modoNoturno = configuracoes.temaEscuro === true;
+    const destaques = modoNoturno ? destaquesNoite : destaquesDia;
+
+    if (pokemonData.length === 0) {
+        await carregarPokedex();
+    }
+
+    const pokemonsDestaque = [];
+    for (const id of destaques) {
+        let p = pokemonData.find(poke => poke.id === id);
+        if (!p) {
+            try {
+                p = await buscarPokemonAvulso(id);
+                if (p) pokemonData.push(p);
+            } catch (e) {
+                console.error(`Erro ao buscar destaque #${id}:`, e);
+            }
+        }
+        if (p) pokemonsDestaque.push(p);
+    }
+
+    container.innerHTML = '';
+
+    if (!pokemonsDestaque.length) return;
+
+    pokemonsDestaque.forEach(p => {
+        renderizarCard(p, container, false);
+    });
+
+    numReaisCarrossel = pokemonsDestaque.length;
+    numClonesCarrossel = Math.min(4, numReaisCarrossel);
+
+    const cards = [...container.children];
+
+    for (let i = 0; i < numClonesCarrossel; i++) {
+        container.appendChild(cards[i].cloneNode(true));
+    }
+    for (let i = 0; i < numClonesCarrossel; i++) {
+        container.insertBefore(cards[cards.length - 1 - i].cloneNode(true), container.firstChild);
+    }
+
+    container.style.scrollBehavior = 'auto';
+    container.scrollLeft = getCardStep(container) * numClonesCarrossel;
+}
+
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');
     if (!container) return;
 
-    const destaques = [25, 2, 5, 8, 1, 4, 7, 10, 12];
+    await montarDestaques(container);
 
-    for (let id of destaques) {
-        try {
-            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const p = await res.json();
-            renderizarCard({
-                name: p.name, id: p.id, hp: p.stats[0].base_stat,
-                attack: p.stats[1].base_stat, defense: p.stats[2].base_stat,
-                type: p.types.map(t => t.type.name),
-                moves: p.moves.slice(0, 2).map(m => m.move.name),
-                image: p.sprites.other['official-artwork'].front_default
-            }, container, false);
-        } catch (e) { console.error(e); }
-    }
-
-    const cards = [...container.children];
-    const numClones = 4;
-
-    for (let i = 0; i < numClones; i++) {
-        container.appendChild(cards[i].cloneNode(true));
-    }
-    for (let i = 0; i < numClones; i++) {
-        container.insertBefore(cards[cards.length - 1 - i].cloneNode(true), container.firstChild);
-    }
-
-    container.scrollLeft = getCardStep(container) * numClones;
+    if (listenersCarrosselAtivos) return;
+    listenersCarrosselAtivos = true;
 
     container.addEventListener('scroll', () => {
         const step = getCardStep(container);
-        const scrollPos = container.scrollLeft;
-        const maxScroll = container.scrollWidth - container.clientWidth;
+        if (step === 0) return;
 
-        if (scrollPos >= maxScroll - 5) {
+        const scrollPos = container.scrollLeft;
+
+        const inicioReais = step * numClonesCarrossel;
+        const fimReais = step * (numClonesCarrossel + numReaisCarrossel);
+
+        if (scrollPos >= fimReais) {
             container.style.scrollBehavior = 'auto';
-            container.scrollLeft = step * numClones;
-        } else if (scrollPos <= 5) {
+            container.scrollLeft = scrollPos - step * numReaisCarrossel;
+        } else if (scrollPos < inicioReais) {
             container.style.scrollBehavior = 'auto';
-            container.scrollLeft = maxScroll - (step * numClones);
+            container.scrollLeft = scrollPos + step * numReaisCarrossel;
         }
     });
 
     window.addEventListener('resize', () => {
         container.style.scrollBehavior = 'auto';
-        container.scrollLeft = getCardStep(container) * numClones;
+        container.scrollLeft = getCardStep(container) * numClonesCarrossel;
+    });
+
+    window.addEventListener('temaAlterado', () => {
+        montarDestaques(container);
     });
 }
 
