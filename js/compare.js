@@ -187,7 +187,7 @@ function abrirmodal(card){
 function battle() {
 
     if(cardcompare[0] && cardcompare[1]){
-        let pontuacaoPokemon = [];
+        let pontuacaoPokemon = [0,0];
         let ganhador = [];
         let perdedor = [];  
 
