@@ -29,26 +29,26 @@ function configurarFiltros() {
 }
 
 function carregarMais() {
-    itemsToShow += increment;
+    itemsToShow += 16;
     renderizarGrid();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const carregarMaisObserver = document.querySelector("#loadMoreBtn");
-    if(!carregarMaisObserver) return;
+const carregarMaisObserver = document.querySelector("#loadMoreBtn");
 
+if (carregarMaisObserver) {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-
                 carregarMais();
             }
         });
     }, {
+        root: null,
+        rootMargin: '150px', 
         threshold: 0.1
     });
 
     observer.observe(carregarMaisObserver);
-});
+}
 
 inicializar();

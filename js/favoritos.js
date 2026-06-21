@@ -134,7 +134,7 @@ async function adicionarFavoritoManual() {
     const modal = document.getElementById('modalFavoritos');
     modal.classList.add('ativo');
 
-    modalItemsToShow = 30; // Resetar para o valor inicial a cada abertura do modal
+    modalItemsToShow = 30; // Repõe o limite de visualização local do DOM
 
     const inputBusca = document.getElementById('buscaPokemonFavorito');
     if (inputBusca) {
@@ -142,15 +142,16 @@ async function adicionarFavoritoManual() {
         inputBusca.focus();
     }
 
-    //Atualiza o modal caso os pokemons sejam carregados depois do modal ser aberto
+    // Atualiza o modal organicamente caso os pokémons cheguem em segundo plano
     window.addEventListener('pokemonsAtualizados', filtrarPokemonsModalFavoritos);
 
     const grid = document.getElementById('listaPokemonsModalGrid');
     if (grid) {
-        grid.innerHTML = '<div class="modal-sem-resultado">Carregando Pokémons...</div>';
+        // Removemos a mensagem de loading estática, pois a renderização agora é síncrona e instantânea
+        grid.innerHTML = ''; 
     }
 
-    await carregarMaisModalFavoritos();
+    filtrarPokemonsModalFavoritos();
 }
 
 function fecharModalFavoritos() {
