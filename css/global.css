@@ -762,7 +762,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-success .app-popup-icon {
-    background: var(--bg-btn-color);
+    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
 }
 
 .app-popup-error .app-popup-icon {
@@ -835,7 +835,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
 }
 
 .app-popup-btn-primary {
-    background: var(--bt-nav);
+    background: var(--bg-btn-color);
 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
 }
