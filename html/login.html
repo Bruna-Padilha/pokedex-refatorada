@@ -9,6 +9,25 @@
     <link id="favicon" rel="icon" type="image/png" href="../assets/favicon.png">
 </head>
 <body>
+    <audio id="musica" autoplay loop muted>
+        <source src="../assets/audio/tema.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+    <div class="userbar" id="userbar">
+        <div class="userbarDivButtons">
+            <span id="userBarSaudacao"></span>
+            <img src="../assets/img/usericon.png" alt="UserIcon" class="userBarIconDeslogado" id="userBarIcon">
+            <img src="../assets/img/configicon.svg" alt="ConfigIcon" id="ConfigIcon" onclick="toggleConfig()" class="ConfigIcon">
+            
+            <a href="../html/login.html" style="text-decoration: none;" id="userBarLogin">Login</a>
+            <a id="userBarLogout">Sair</a>
+        </div>
+            
+        <div class="userbarDivConfig">
+            <span class="configPainel" id="configPainel"></span>
+        </div>
+    </div>
+    
     <div class="bubbles-container">
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
         <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
@@ -30,9 +49,9 @@
     </header>
     <main class="login-card-container">
         <div class="login-card">
-            <img src="../assets/img/pikachu.png" alt="Pikachu" class="char-one char--left">
-            <img src="../assets/img/squirtle.png" alt="Squirtle" class="char-two char--right">
-            <h1 class="login-card__title">Login</h1>
+            <div class="char-one char--left"></div>
+            <div class="char-two char--right"></div>
+            <h1 class="login-card-title">Login</h1>
             <form class="login-form" action="/login" method="POST">
             <div class="form-field">
                 <img src="../assets/img/username.png" alt="Username" class="form-field-icon">
@@ -48,6 +67,8 @@
             </form>
         </div>
     </main>
-    <script src="../js/script.js"></script>
+
+    <script src="../js/global.js"></script>
+    <script src="../js/login.js"></script>
 </body>
 </html>

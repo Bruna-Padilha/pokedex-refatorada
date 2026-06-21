@@ -32,7 +32,7 @@
 }
 
 .sort-container {
-    background: linear-gradient(to bottom, #a5d63f, #4d8c18);
+    background: var(--bg-btn-color);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
@@ -66,7 +66,8 @@
     margin: 60px 0;
 }
 
-#loadMoreBtn {
+#loadMoreBtn,
+#loadMoreModalBtn {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -79,7 +80,8 @@
     backdrop-filter: blur(5px);
 }
 
-#loadMoreBtn:hover {
+#loadMoreBtn:hover,
+#loadMoreModalBtn:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-3px);
 }

@@ -7,7 +7,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
-
+let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, temaEscuro: false};
 
 const cores = {
     fire: 'var(--clr-fire)',
@@ -22,16 +22,20 @@ const cores = {
     fairy: '#d685ad'
 };
 
-/* -------------------------------------------------
-   POP-UP GLOBAL PERSONALIZADO
-   Use:
-   mostrarPopup("Mensagem", "success");
-   mostrarPopup("Mensagem", "error");
-   mostrarPopup("Mensagem", "warning");
-   mostrarPopup("Mensagem", "info");
-   Também retorna Promise para ações após confirmação:
-   await mostrarPopup("Sessão encerrada.", "success");
-------------------------------------------------- */
+if(configuracoes.temaEscuro === true){
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('tema-escuro');
+} else {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.add('tema-claro');
+}
+
+//Liga a musica tema
+if (configuracoes.musica) {
+            musica.muted = false;
+        } else {
+            musica.muted = true;
+        }
 
 function obterDadosPopupSistema(tipo = 'info') {
     const tipos = {
@@ -147,12 +151,9 @@ function mostrarPopup(mensagem, tipo = 'info', opcoes = {}) {
     });
 }
 
-/* Fallback: qualquer alert antigo que ainda surgir no projeto vira popup visual */
 window.alert = function(mensagem) {
     mostrarPopup(String(mensagem), 'info');
 };
-
-
 
 /* INICIALIZAÇÃO E UTILITÁRIOS */
 
@@ -176,6 +177,111 @@ function loginSimulado(status) {
     atualizarInterfaceLogin(); 
 }
 
+//UserBar
+const userBarSaudacao = document.getElementById('userBarSaudacao');
+const userBarIcon = document.getElementById('userBarIcon');
+const userBarLogin = document.getElementById('userBarLogin');
+const userBarLogout = document.getElementById('userBarLogout');
+
+if(estaLogado()){
+    userBarSaudacao.innerText = "Bem-vindo, Admin";
+    userBarIcon.classList.replace('userBarIconDeslogado', 'userBarIconLogado');
+    userBarLogin.style.display = "none";
+    userBarLogout.style.display = "inline";
+
+} else{
+    userBarSaudacao.innerText = "Voce está deslogado";
+    userBarIcon.classList.replace('userBarIconLogado', 'userBarIconDeslogado');
+    userBarLogin.style.display = "inline";
+    userBarLogout.style.display = "none";
+}
+
+userBarLogout.addEventListener('click', () => {
+    loginSimulado('false');
+    alert("Sessão encerrada.");
+    window.location.href = 'mainpage.html';
+});
+
+function toggleConfig(){
+    const panelConfig = document.getElementById('configPainel');
+    panelConfig.classList.toggle('open');
+
+    if (!panelConfig.classList.contains('open')) {return;}
+
+        panelConfig.innerHTML = `
+            <div>
+                <span>Sons</span>
+                <div class="chave ${configuracoes.sons ? 'true' : 'false'}" id="chaveSons">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Música</span>
+                <div class="chave ${configuracoes.musica ? 'true' : 'false'}" id="chaveMusica">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span>Tema escuro</span>
+                <div class="chave ${configuracoes.temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
+                <span id="chaveLimparCache" style="cursor: pointer;">Limpar cache</span>
+            </div>
+        `;
+
+        const chaveSons = document.getElementById('chaveSons');
+        const chaveMusica = document.getElementById('chaveMusica');
+        const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
+        const chaveLimparCache = document.getElementById('chaveLimparCache');
+        const htmlElement = document.documentElement;
+        const musica = document.getElementById('musica');
+
+        chaveSons.addEventListener('click', () => {
+            configuracoes.sons = !configuracoes.sons;
+            chaveSons.classList.toggle('true', configuracoes.sons);
+            chaveSons.classList.toggle('false', !configuracoes.sons);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveMusica.addEventListener('click', () => {
+            configuracoes.musica = !configuracoes.musica;
+            chaveMusica.classList.toggle('true', configuracoes.musica);
+            chaveMusica.classList.toggle('false', !configuracoes.musica);
+
+            if (configuracoes.musica) {
+                musica.muted = false;
+            } else {
+                musica.muted = true;
+            }
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveTemaEscuro.addEventListener('click', () => {
+            configuracoes.temaEscuro = !configuracoes.temaEscuro;
+            chaveTemaEscuro.classList.toggle('true', configuracoes.temaEscuro);
+            chaveTemaEscuro.classList.toggle('false', !configuracoes.temaEscuro);
+
+            htmlElement.classList.toggle('tema-escuro', configuracoes.temaEscuro);
+            htmlElement.classList.toggle('tema-claro', !configuracoes.temaEscuro);
+
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+        });
+
+        chaveLimparCache.addEventListener('click', () => {
+            localStorage.clear();
+            location.reload();
+        });
+    
+}
+
 /* --- LÓGICA DE VISIBILIDADE E LOGIN (ADICIONADO) --- */
 
 function atualizarInterfaceLogin() {
@@ -194,7 +300,6 @@ function configurarPaginaLogin() {
     if (!loginForm || !loginCard) return;
 
     if (estaLogado()) {
-        // Altera visual para estado logado
         loginForm.style.display = 'none';
         if (loginTitle) loginTitle.textContent = "Você já está logado.";
 
@@ -215,7 +320,7 @@ function configurarPaginaLogin() {
             window.location.href = 'mainpage.html';
         });
     } else {
-        // Validação admin/1234
+        //admin/1234
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const usuarioInput = document.getElementById('usuario').value;
@@ -258,7 +363,6 @@ function obterBackground(tipos) {
 async function inicializar() {
     const path = window.location.pathname;
     
-    // Atualiza a classe do body em todas as páginas
     atualizarInterfaceLogin();
 
     if (path.includes('mainpage.html')) {
@@ -267,7 +371,8 @@ async function inicializar() {
 
     } else if (path.includes('compare.html')) {
         
-        await carregarPokedex();
+        await carregarPokedex();      
+
 
     } else if (path.includes('login.html')) {
         
@@ -290,7 +395,6 @@ async function carregarPokedex() {
         pokemonData = await res.json();
         filteredPokemon = [...pokemonData];
 
-        //console.log("dados", filteredPokemon);
         window.dispatchEvent(new Event('pokemonsCarregados'));
         renderizarGrid();
     } catch (e) {
@@ -355,8 +459,6 @@ function carregarMais() {
     renderizarGrid();
 }
 
-/* OBSERVER PARA CARREGAR MAIS CARDS QUANDO APARECER O BOTAO CARREGAR NA TELA DA POKEDEX */
-
 document.addEventListener("DOMContentLoaded", () => {
     const carregarMaisObserver = document.querySelector("#loadMoreBtn");
     if(!carregarMaisObserver) return;
@@ -371,13 +473,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }, {
-        threshold: 1 // Carrega quando 100% do elemento estiver visível
+        threshold: 1
     });
 
     observer.observe(carregarMaisObserver);
 });
-
-/* LÓGICA DA INDEX E CARROSSEL */
 
 async function carregarDestaquesIndex() {
     const container = document.getElementById('pokemon-list');
@@ -389,93 +489,95 @@ async function carregarDestaquesIndex() {
         try {
             const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const p = await res.json();
-
             renderizarCard({
-                name: p.name, 
-                id: p.id, 
-                hp: p.stats[0].base_stat,
-                attack: p.stats[1].base_stat, 
-                defense: p.stats[2].base_stat,
+                name: p.name, id: p.id, hp: p.stats[0].base_stat,
+                attack: p.stats[1].base_stat, defense: p.stats[2].base_stat,
                 type: p.types.map(t => t.type.name),
                 moves: p.moves.slice(0, 2).map(m => m.move.name),
                 image: p.sprites.other['official-artwork'].front_default
             }, container, false);
-
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) { console.error(e); }
     }
-}
 
-// Carrossel 
+    const cards = [...container.children];
+    const numClones = 4;
+
+    for (let i = 0; i < numClones; i++) {
+        container.appendChild(cards[i].cloneNode(true));
+    }
+    for (let i = 0; i < numClones; i++) {
+        container.insertBefore(cards[cards.length - 1 - i].cloneNode(true), container.firstChild);
+    }
+
+
+    container.addEventListener('scroll', () => {
+        const scrollPos = container.scrollLeft;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        if (scrollPos >= maxScroll - 5) {
+            container.style.scrollBehavior = 'auto';
+            container.scrollLeft = step * numClones;
+        } else if (scrollPos <= 5) {
+            container.style.scrollBehavior = 'auto';
+            container.scrollLeft = maxScroll - (step * numClones);
+        }
+    });
+
 function scrollCarousel(direction) {
     const container = document.getElementById('pokemon-list');
-    const cardWidth = 250;
-    const gap = 15;
-    const visibleCards = 4;
+    if (!container) return;
 
-    const scrollAmount = (cardWidth + gap) * visibleCards;
-
-    container.scrollBy({
-        left: scrollAmount * direction,
-        behavior: 'smooth'
-    });
-}
-
-function scrollCarouselCompare(direction) {
-    const container = document.getElementById('divUltimasComparacoes');
-    const cardWidth = 250;
-    const gap = 16;
-    const visibleCards = 4;
-
-    const scrollAmount = (cardWidth + gap) * visibleCards;
-
-    container.scrollBy({
-        left: scrollAmount * direction,
-        behavior: 'smooth'
-    });
+    const step = getCardStep(container);
+    container.style.scrollBehavior = 'smooth';
+    container.scrollLeft += step * direction;
 }
 
 /* LÓGICA DE COMPARAÇÃO */
 
 const divUltimasComp = document.getElementById('divUltimasComparacoes');
+const carouselContainerComparacao = document.getElementById('carouselContainerComparacao');
+const carouselContainerComparacaoTitle = document.getElementById('carouselContainerComparacaoTitle');
 
 if(divUltimasComp){
     
     if(ultimasComparacoes.length){
-        console.log(ultimasComparacoes);
-        ultimasComparacoes.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
-        });
-    } else{
-        for(i=0; i<5; i++){
-            const card = document.createElement('div');
-            card.classList.add('pokemon-card-container');
+        carouselContainerComparacaoTitle.innerHTML = "Ultimas Comparações";
 
-            card.innerHTML = `
-                <div class="pokemon-card-base" style="background-color: rgba(255, 255, 255, 0.1);">            
-                    <div class="glass-info-panel">
-                        <div class="header-row">
-                            <h3 class="pokemon-name" style="text-transform:capitalize;">Vazio</h3>
-                            <span class="pokemon-number">#</span>
-                        </div>
-                        <div class="types-wrapper">
-                        </div>
+        ultimasComparacoes.forEach(compcard => {
+            const cardComparacao = document.createElement('div');
+            cardComparacao.classList.add('cardComparacao');
+            
+            cardComparacao.innerHTML = `
+                <div class="card-comp-base" >
+                    <img src="../assets/img/winner.png" alt="Ganhador" class="card-comp-img-w">
+                    <img src="${compcard.ganhador.image}" alt="${compcard.ganhador.name}" class="card-comp-img-poke">
+                        
+                    <img src="../assets/img/loser.png" alt="Perdedor" class="card-comp-img-l">
+                    <img src="${compcard.perdedor.image}" alt="${compcard.perdedor.name}" class="card-comp-img-poke">
+                </div>
+
+                <div class="card-comp-info">
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.ganhador.name}</spam>
+                        <spam class="card-comp-id">#${compcard.ganhador.id}</spam>
                     </div>
-                </div>                
+
+                    <h3 class="card-comp-vs">VS</h3>
+
+                    <div class="card-comp-coluna">
+                        <spam class="card-comp-name">${compcard.perdedor.name}</spam>
+                        <spam class="card-comp-id">#${compcard.perdedor.id}</spam>
+                    </div> 
+                </div>
             `;
 
-            divUltimasComp.appendChild(card);
-        }
+            divUltimasComp.appendChild(cardComparacao);
+        });
+    } else{
+        carouselContainerComparacao.innerHTML = "";
+        carouselContainerComparacaoTitle.innerHTML = "";
     }
      
-    /*
-    window.addEventListener('pokemonsCarregados',() => {
-        filteredPokemon.forEach(p => {
-            renderizarCard(p, divUltimasComp, false, "");
-        });
-    });
-    */
 }
 
 function renderizarNoSlot(containerId, pokemon) {
@@ -542,7 +644,6 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(target);
 });
 
-/* EVENTO DE CLICK NOS CARDS ADD */
 const card01 = document.getElementById('card1');
 const card02 = document.getElementById('card2');
 
@@ -563,17 +664,15 @@ function abrirmodal(card){
         <div id="fade"></div>
         <div id="modal">
             <div class="search-sort-bar" id="modal-header">
-                
-                    <div class="search-container">
-                        <span>🔍</span>
-                        <input type="text" id="searchInput" placeholder="Buscar por nome ou número...">
-                    </div>
+                <div class="search-container">
+                    <span>🔍</span>
+                    <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
+                </div>
               
-                    <div class="sort-container" id="btn-modal-compare">
-                        <span>Buscar</span>
-                    </div>
-                    <a href="compare.html" id="buttonFecharX">X</a>
-               
+                <div class="sort-container" id="btn-modal-compare">
+                    <span>Buscar</span>
+                </div>
+                <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
@@ -582,19 +681,36 @@ function abrirmodal(card){
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
+    const modalSearchInput = document.getElementById('modalSearchInput');
     
-    filteredPokemon.forEach(p => {
-        renderizarCard(p, bodymodal, true, card);
+    const renderizarFiltradosNoModal = (lista) => {
+        bodymodal.innerHTML = ""; 
+        lista.forEach(p => {            
+            renderizarCard(p, bodymodal, true, card);
+        });
+    };
+
+    renderizarFiltradosNoModal(filteredPokemon);
+
+    modalSearchInput.addEventListener('input', (e) => {
+        const termo = e.target.value.toLowerCase();
+        
+        const resultados = pokemonData.filter(p => 
+            p.name.toLowerCase().includes(termo) || 
+            p.id.toString().includes(termo)
+        );
+
+        renderizarFiltradosNoModal(resultados);
     });
 
-    const btnBusca = document.getElementById('btn-modal-compare');
-    const fadearea = document.getElementById('fade');
+    const fecharModal = () => { modal.innerHTML = ""; };
+    
+    document.getElementById('fade').addEventListener('click', fecharModal);
+    document.getElementById('buttonFecharX').addEventListener('click', fecharModal);
 
-    //Para fechar o modal
-    fadearea.addEventListener('click', () => {
-         modal.innerHTML = "";
-    });
-    //--------//--------//
+    document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') fecharModal();
+});
 }
 
 function battle() {
@@ -602,10 +718,7 @@ function battle() {
     if(cardcompare[0] && cardcompare[1]){
         let pontuacaoPokemon = [];
         let ganhador = [];
-
-        //adiciono aqui os ultimos comparados na Array de historico
-        ultimasComparacoes.unshift(cardcompare[0], cardcompare[1]);
-        localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
+        let perdedor = [];  
 
         cardcompare[0].attack > cardcompare[1].attack ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
         cardcompare[0].defense > cardcompare[1].defense ? pontuacaoPokemon[0]++ : pontuacaoPokemon[1]++;
@@ -616,14 +729,15 @@ function battle() {
 
          if(pontuacaoPokemon[0] > pontuacaoPokemon[1]){
             ganhador = cardcompare[0];
+            perdedor = cardcompare[1];
          } else {
             ganhador = cardcompare[1];
+            perdedor = cardcompare[0];
          }
 
         const section = document.getElementById('sectionCompare');
         const bannersection = document.querySelector('.hero-div');
 
-        //section.style.display = 'flex';
         bannersection.style.display = 'none';
         section.style.backgroundColor = 'black';
 
@@ -632,13 +746,28 @@ function battle() {
                 <img src="../assets/img/animacao1.gif" alt="animacao" id="animacaoBattle">
             </div>
         `;
-
-        //section.scrollIntoView({ behavior: 'smooth' });
         
         setTimeout(function() {
             document.getElementById('animacaoBattle').style.display = 'none';
             section.style.backgroundColor = 'transparent';
             renderizarVencedor(ganhador);
+
+            //adiciono aqui os ultimos comparados na Array de historico
+            ultimasComparacoes.unshift({
+                ganhador: {
+                    id: ganhador.id,
+                    name: ganhador.name,
+                    type: ganhador.type,
+                    image: ganhador.image
+                },
+                perdedor: {
+                    id: perdedor.id,
+                    name: perdedor.name,
+                    type: perdedor.type,
+                    image: perdedor.image
+                }
+            });
+            localStorage.setItem('ultimasComparacoes', JSON.stringify(ultimasComparacoes));
         }, 500);
 
         cardcompare[0] = [];
@@ -672,7 +801,6 @@ function renderizarVencedor(ganhador){
     `;
 }
 
-/* FUNÇÃO MESTRE DE RENDERIZAÇÃO DE CARD */
 
 function renderizarCard(p, container, isMainPage, origem) {
     const card = document.createElement('div');
@@ -737,14 +865,13 @@ function renderizarCard(p, container, isMainPage, origem) {
         ${detailsPanel} 
     `;
 
-    // Click do card: só ativa lógica de comparação na página compare
     if (document.querySelector('.modal-container')) {
-        const btnAdd = card.querySelector(".glass-info-panel");
+        const btnAdd = card.querySelector(".pokemon-card-base");
 
         if(btnAdd && origem){
             btnAdd.addEventListener('click', () => {
                 if(origem === 'card1'){
-                    if(!cardcompare[1] || p.id != cardcompare[1].id){
+                    if(!cardcompare[1] || p.id !== cardcompare[1].id){
                         cardcompare[0] = p;
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
@@ -794,11 +921,8 @@ function scrollToTop() {
     }); 
 }
 
-/* ============================================
-   LÓGICA DE FAVORITOS
-   ============================================ */
+//LÓGICA DE FAVORITOS
 
-/* LocalStorage helpers */
 function salvarLS(chave, valor) {
     localStorage.setItem(chave, JSON.stringify(valor));
 }
@@ -808,13 +932,12 @@ function buscarLS(chave, padrao = null) {
     return item ? JSON.parse(item) : padrao;
 }
 
-/* Verifica se pokemon já é favorito */
 function verificarFavorito(id) {
     return buscarLS('pokemonFavoritos', []).includes(id);
 }
 
 async function tentarFavoritar(event, elemento, pokemonId) {
-    event.stopPropagation(); // Evita que o clique vaze para o card de trás
+    event.stopPropagation();
 
     if (estaLogado()) {
         toggleFavorito(pokemonId, elemento);
@@ -827,7 +950,6 @@ async function tentarFavoritar(event, elemento, pokemonId) {
     }
 }
 
-/* Salva/remove favorito ao clicar na pokébola */
 function toggleFavorito(id, elemento) {
     let favoritos = buscarLS('pokemonFavoritos', []);
 
@@ -841,13 +963,11 @@ function toggleFavorito(id, elemento) {
 
     salvarLS('pokemonFavoritos', favoritos);
 
-    // Se estiver na página de favoritos, re-renderiza
     if (window.location.pathname.includes('favoritos.html')) {
         carregarFavoritos();
     }
 }
 
-/* Carrega e renderiza a página de favoritos */
 async function carregarFavoritos() {
     const grid = document.getElementById('favoritosGrid') || document.querySelector('.favoritos-grid') || document.getElementById('pokemonGrid');
     if (!grid) return;
@@ -876,7 +996,6 @@ async function carregarFavoritos() {
             renderizarCard(pokemon, grid, true, null);
         });
 
-        // Slots vazios para completar até mínimo de 6 células, gerados exatamente como você determinou
         const minSlots = 6;
         const slotsVazios = Math.max(1, minSlots - pokemonsFavoritos.length);
         for (let i = 0; i < slotsVazios; i++) {
@@ -930,7 +1049,6 @@ function criarModalFavoritos() {
 
     document.body.appendChild(modal);
 
-    // Fechar clicando fora
     modal.addEventListener('click', function (event) {
         if (event.target === modal) fecharModalFavoritos();
     });
@@ -1005,12 +1123,29 @@ function renderizarPokemonsModalFavoritos(listaPokemons) {
             card.style.opacity = '0.45';
             card.style.pointerEvents = 'none';
         } else {
-            card.style.cursor = 'pointer';
-            card.addEventListener('click', () => salvarPokemonNosFavoritos(pokemon.id));
+            const cardBase = card.querySelector('.pokemon-card-base');
+            
+            cardBase.addEventListener('click', (e) => {
+                salvarPokemonNosFavoritos(pokemon.id);
+            });
+
+            const expandBtn = card.querySelector('.expand-btn');
+            const detailsPanel = card.querySelector('.details-panel');
+
+            if (expandBtn) {
+                expandBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+
+            if (detailsPanel) {
+                detailsPanel.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
         }
     });
 }
-
 function salvarPokemonNosFavoritos(id) {
     let favoritos = buscarLS('pokemonFavoritos', []);
     if (!favoritos.includes(id)) favoritos.push(id);
@@ -1023,5 +1158,4 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') fecharModalFavoritos();
 });
 
-// Inicialização imediata
 inicializar();
