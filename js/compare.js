@@ -118,21 +118,38 @@ function abrirmodal(card){
             </div>
             <div id="modal-body">
                 <div id="modal-body-grid"></div>
+                <button id="loadMoreBtnModal">Carregar Mais</button>
             </div>
         </div>
     `;
     
     const bodymodal = document.getElementById('modal-body-grid');
     const modalSearchInput = document.getElementById('modalSearchInput');
+    const loadMoreBtnModal = document.getElementById('loadMoreBtnModal');
+    let contadorCardsModal = 12;
     
+    function renderizarCardsNoModal(lista, offset, limit) {
+        const proximosCards = lista.slice(offset, offset + limit);
+        proximosCards.forEach(p => {            
+            renderizarCard(p, bodymodal, true, card);
+        });
+    };
+
     const renderizarFiltradosNoModal = (lista) => {
-        bodymodal.innerHTML = ""; 
+        bodymodal.innerHTML = "";
         lista.forEach(p => {            
             renderizarCard(p, bodymodal, true, card);
         });
     };
 
-    renderizarFiltradosNoModal(filteredPokemon);
+    renderizarCardsNoModal(filteredPokemon, 0, contadorCardsModal);
+
+    if(loadMoreBtnModal) {
+        loadMoreBtnModal.addEventListener('click', () => {
+            renderizarCardsNoModal(filteredPokemon, contadorCardsModal, 12);
+            contadorCardsModal += 12;
+        }); 
+    }
 
     modalSearchInput.addEventListener('input', (e) => {               
         const resultados = buscarPokemonsPorTermo(pokemonData, e.target.value)
