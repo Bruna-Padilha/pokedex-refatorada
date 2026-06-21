@@ -197,8 +197,10 @@
     gap: 6rem 1.5rem;
 }
 
-/* Cards dentro do modal: cursor pointer */
+/* Cards dentro do modal: cursor pointer + deixa o card encolher na célula do grid */
 .lista-pokemons-modal-grid .pokemon-card-container {
+    min-width: 0;
+    width: 100%;
     cursor: pointer;
 }
 
