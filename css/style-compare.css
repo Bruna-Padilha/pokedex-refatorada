@@ -55,9 +55,9 @@
 
 .hero-image div{
     margin-top: 0;
+    max-width: 40vw;
     width: 400px;
     height: 400px;
-    max-width: 40vw;
     background: var(--img-trio-pokemon);
     z-index: 10;
     pointer-events: none;
@@ -532,7 +532,6 @@ visibility: hidden;
     justify-content: space-between;
     justify-content: end;
     width: 100%;
-    height: 15%;
     min-height: 4rem;
     align-items: center;
     border-bottom: 1px solid white;
@@ -623,7 +622,7 @@ visibility: hidden;
 
 #modal-body {
     width: 95%;
-    height: 80%;
+    height: 78%;
     position:absolute;
     left: 50%;
     padding: 1rem;

@@ -43,8 +43,6 @@ if (carregarMaisObserver) {
             }
         });
     }, {
-        root: null,
-        rootMargin: '150px', 
         threshold: 0.1
     });
 

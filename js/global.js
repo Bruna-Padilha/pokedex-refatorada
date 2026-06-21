@@ -44,10 +44,15 @@ if (configuracoes.musica) {
 }
 
 //Sons
-document.addEventListener('click', async () => {
-    const beep = new Audio('../assets/audio/beep.mp3');
+const sons_beep = new Audio('../assets/audio/beep.mp3');
+const sons_error = new Audio('../assets/audio/error.mp3');
+const sons_error2 = new Audio('../assets/audio/error_2.mp3');
+const sons_winner = new Audio('../assets/audio/winner.mp3');
 
-    await beep.play();
+document.addEventListener('click', () => {
+    if (configuracoes.sons) {
+        sons_beep.play();
+    }
 });
 
 function obterDadosPopupSistema(tipo = 'info') {
@@ -205,8 +210,6 @@ userBarLogout.addEventListener('click', () => {
     alert("Sessão encerrada.");
     window.location.href = 'mainpage.html';
 });
-
-
 
 function atualizarInterfaceLogin() {
     if (estaLogado()) {
@@ -559,6 +562,7 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
+                        configuracoes.sons ? sons_error2.play() : null;
                         mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
                             titulo: 'Escolha inválida',
                             textoBotao: 'OK'
@@ -570,6 +574,7 @@ function renderizarCard(p, container, isMainPage, origem) {
                         renderizarNoSlot(origem, p);
                         document.querySelector('.modal-container').innerHTML = "";
                     } else {
+                        configuracoes.sons ? sons_error2.play() : null;
                         mostrarPopup('Você não pode escolher o mesmo Pokémon!', 'warning', {
                             titulo: 'Escolha inválida',
                             textoBotao: 'OK'
@@ -579,6 +584,16 @@ function renderizarCard(p, container, isMainPage, origem) {
             }); 
         }
     }
+
+    const sonsPokemonClick = card.querySelector(".pokemon-card-base");
+
+    if(sonsPokemonClick){
+        sonsPokemonClick.addEventListener('click', () => {
+            const sonsPokemon = new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${p.id}.ogg`)
+            configuracoes.sons ? sonsPokemon.play() : null;
+        });
+    }
+
     container.appendChild(card);
 }
 
@@ -621,6 +636,7 @@ async function tentarFavoritar(event, elemento, pokemonId) {
     if (estaLogado()) {
         toggleFavorito(pokemonId, elemento);
     } else {
+        configuracoes.sons ? sons_error.play() : null;
         await mostrarPopup('Você precisa estar logado para favoritar um Pokémon!', 'warning', {
             titulo: 'Login necessário',
             textoBotao: 'Ir para login'
