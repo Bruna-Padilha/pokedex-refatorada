@@ -237,6 +237,14 @@
     width: 100%;
 }
 
+.favoritos-grid .pokemon-card-container:hover .pokemon-image-card {
+    transform: translateX(-50%);
+}
+
+.favoritos-grid .pokemon-card-base:hover .pokemon-image-card {
+    transform: translateX(-50%) translateY(-10px) scale(1.1);
+}
+
 @media (max-width: 1024px) {
     .favoritos-grid {
         gap: 80px 20px;
