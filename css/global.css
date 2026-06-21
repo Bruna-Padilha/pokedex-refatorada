@@ -80,7 +80,7 @@ body {
     color: white;
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background 0.5s ease;
+    /* transition: background 0.5s ease; */
 }
 
 /* --- 2. HEADER E NAVBAR --- */

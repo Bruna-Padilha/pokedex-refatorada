@@ -269,15 +269,17 @@ function toggleConfig(){
             chaveMusica.classList.toggle('true', configuracoes.musica);
             chaveMusica.classList.toggle('false', !configuracoes.musica);
 
-        //Liga a musica tema
-        if (configuracoes.musica) {
-            musica.muted = false;
-        } else {
-            musica.muted = true;
-        }
-            
             localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
-            console.log(configuracoes);
+
+            // Sincroniza a tag de áudio em tempo real
+            const audio = document.getElementById('musica');
+                if (audio) {
+                    if (configuracoes.musica) {
+                        audio.play().catch(e => console.error("Erro ao tocar:", e));
+                    } else {
+                        audio.pause();
+                    }
+                }
         });
 
         chaveTemaEscuro.addEventListener('click', () => {
@@ -330,6 +332,7 @@ async function inicializar() {
     const path = window.location.pathname;
     
     atualizarInterfaceLogin();
+    gerenciarAudioGlobal();
 
     if (path.includes('mainpage.html')) {
         
@@ -661,4 +664,40 @@ function toggleFavorito(id, elemento) {
     if (window.location.pathname.includes('favoritos.html')) {
         carregarFavoritos();
     }
+}
+
+// ==========================================
+// GERENCIADOR DE ÁUDIO GLOBAL
+// ==========================================
+function gerenciarAudioGlobal() {
+    const audio = document.getElementById('musica');
+    if (!audio) return;
+
+    audio.volume = 0.2;
+
+    // Verifica se há um tempo salvo da página anterior
+    const tempoSalvo = sessionStorage.getItem('tempoMusicaGlobal');
+    if (tempoSalvo) {
+        audio.currentTime = parseFloat(tempoSalvo);
+    }
+
+    // Tenta tocar a música se o usuário estiver com a chave de música ativada
+    if (configuracoes.musica) {
+        // O .play() retorna uma Promise para caso o navegador bloqueie.
+        audio.play().catch((erro) => {
+            console.warn("Autoplay bloqueado pelo navegador. O áudio iniciará no primeiro clique na tela.");
+            
+            // Se o navegador bloquear, esperamos o usuário interagir com a tela para liberar o áudio
+            const iniciarAudioNoClique = () => {
+                if (configuracoes.musica) audio.play();
+                document.removeEventListener('click', iniciarAudioNoClique);
+            };
+            document.addEventListener('click', iniciarAudioNoClique);
+        });
+    }
+
+    // Salva o tempo exato de reprodução momentos antes da página ser destruída
+    window.addEventListener('beforeunload', () => {
+        sessionStorage.setItem('tempoMusicaGlobal', audio.currentTime);
+    });
 }
