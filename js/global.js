@@ -366,7 +366,7 @@ async function fetchPokemonBatch(offset = 0, limit = 100) {
 
 async function iniciarCarregamentoBackground(offsetInicial) {
     let offset = offsetInicial;
-    const limit = 100;
+    const limit = 20;
     const maxPokemons = 1025; // Limite do total de pokemons presentes na pokéapi
 
     while (offset < maxPokemons) {
