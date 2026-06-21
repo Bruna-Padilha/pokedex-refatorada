@@ -288,6 +288,18 @@ function obterBackground(tipos) {
     return cores[listaTipos[0]] || '#777';
 }
 
+function buscarPokemonsPorTermo(listaBase, termo) {
+    const t = termo.toLowerCase().trim();
+    
+    if (t === '') return listaBase;
+
+    return listaBase.filter(p => 
+        p.name.toLowerCase().includes(t) || 
+        p.id.toString().includes(t) || 
+        p.type.some(tipo => tipo.toLowerCase().includes(t))
+    );
+}
+
 async function inicializar() {
     const path = window.location.pathname;
     
