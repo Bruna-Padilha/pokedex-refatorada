@@ -202,6 +202,10 @@
     cursor: pointer;
 }
 
+.lista-pokemons-modal-grid .pokemon-card-container:hover .pokemon-image-card {
+    transform: translateX(-50%);
+}
+
 /* Mensagem sem resultado */
 .modal-sem-resultado {
     text-align: center;
