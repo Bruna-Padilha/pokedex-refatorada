@@ -366,13 +366,14 @@ function obterBackground(tipos) {
     return cores[listaTipos[0]] || '#777';
 }
 
+/* Função mestre de inicialização, detecta a página e chama as funções específicas */
+
 async function inicializar() {
     const path = window.location.pathname;
     
     atualizarInterfaceLogin();
 
     if (path.includes('mainpage.html')) {
-        
         await carregarPokedex();
         configurarFiltros();
 
@@ -390,9 +391,7 @@ async function inicializar() {
         await carregarFavoritos();
 
     } else {
-        
         await carregarDestaquesIndex();
-
     }
 }
 
@@ -630,9 +629,11 @@ function irParaSectionCompare() {
     section.scrollIntoView({ behavior: 'smooth' });
 }
 
+
 document.addEventListener("DOMContentLoaded", () => {
     const target = document.querySelector("#sectionCompare");
-    if(!target) return;
+
+    if (!target) return;
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {

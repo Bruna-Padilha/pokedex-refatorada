@@ -12,8 +12,8 @@
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
     border-radius: 30px;
     padding: 35px 40px 60px;
-    width: 80rem;
-    max-width: 90%;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .favoritos-box h1 {
@@ -27,7 +27,7 @@
 /* --- GRID DE FAVORITOS --- */
 .favoritos-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 90px 25px;
     padding-top: 60px;
 }
@@ -202,6 +202,10 @@
     cursor: pointer;
 }
 
+.lista-pokemons-modal-grid .pokemon-card-container:hover .pokemon-image-card {
+    transform: translateX(-50%);
+}
+
 /* Mensagem sem resultado */
 .modal-sem-resultado {
     text-align: center;
@@ -226,4 +230,239 @@
 
 .lista-pokemons-modal::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.favoritos-grid .pokemon-card-container {
+    min-width: 0;
+    width: 100%;
+}
+
+.favoritos-grid .pokemon-card-container:hover .pokemon-image-card {
+    transform: translateX(-50%);
+}
+
+.favoritos-grid .pokemon-card-base:hover .pokemon-image-card {
+    transform: translateX(-50%) translateY(-10px) scale(1.1);
+}
+
+@media (max-width: 1024px) {
+    .favoritos-grid {
+        gap: 80px 20px;
+    }
+    .lista-pokemons-modal-grid {
+        gap: 5rem 1rem;
+    }
+    .favoritos-grid .pokemon-image-card,
+    .lista-pokemons-modal-grid .pokemon-image-card {
+        width: 9.5rem;
+        top: -45px;
+    }
+    .favoritos-grid .pokemon-card-base,
+    .lista-pokemons-modal-grid .pokemon-card-base {
+        height: 10rem;
+    }
+    .favoritos-grid .expand-btn,
+    .lista-pokemons-modal-grid .expand-btn {
+        top: 158px;
+    }
+    .favoritos-grid .glass-info-panel,
+    .lista-pokemons-modal-grid .glass-info-panel {
+        height: 75px;
+    }
+    .favoritos-grid .pokemon-name,
+    .lista-pokemons-modal-grid .pokemon-name {
+        font-size: 1.1rem;
+    }
+    .favoritos-grid .pokemon-number,
+    .lista-pokemons-modal-grid .pokemon-number {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .favoritos-modal {
+        width: 95%;
+        max-width: 95%;
+        height: 80%;
+        padding: 1rem;
+    }
+    .favoritos-box {
+        padding: 25px 20px 40px;
+    }
+    .favoritos-grid {
+        gap: 65px 15px;
+        padding-top: 45px;
+    }
+    .lista-pokemons-modal-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 4.5rem 1rem;
+        padding-top: 2.5rem;
+    }
+    .favoritos-grid .pokemon-image-card,
+    .lista-pokemons-modal-grid .pokemon-image-card {
+        width: 7.5rem;
+        top: -35px;
+    }
+    .favoritos-grid .pokemon-card-base,
+    .lista-pokemons-modal-grid .pokemon-card-base {
+        height: 9rem;
+    }
+    .favoritos-grid .glass-info-panel,
+    .lista-pokemons-modal-grid .glass-info-panel {
+        height: 68px;
+        padding: 5px 12px;
+    }
+    .favoritos-grid .pokemon-name,
+    .lista-pokemons-modal-grid .pokemon-name {
+        font-size: 0.95rem;
+    }
+    .favoritos-grid .pokemon-number,
+    .lista-pokemons-modal-grid .pokemon-number {
+        font-size: 0.8rem;
+    }
+    .favoritos-grid .type-badge,
+    .lista-pokemons-modal-grid .type-badge {
+        padding: 2px 8px;
+        font-size: 0.65rem;
+    }
+    .favoritos-grid .hp-badge,
+    .lista-pokemons-modal-grid .hp-badge {
+        top: 70px;
+        right: 5px;
+        padding: 2px 8px;
+        font-size: 0.65rem;
+    }
+    .favoritos-grid .favorite-toggle,
+    .lista-pokemons-modal-grid .favorite-toggle {
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+    }
+    .favoritos-grid .pokeball-icons-wrapper,
+    .lista-pokemons-modal-grid .pokeball-icons-wrapper {
+        width: 18px;
+        height: 18px;
+    }
+    .favoritos-grid .expand-btn,
+    .lista-pokemons-modal-grid .expand-btn {
+        width: 24px;
+        height: 24px;
+        top: 140px;
+        font-size: 0.75rem;
+    }
+    .favoritos-grid .details-panel.open,
+    .lista-pokemons-modal-grid .details-panel.open {
+        padding: 20px 0 10px 0;
+    }
+    .favoritos-grid .stat-row,
+    .lista-pokemons-modal-grid .stat-row {
+        padding: 4px 10px;
+        margin: 3px 8px;
+        font-size: 0.7rem;
+    }
+    .favoritos-grid .moves-section,
+    .lista-pokemons-modal-grid .moves-section {
+        margin: 5px 8px 0;
+    }
+    .favoritos-grid .pixel-move-btn,
+    .lista-pokemons-modal-grid .pixel-move-btn {
+        font-size: 8px;
+        padding: 2px 4px;
+    }
+    .slot-vazio {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .favoritos-grid {
+        gap: 50px 8px;
+        padding-top: 35px;
+    }
+    .lista-pokemons-modal-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 3.5rem 0.5rem;
+        padding-top: 2rem;
+    }
+    .favoritos-grid .pokemon-image-card,
+    .lista-pokemons-modal-grid .pokemon-image-card {
+        width: 5.5rem;
+        top: -25px;
+    }
+    .favoritos-grid .pokemon-card-base,
+    .lista-pokemons-modal-grid .pokemon-card-base {
+        height: 8rem;
+    }
+    .favoritos-grid .glass-info-panel,
+    .lista-pokemons-modal-grid .glass-info-panel {
+        height: 60px;
+        padding: 3px 8px;
+    }
+    .favoritos-grid .pokemon-name,
+    .lista-pokemons-modal-grid .pokemon-name {
+        font-size: 0.8rem;
+    }
+    .favoritos-grid .pokemon-number,
+    .lista-pokemons-modal-grid .pokemon-number {
+        font-size: 0.65rem;
+    }
+    .favoritos-grid .type-badge,
+    .lista-pokemons-modal-grid .type-badge {
+        padding: 1px 4px;
+        font-size: 0.55rem;
+    }
+    .favoritos-grid .hp-badge,
+    .lista-pokemons-modal-grid .hp-badge {
+        top: 55px;
+        right: 4px;
+        padding: 1px 6px;
+        font-size: 0.55rem;
+    }
+    .favoritos-grid .favorite-toggle,
+    .lista-pokemons-modal-grid .favorite-toggle {
+        top: 6px;
+        right: 6px;
+        width: 22px;
+        height: 22px;
+    }
+    .favoritos-grid .pokeball-icons-wrapper,
+    .lista-pokemons-modal-grid .pokeball-icons-wrapper {
+        width: 14px;
+        height: 14px;
+    }
+    .favoritos-grid .expand-btn,
+    .lista-pokemons-modal-grid .expand-btn {
+        width: 20px;
+        height: 20px;
+        top: 124px;
+        font-size: 0.6rem;
+    }
+    .favoritos-grid .details-panel.open,
+    .lista-pokemons-modal-grid .details-panel.open {
+        padding: 15px 0 8px 0;
+    }
+    .favoritos-grid .stat-row,
+    .lista-pokemons-modal-grid .stat-row {
+        padding: 3px 8px;
+        margin: 2px 6px;
+        font-size: 0.6rem;
+    }
+    .favoritos-grid .moves-section,
+    .lista-pokemons-modal-grid .moves-section {
+        margin: 4px 6px 0;
+    }
+    .favoritos-grid .pixel-move-btn,
+    .lista-pokemons-modal-grid .pixel-move-btn {
+        font-size: 7px;
+        padding: 1px 3px;
+        margin: 1px;
+    }
+    .slot-vazio {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
 }

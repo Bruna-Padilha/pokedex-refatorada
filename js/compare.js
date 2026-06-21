@@ -134,13 +134,8 @@ function abrirmodal(card){
 
     renderizarFiltradosNoModal(filteredPokemon);
 
-    modalSearchInput.addEventListener('input', (e) => {
-        const termo = e.target.value.toLowerCase();
-        
-        const resultados = pokemonData.filter(p => 
-            p.name.toLowerCase().includes(termo) || 
-            p.id.toString().includes(termo)
-        );
+    modalSearchInput.addEventListener('input', (e) => {               
+        const resultados = buscarPokemonsPorTermo(pokemonData, e.target.value)
 
         renderizarFiltradosNoModal(resultados);
     });

@@ -4,13 +4,8 @@ function configurarFiltros() {
 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const termo = e.target.value.toLowerCase();
-
-            filteredPokemon = pokemonData.filter(p => 
-                p.name.toLowerCase().includes(termo) || 
-                p.id.toString().includes(termo) || 
-                p.type.some(tipo => tipo.toLowerCase().includes(termo))
-            );
+            
+            filteredPokemon = buscarPokemonsPorTermo(pokemonData, e.target.value);
 
             itemsToShow = 8; 
             renderizarGrid();

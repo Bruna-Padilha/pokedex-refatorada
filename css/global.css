@@ -407,7 +407,7 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     width: 35px; 
     height: 35px; 
     cursor: pointer; 
-    z-index: 15; 
+    z-index: 20; 
     display: flex; 
     justify-content: center; 
     align-items: center; 
