@@ -44,10 +44,6 @@
     line-height: 1.3;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin: 0 0 20px;
-    font-size: clamp(0.8rem, 2.2vw, 20px);
-    line-height: 1.3;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin: 0 0 20px;
 }
 .hero-content span {
     color: #ffcb05;
@@ -400,7 +396,7 @@ visibility: hidden;
 .card-add-head-title .types-wrapper {
     display: flex;
     gap: 5px;
-    margin-top: 8px; /* Espaço entre nome e badges */
+    margin-top: 8px; 
 }
 
 /* --- SEÇÃO DE STATUS INFERIOR --- */
@@ -643,7 +639,7 @@ visibility: hidden;
 #modal-body {
     width: 95%;
     height: 78%;
-    position:absolute;
+    position: absolute;
     left: 50%;
     padding: 1rem;
     translate: -50%;
@@ -659,6 +655,11 @@ visibility: hidden;
     gap: 6rem 1.5rem;
 }
 
+#modal-body-grid .pokemon-card-container {
+    min-width: 0;
+    width: 100%;
+}
+
 #modal-body::-webkit-scrollbar{
     width: 8px;
 }
@@ -671,12 +672,12 @@ visibility: hidden;
 }
 
 #modal-body-grid::-webkit-scrollbar-thumb {
-  background: #d3d3d3; /* Cor da alça */
+  background: #d3d3d3;
   border-radius: 10px;
 }
 
 #modal-body-grid::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Cor da alça ao passar o mouse */
+  background: #555;
 }
 
 #loadMoreBtnModal{
@@ -696,4 +697,27 @@ visibility: hidden;
 #loadMoreBtnModal:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    #modal-body-grid {        
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 4.5rem 0.5rem; 
+    }
+    #modal-body-grid .pokemon-image-card { width: 7.5rem; top: -35px; }
+    #modal-body-grid .pokemon-card-base { height: 9rem; }
+    #modal-body-grid .glass-info-panel { height: 68px; padding: 5px 12px; }
+    #modal-body-grid .pokemon-name { font-size: 0.95rem; }
+    #modal-body-grid .pokemon-number { font-size: 0.8rem; }
+}
+
+@media (max-width: 480px) {
+    #modal-body-grid {
+        gap: 3.5rem 0.5rem; 
+    }
+    #modal-body-grid .pokemon-image-card { width: 5.5rem; top: -25px; }
+    #modal-body-grid .pokemon-card-base { height: 8rem; }
+    #modal-body-grid .glass-info-panel { height: 60px; padding: 3px 8px; }
+    #modal-body-grid .pokemon-name { font-size: 0.8rem; }
+    #modal-body-grid .pokemon-number { font-size: 0.65rem; }
 }

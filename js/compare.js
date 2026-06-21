@@ -111,9 +111,6 @@ function abrirmodal(card){
                     <input type="text" id="modalSearchInput" placeholder="Buscar por nome ou número...">
                 </div>
               
-                <div class="sort-container" id="btn-modal-compare">
-                    <span>Buscar</span>
-                </div>
                 <button id="buttonFecharX" style="background:none; border:none; color:white; cursor:pointer; font-size:1.5rem;">X</button>
             </div>
             <div id="modal-body">

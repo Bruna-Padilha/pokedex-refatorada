@@ -9,12 +9,13 @@
 .search-sort-bar {
     margin: 40px 0 80px 0;
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     align-items: center;
 }
 
 .search-container {
-    flex: 1;
+    flex: 1 1 250px;
     background: rgba(255,255,255,0.7);
     border-radius: 30px;
     padding: 12px 25px;
@@ -31,7 +32,8 @@
     margin-left: 10px;
 }
 
-.sort-container {
+.sort-container { /* ADICIONADO: Dá a capacidade do botão crescer e esticar */
+    justify-content: center;
     background: var(--bg-btn-color);
     color: white;
     padding: 12px 25px;
