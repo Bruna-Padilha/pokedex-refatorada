@@ -12,8 +12,8 @@
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
     border-radius: 30px;
     padding: 35px 40px 60px;
-    width: 80rem;
-    max-width: 90%;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .favoritos-box h1 {
@@ -27,7 +27,7 @@
 /* --- GRID DE FAVORITOS --- */
 .favoritos-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 90px 25px;
     padding-top: 60px;
 }
