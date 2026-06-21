@@ -45,10 +45,19 @@
     right: 10%;
 }
 
+@media(max-width:970px){
+    .hero-image{
+        position: absolute;
+        top: -40%;
+        right: -5%;
+    }
+}
+
 .hero-image div{
     margin-top: 0;
     width: 400px;
     height: 400px;
+    max-width: 40vw;
     background: var(--img-trio-pokemon);
     z-index: 10;
     pointer-events: none;
@@ -223,6 +232,7 @@ width: 100vw;
 height: 100vh;
 display: flex;
 flex-wrap: wrap;
+margin-top: 0px;
 justify-content: center;
 align-items: center;
 gap: 8%;
@@ -230,10 +240,18 @@ padding: 2%;
 visibility: hidden;
 }
 
+@media(max-width:790px){
+    .card-add-content {
+        flex-wrap: unset;
+        flex-direction: column;
+        margin-top: 120px;
+    }
+}
+
 /* Slot Vazio com "+" */
 .card-add-empty {
     background: rgba(255, 255, 255, 0.2);
-    height: 420px;
+    min-height: 420px;
     width: 250px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
