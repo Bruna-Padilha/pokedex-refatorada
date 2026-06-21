@@ -287,6 +287,8 @@ function toggleConfig(){
 
             localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
             console.log(configuracoes);
+
+            window.dispatchEvent(new Event('temaAlterado'));
         });
 
         chaveLimparCache.addEventListener('click', () => {
