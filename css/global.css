@@ -381,8 +381,8 @@ nav ul { display: flex; list-style: none; gap: 15px; }
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
-.pokemon-image-card { 
-    width: 11.25rem; 
+.pokemon-image-card {
+    width: 11.25rem;
     position: absolute; 
     top: -50px; 
     left: 50%; 

@@ -5,7 +5,7 @@ const increment = 4;
 let currentSort = 'id';
 let cardcompare = [];
 let ultimasComparacoes = JSON.parse(localStorage.getItem('ultimasComparacoes')) || [];
-let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, temaEscuro: false};
+let configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || {sons: true, musica: true, animacao: false, temaEscuro: false};
 
 const cores = {
 fire: 'var(--clr-fire)',
@@ -239,6 +239,12 @@ function toggleConfig(){
                 </div>
             </div>
             <div>
+                <span>Animação</span>
+                <div class="chave ${configuracoes.animacao ? 'true' : 'false'}" id="chaveAnimacao">
+                    <span class="chaveSeletor"></span>
+                </div>
+            </div>
+            <div>
                 <span>Tema escuro</span>
                 <div class="chave ${configuracoes.temaEscuro ? 'true' : 'false'}" id="chaveTemaEscuro">
                     <span class="chaveSeletor"></span>
@@ -251,6 +257,7 @@ function toggleConfig(){
 
         const chaveSons = document.getElementById('chaveSons');
         const chaveMusica = document.getElementById('chaveMusica');
+        const chaveAnimacao = document.getElementById('chaveAnimacao');
         const chaveTemaEscuro = document.getElementById('chaveTemaEscuro');
         const chaveLimparCache = document.getElementById('chaveLimparCache');
         const htmlElement = document.documentElement;
@@ -280,6 +287,16 @@ function toggleConfig(){
                         audio.pause();
                     }
                 }
+        });
+
+        chaveAnimacao.addEventListener('click', () => {
+            configuracoes.animacao = !configuracoes.animacao;
+            chaveAnimacao.classList.toggle('true', configuracoes.animacao);
+            chaveAnimacao.classList.toggle('false', !configuracoes.animacao);
+            
+            localStorage.setItem('configuracoes', JSON.stringify(configuracoes));
+            console.log(configuracoes);
+            window.location.reload();
         });
 
         chaveTemaEscuro.addEventListener('click', () => {
@@ -398,7 +415,8 @@ async function fetchPokemonBatch(offset = 0, limit = 100) {
             attack: details.stats.find(s => s.stat.name === 'attack').base_stat,
             defense: details.stats.find(s => s.stat.name === 'defense').base_stat,
             moves: details.moves.slice(0, 2).map(m => m.move.name), // Pega apenas os 2 primeiros ataques
-            image: details.sprites.other['official-artwork'].front_default || details.sprites.front_default
+            image: details.sprites.other['official-artwork'].front_default || details.sprites.front_default,
+            gif: details.sprites.other['showdown'].front_default
         };
     }));
     
@@ -540,7 +558,7 @@ function renderizarCard(p, container, isMainPage, origem) {
         <div class="pokemon-card-base" style="background: ${obterBackground(p.type)};">
             ${isMainPage ? `<span class="hp-badge">HP ${p.hp}</span>` : ''}
             ${favButton}
-            <img src="${p.image}" class="pokemon-image-card" alt="${p.name}">
+            <img src="${configuracoes.animacao ? p.gif : p.image}" class="pokemon-image-card" alt="${p.name}">
             <div class="glass-info-panel">
                 <div class="header-row">
                     <h3 class="pokemon-name" style="text-transform:capitalize;">${p.name}</h3>
@@ -587,6 +605,7 @@ function renderizarCard(p, container, isMainPage, origem) {
             }); 
         }
     }
+
 
     const sonsPokemonClick = card.querySelector(".pokemon-card-base");
 
